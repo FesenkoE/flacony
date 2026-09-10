@@ -1,0 +1,47 @@
+import { Head, Link } from '@inertiajs/react';
+import SiteFooter from '@/components/site-footer';
+import SiteHeader from '@/components/site-header';
+import { formatDate } from '@/lib/format-date';
+
+export default function BlogShow({ post }) {
+    const paragraphs = post.body.split(/\n{2,}/);
+
+    return (
+        <>
+            <Head title={post.title} />
+            <SiteHeader />
+            <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
+                <div className="mx-auto max-w-2xl p-6">
+                    <Link
+                        href="/blog"
+                        className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                    >
+                        ← Блог
+                    </Link>
+
+                    <div className="mt-6 mb-8 flex flex-col gap-2">
+                        <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                            {formatDate(post.published_at)}
+                            {post.author && <> · {post.author.name}</>}
+                        </span>
+                        <h1 className="font-display text-4xl leading-tight font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
+                            {post.title}
+                        </h1>
+                    </div>
+
+                    <div className="flex flex-col gap-4">
+                        {paragraphs.map((paragraph, i) => (
+                            <p
+                                key={i}
+                                className="text-base leading-relaxed text-[#241a10] dark:text-[#f6ecdd]"
+                            >
+                                {paragraph}
+                            </p>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <SiteFooter />
+        </>
+    );
+}
