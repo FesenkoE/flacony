@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Lot;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -32,6 +33,7 @@ class SearchController extends Controller
             'query' => $query,
             'products' => $products,
             'lots' => $lots,
+            'brands' => Brand::orderBy('name')->pluck('name'),
         ]);
     }
 }

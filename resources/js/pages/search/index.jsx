@@ -5,12 +5,17 @@ import ProductCard from '@/components/product-card';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 
-export default function SearchIndex({ query, products, lots }) {
+export default function SearchIndex({ query, products, lots, brands }) {
     const [value, setValue] = useState(query);
 
     function submit(e) {
         e.preventDefault();
         router.get('/search', { q: value }, { preserveState: true });
+    }
+
+    function searchFor(term) {
+        setValue(term);
+        router.get('/search', { q: term }, { preserveState: true });
     }
 
     const hasResults = products.length > 0 || lots.length > 0;
@@ -21,6 +26,13 @@ export default function SearchIndex({ query, products, lots }) {
             <SiteHeader />
             <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
                 <div className="mx-auto max-w-6xl p-6">
+                    <h1 className="mb-1 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                        Поиск
+                    </h1>
+                    <p className="mb-6 text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                        Ищем сразу по официальному каталогу и лотам распива.
+                    </p>
+
                     <form onSubmit={submit} className="mb-8 flex gap-2">
                         <input
                             type="text"
@@ -39,9 +51,23 @@ export default function SearchIndex({ query, products, lots }) {
                     </form>
 
                     {query === '' ? (
-                        <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
-                            Введите название аромата, бренда или ноты.
-                        </p>
+                        <div className="flex flex-col gap-3">
+                            <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                Или ищите по бренду
+                            </span>
+                            <div className="flex flex-wrap gap-2">
+                                {brands.map((brand) => (
+                                    <button
+                                        key={brand}
+                                        type="button"
+                                        onClick={() => searchFor(brand)}
+                                        className="rounded-full border border-[#e6d7bb] px-4 py-1.5 text-sm font-medium text-[#8a7860] dark:border-[#ffffff29] dark:text-[#b7a58f]"
+                                    >
+                                        {brand}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
                     ) : !hasResults ? (
                         <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
                             По запросу «{query}» ничего не нашлось.
