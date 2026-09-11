@@ -66,4 +66,9 @@ class User extends Authenticatable implements FilamentUser, PasskeyUser
     {
         return $this->hasMany(Favorite::class);
     }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
 }

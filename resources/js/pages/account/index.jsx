@@ -5,6 +5,7 @@ import ConfirmButton from '@/components/confirm-button';
 import DissolveCard from '@/components/dissolve-card';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
+import { formatDate } from '@/lib/format-date';
 
 const actionButtonBase =
     'flex h-9 w-9 items-center justify-center rounded-full border transition-all duration-200 ease-out hover:scale-110 active:scale-95';
@@ -109,7 +110,7 @@ function LotRow({ lot }) {
     );
 }
 
-export default function AccountIndex({ lots }) {
+export default function AccountIndex({ lots, orders }) {
     const { auth } = usePage().props;
     const listRef = useFlipList([lots.length]);
 
@@ -146,6 +147,40 @@ export default function AccountIndex({ lots }) {
                             Корзина
                         </Link>
                     </div>
+
+                    <div className="mt-10 flex items-center justify-between">
+                        <h2 className="text-xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                            Мои заказы
+                        </h2>
+                    </div>
+
+                    {orders.length === 0 ? (
+                        <p className="mt-4 text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                            Ты ещё не оформлял заказы.
+                        </p>
+                    ) : (
+                        <div className="mt-4 flex flex-col gap-3">
+                            {orders.map((order) => (
+                                <Link
+                                    key={order.id}
+                                    href={`/orders/${order.id}`}
+                                    className="flex items-center justify-between gap-4 rounded-2xl border border-[#1e160c14] bg-[#fffaf1] p-4 dark:border-[#ffffff14] dark:bg-[#ffffff0a]"
+                                >
+                                    <div className="flex flex-col gap-1">
+                                        <span className="font-display text-lg font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
+                                            Заказ №{order.id}
+                                        </span>
+                                        <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                                            {formatDate(order.created_at)}
+                                        </span>
+                                    </div>
+                                    <span className="font-display text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                                        {Number(order.total).toFixed(2)} ₴
+                                    </span>
+                                </Link>
+                            ))}
+                        </div>
+                    )}
 
                     <div className="mt-10 flex items-center justify-between">
                         <h2 className="text-xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">

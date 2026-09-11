@@ -12,6 +12,7 @@ class DashboardController extends Controller
     {
         return Inertia::render('account/index', [
             'lots' => $request->user()->lots()->latest()->get(),
+            'orders' => $request->user()->orders()->latest()->get(),
         ]);
     }
 }

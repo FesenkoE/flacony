@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ForumController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\ForumReplyController;
 use App\Http\Controllers\ForumTopicController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LotController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
@@ -49,6 +51,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('favorites/{product}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
     Route::post('products/{product:slug}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
     Route::delete('reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 });
 
 Route::get('sellers/lots/{lot}', [LotController::class, 'show'])->name('lots.show');

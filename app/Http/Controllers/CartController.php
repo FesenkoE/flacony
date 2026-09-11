@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Lot;
 use App\Models\ProductVariant;
+use App\Support\Cart;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,34 +14,7 @@ class CartController extends Controller
 {
     public function index(): Response
     {
-        $cart = session('cart', []);
-        $cartLots = session('cart_lots', []);
-
-        $variants = ProductVariant::with('product.brand')
-            ->whereIn('id', array_keys($cart))
-            ->get();
-
-        $variantItems = $variants->map(fn (ProductVariant $variant) => [
-            'type' => 'variant',
-            'key' => $variant->id,
-            'brand_name' => $variant->product->brand->name,
-            'product_name' => $variant->product->name,
-            'detail' => "{$variant->volume_ml} мл × {$cart[$variant->id]}",
-            'subtotal' => $variant->price * $cart[$variant->id],
-        ]);
-
-        $lots = Lot::whereIn('id', array_keys($cartLots))->get();
-
-        $lotItems = $lots->map(fn (Lot $lot) => [
-            'type' => 'lot',
-            'key' => $lot->id,
-            'brand_name' => $lot->brand_name,
-            'product_name' => $lot->product_name,
-            'detail' => "{$cartLots[$lot->id]} мл (распив)",
-            'subtotal' => $lot->priceForMl((float) $cartLots[$lot->id]),
-        ]);
-
-        $items = $variantItems->concat($lotItems)->values();
+        $items = Cart::items();
 
         return Inertia::render('cart/index', [
             'items' => $items,

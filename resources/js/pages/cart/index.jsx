@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { useConfirmDelete } from '@/hooks/use-confirm-delete';
 import { useFlipList } from '@/hooks/use-flip-list';
 import ConfirmButton from '@/components/confirm-button';
@@ -44,6 +44,7 @@ function CartRow({ item }) {
 
 export default function CartIndex({ items, total }) {
     const listRef = useFlipList([items.length]);
+    const { auth } = usePage().props;
 
     return (
         <>
@@ -83,6 +84,15 @@ export default function CartIndex({ items, total }) {
                                     {Number(total).toFixed(2)} ₴
                                 </span>
                             </div>
+
+                            <Link
+                                href={auth.user ? '/checkout' : '/login'}
+                                className="mt-2 rounded-full bg-[#bf8438] px-7 py-3.5 text-center text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                            >
+                                {auth.user
+                                    ? 'Оформить заказ'
+                                    : 'Войти, чтобы оформить заказ'}
+                            </Link>
                         </div>
                     )}
                 </div>
