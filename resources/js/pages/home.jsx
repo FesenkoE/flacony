@@ -23,7 +23,7 @@ const STEPS = [
 
 const SCENT_TAGS = [
     { label: 'Woody', top: '14%', left: '8%', delay: '0.2s' },
-    { label: 'Amber', top: '66%', left: '6%', delay: '1.4s' },
+    { label: 'Amber', top: '84%', left: '6%', delay: '1.4s' },
     { label: 'Citrus', top: '22%', right: '9%', delay: '0.8s' },
     { label: 'Floral', top: '74%', right: '12%', delay: '2s' },
 ];
@@ -55,22 +55,21 @@ function Hero() {
         >
             <div className="hero-bg absolute inset-0" />
 
-            {SCENT_TAGS.map((tag) => (
-                <span
-                    key={tag.label}
-                    className="hero-float hero-tag absolute rounded-full px-3.5 py-1.5 text-xs tracking-wide backdrop-blur-[10px]"
-                    style={{
-                        top: tag.top,
-                        left: tag.left,
-                        right: tag.right,
-                        animationDelay: tag.delay,
-                    }}
-                >
-                    {tag.label}
-                </span>
-            ))}
-
             <div className="relative mx-auto grid min-h-[760px] max-w-6xl grid-cols-1 items-center gap-6 px-6 md:grid-cols-[1.1fr_0.9fr] md:px-12">
+                {SCENT_TAGS.map((tag) => (
+                    <span
+                        key={tag.label}
+                        className="hero-float hero-tag absolute hidden rounded-full px-3.5 py-1.5 text-xs tracking-wide backdrop-blur-[10px] md:block"
+                        style={{
+                            top: tag.top,
+                            left: tag.left,
+                            right: tag.right,
+                            animationDelay: tag.delay,
+                        }}
+                    >
+                        {tag.label}
+                    </span>
+                ))}
                 <div className="flex flex-col gap-5">
                     <span
                         className="hero-fade-up text-[13px] font-bold tracking-[0.3em] text-[#bf8438]"
