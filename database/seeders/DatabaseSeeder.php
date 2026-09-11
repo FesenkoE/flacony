@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'test@example.com'],
             User::factory()->raw(['name' => 'Test User', 'email' => 'test@example.com']),
         );
+        $testUser->update(['is_admin' => true]);
 
         $categories = [
             'unisex' => Category::firstOrCreate(['slug' => 'unisex'], ['name' => 'Унисекс']),
@@ -90,10 +91,23 @@ class DatabaseSeeder extends Seeder
 
         // ponytail: only one real photo exists so far (see product-card.jsx /
         // products/show.jsx fallback to the SVG bottle icon) — add more slugs here
-        // as real product photos come in.
+        // as real product photos come in (upload via /admin, or drop the file in
+        // public/images/products and register it here like the line below).
         $imagePaths = [
-            'dior-sauvage' => 'images/products/dior-sauvage.jpg',
+            'dior-sauvage' => 'products/dior-sauvage.jpg',
         ];
+
+        // Demo photos live in public/images (tracked in git) but are served from
+        // the same "public" disk as admin uploads (storage/app/public) — copy
+        // them over once so both sources render through the same /storage/... URL.
+        foreach ($imagePaths as $source) {
+            $seedFile = public_path("images/{$source}");
+            $storagePath = storage_path("app/public/{$source}");
+            if (file_exists($seedFile) && ! file_exists($storagePath)) {
+                @mkdir(dirname($storagePath), 0755, true);
+                copy($seedFile, $storagePath);
+            }
+        }
 
         foreach ($products as $entry) {
             $brand = Brand::firstOrCreate(

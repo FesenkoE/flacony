@@ -51,7 +51,7 @@ export default function ProductCard({ product }) {
                 <div className="scent-card-photo flex aspect-square items-center justify-center overflow-hidden">
                     {product.image_path ? (
                         <img
-                            src={`/${product.image_path}`}
+                            src={`/storage/${product.image_path}`}
                             alt={`${product.brand.name} ${product.name}`}
                             className="h-full w-full object-cover"
                         />
