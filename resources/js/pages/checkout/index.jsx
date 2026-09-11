@@ -83,9 +83,14 @@ function CityField({ city, onSelectCity, error }) {
 
 function WarehouseField({ cityRef, error }) {
     const [warehouses, setWarehouses] = useState([]);
-    const [filter, setFilter] = useState('');
+    const [query, setQuery] = useState('');
+    const [selected, setSelected] = useState('');
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
+        setSelected('');
+        setQuery('');
+
         if (!cityRef) {
             setWarehouses([]);
             return;
@@ -95,6 +100,7 @@ function WarehouseField({ cityRef, error }) {
             .then((r) => r.json())
             .then(setWarehouses)
             .catch(() => setWarehouses([]));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cityRef]);
 
     if (!cityRef) {
@@ -108,41 +114,55 @@ function WarehouseField({ cityRef, error }) {
         );
     }
 
-    const filtered = filter
+    const matches = query
         ? warehouses.filter((w) =>
-              w.description.toLowerCase().includes(filter.toLowerCase()),
+              w.description.toLowerCase().includes(query.toLowerCase()),
           )
         : warehouses;
 
     return (
-        <div className="flex flex-col gap-1.5">
-            <label className={labelClass} htmlFor="address">
+        <div className="relative flex flex-col gap-1.5">
+            <label className={labelClass} htmlFor="address_query">
                 Отделение
             </label>
             <input
-                type="text"
-                placeholder="Фильтр по адресу или номеру..."
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
+                id="address_query"
+                autoComplete="off"
+                placeholder={
+                    warehouses.length === 0
+                        ? 'Загрузка отделений...'
+                        : 'Начните вводить номер или улицу...'
+                }
+                disabled={warehouses.length === 0}
+                value={query}
+                onChange={(e) => {
+                    setQuery(e.target.value);
+                    setSelected('');
+                    setOpen(true);
+                }}
+                onFocus={() => warehouses.length > 0 && setOpen(true)}
+                onBlur={() => setTimeout(() => setOpen(false), 150)}
                 className={fieldClass}
             />
-            <select
-                id="address"
-                name="address"
-                defaultValue=""
-                className={fieldClass}
-            >
-                <option value="" disabled>
-                    {warehouses.length === 0
-                        ? 'Загрузка...'
-                        : `Выберите отделение (${filtered.length})`}
-                </option>
-                {filtered.map((w) => (
-                    <option key={w.ref} value={w.description}>
-                        {w.description}
-                    </option>
-                ))}
-            </select>
+            <input type="hidden" name="address" value={selected} />
+            {open && matches.length > 0 && (
+                <div className="absolute top-full left-0 z-10 mt-1 max-h-56 w-full overflow-y-auto rounded-xl border border-[#e6d7bb] bg-[#fffaf1] shadow-lg dark:border-[#ffffff29] dark:bg-[#130f0b]">
+                    {matches.slice(0, 50).map((w) => (
+                        <button
+                            key={w.ref}
+                            type="button"
+                            onMouseDown={() => {
+                                setSelected(w.description);
+                                setQuery(w.description);
+                                setOpen(false);
+                            }}
+                            className="block w-full px-3 py-2 text-left text-sm text-[#241a10] hover:bg-[#f6efe3] dark:text-[#f6ecdd] dark:hover:bg-[#ffffff0a]"
+                        >
+                            {w.description}
+                        </button>
+                    ))}
+                </div>
+            )}
             <InputError message={error} />
         </div>
     );
