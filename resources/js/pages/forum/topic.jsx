@@ -38,7 +38,7 @@ export default function ForumTopic({ topic, replies }) {
                         ← {topic.category.name}
                     </Link>
 
-                    <h1 className="mt-4 mb-8 font-display text-3xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
+                    <h1 className="font-display mt-4 mb-8 text-3xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                         {topic.title}
                     </h1>
 

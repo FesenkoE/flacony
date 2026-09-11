@@ -7,7 +7,8 @@ import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 
 function CartRow({ item }) {
-    const href = item.type === 'lot' ? `/cart/lots/${item.key}` : `/cart/${item.key}`;
+    const href =
+        item.type === 'lot' ? `/cart/lots/${item.key}` : `/cart/${item.key}`;
     const { removing, remove } = useConfirmDelete(href);
 
     return (
@@ -68,7 +69,10 @@ export default function CartIndex({ items, total }) {
                     ) : (
                         <div ref={listRef} className="flex flex-col gap-4">
                             {items.map((item) => (
-                                <CartRow key={`${item.type}-${item.key}`} item={item} />
+                                <CartRow
+                                    key={`${item.type}-${item.key}`}
+                                    item={item}
+                                />
                             ))}
 
                             <div className="mt-2 flex items-baseline justify-between border-t border-[#1e160c14] pt-4 dark:border-[#ffffff1a]">

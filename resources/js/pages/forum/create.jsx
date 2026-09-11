@@ -34,7 +34,10 @@ export default function ForumTopicCreate({ category }) {
                         {({ errors, processing }) => (
                             <>
                                 <div className="flex flex-col gap-1.5">
-                                    <label className={labelClass} htmlFor="title">
+                                    <label
+                                        className={labelClass}
+                                        htmlFor="title"
+                                    >
                                         Заголовок
                                     </label>
                                     <input
@@ -47,7 +50,10 @@ export default function ForumTopicCreate({ category }) {
                                 </div>
 
                                 <div className="flex flex-col gap-1.5">
-                                    <label className={labelClass} htmlFor="body">
+                                    <label
+                                        className={labelClass}
+                                        htmlFor="body"
+                                    >
                                         Сообщение
                                     </label>
                                     <textarea

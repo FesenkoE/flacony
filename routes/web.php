@@ -3,12 +3,14 @@
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ForumReplyController;
 use App\Http\Controllers\ForumTopicController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LotController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SellerController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +41,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('sellers/lots/{lot}', [LotController::class, 'update'])->name('lots.update');
     Route::delete('sellers/lots/{lot}', [LotController::class, 'destroy'])->name('lots.destroy');
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+    Route::post('favorites/{product}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+    Route::post('products/{product:slug}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::delete('reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 });
 
 Route::get('sellers/lots/{lot}', [LotController::class, 'show'])->name('lots.show');

@@ -28,12 +28,19 @@ export default function LotForm({
                 {heading}
             </h1>
 
-            <Form action={action} method={method} className="flex flex-col gap-5">
+            <Form
+                action={action}
+                method={method}
+                className="flex flex-col gap-5"
+            >
                 {({ errors, processing }) => (
                     <>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="flex flex-col gap-1.5">
-                                <label className={labelClass} htmlFor="brand_name">
+                                <label
+                                    className={labelClass}
+                                    htmlFor="brand_name"
+                                >
                                     Бренд
                                 </label>
                                 <input
@@ -46,7 +53,10 @@ export default function LotForm({
                                 <InputError message={errors.brand_name} />
                             </div>
                             <div className="flex flex-col gap-1.5">
-                                <label className={labelClass} htmlFor="product_name">
+                                <label
+                                    className={labelClass}
+                                    htmlFor="product_name"
+                                >
                                     Название
                                 </label>
                                 <input
@@ -61,7 +71,10 @@ export default function LotForm({
                         </div>
 
                         <div className="flex flex-col gap-1.5">
-                            <label className={labelClass} htmlFor="total_volume_ml">
+                            <label
+                                className={labelClass}
+                                htmlFor="total_volume_ml"
+                            >
                                 Объём флакона, мл
                             </label>
                             <input
@@ -78,7 +91,10 @@ export default function LotForm({
                         </div>
 
                         <div className="flex flex-col gap-1.5">
-                            <label className={labelClass} htmlFor="price_per_ml">
+                            <label
+                                className={labelClass}
+                                htmlFor="price_per_ml"
+                            >
                                 Цена за мл, ₴
                             </label>
                             <input
@@ -97,12 +113,16 @@ export default function LotForm({
                         <div className="h-px bg-[#1e160c14] dark:bg-[#ffffff1a]" />
 
                         <p className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
-                            Необязательно: скидка при покупке от определённого объёма.
+                            Необязательно: скидка при покупке от определённого
+                            объёма.
                         </p>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="flex flex-col gap-1.5">
-                                <label className={labelClass} htmlFor="bulk_threshold_ml">
+                                <label
+                                    className={labelClass}
+                                    htmlFor="bulk_threshold_ml"
+                                >
                                     От скольки мл
                                 </label>
                                 <input
@@ -115,10 +135,15 @@ export default function LotForm({
                                     className={fieldClass}
                                     placeholder="5"
                                 />
-                                <InputError message={errors.bulk_threshold_ml} />
+                                <InputError
+                                    message={errors.bulk_threshold_ml}
+                                />
                             </div>
                             <div className="flex flex-col gap-1.5">
-                                <label className={labelClass} htmlFor="bulk_price_per_ml">
+                                <label
+                                    className={labelClass}
+                                    htmlFor="bulk_price_per_ml"
+                                >
                                     Цена за мл при скидке, ₴
                                 </label>
                                 <input
@@ -131,7 +156,9 @@ export default function LotForm({
                                     className={fieldClass}
                                     placeholder="20"
                                 />
-                                <InputError message={errors.bulk_price_per_ml} />
+                                <InputError
+                                    message={errors.bulk_price_per_ml}
+                                />
                             </div>
                         </div>
 

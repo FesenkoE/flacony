@@ -1,14 +1,64 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import BottleIcon, { tintForId } from '@/components/bottle-icon';
+import StarRating from '@/components/star-rating';
+import { formatDate } from '@/lib/format-date';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { useAddToCart } from '@/hooks/use-add-to-cart';
 
-export default function ProductShow({ product }) {
+const LONGEVITY_LABELS = {
+    weak: ['Слабая', 1],
+    moderate: ['Умеренная', 2],
+    long_lasting: ['Стойкая', 3],
+    eternal: ['Очень стойкая', 4],
+};
+
+const SILLAGE_LABELS = {
+    soft: ['Лёгкий', 1],
+    moderate: ['Умеренный', 2],
+    strong: ['Сильный', 3],
+    enormous: ['Огромный', 4],
+};
+
+function LevelBar({ level }) {
+    return (
+        <div className="flex gap-1">
+            {[1, 2, 3, 4].map((n) => (
+                <span
+                    key={n}
+                    className={
+                        'h-1.5 w-6 rounded-full ' +
+                        (n <= level
+                            ? 'bg-[#bf8438]'
+                            : 'bg-[#e6d7bb] dark:bg-[#ffffff1a]')
+                    }
+                />
+            ))}
+        </div>
+    );
+}
+
+export default function ProductShow({ product, myReview }) {
     const [variantIndex, setVariantIndex] = useState(0);
     const { added, addToCart } = useAddToCart();
+    const { auth } = usePage().props;
     const variant = product.variants[variantIndex];
+    const [rating, setRating] = useState(myReview?.rating ?? 5);
+    const [body, setBody] = useState(myReview?.body ?? '');
+
+    function submitReview(e) {
+        e.preventDefault();
+        router.post(
+            `/products/${product.slug}/reviews`,
+            { rating, body },
+            { preserveScroll: true },
+        );
+    }
+
+    function deleteReview() {
+        router.delete(`/reviews/${myReview?.id}`, { preserveScroll: true });
+    }
 
     return (
         <>
@@ -24,8 +74,19 @@ export default function ProductShow({ product }) {
                     </Link>
 
                     <div className="mt-6 grid gap-8 md:grid-cols-2">
-                        <div className="scent-card-photo flex aspect-square items-center justify-center rounded-3xl">
-                            <BottleIcon size={160} tint={tintForId(product.id)} />
+                        <div className="scent-card-photo flex aspect-square items-center justify-center overflow-hidden rounded-3xl">
+                            {product.image_path ? (
+                                <img
+                                    src={`/${product.image_path}`}
+                                    alt={`${product.brand.name} ${product.name}`}
+                                    className="h-full w-full object-cover"
+                                />
+                            ) : (
+                                <BottleIcon
+                                    size={160}
+                                    tint={tintForId(product.id)}
+                                />
+                            )}
                         </div>
 
                         <div className="flex flex-col gap-5">
@@ -37,6 +98,22 @@ export default function ProductShow({ product }) {
                                     {product.name}
                                 </h1>
                                 <div className="mt-1 h-0.5 w-9 rounded-full bg-[#bf8438]" />
+                                {product.reviews.length > 0 && (
+                                    <div className="mt-1 flex items-center gap-2">
+                                        <StarRating
+                                            value={product.reviews_avg_rating}
+                                        />
+                                        <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                            {Number(
+                                                product.reviews_avg_rating,
+                                            ).toFixed(1)}{' '}
+                                            · {product.reviews.length}{' '}
+                                            {product.reviews.length === 1
+                                                ? 'отзыв'
+                                                : 'отзывов'}
+                                        </span>
+                                    </div>
+                                )}
                             </div>
 
                             {product.description && (
@@ -58,18 +135,17 @@ export default function ProductShow({ product }) {
                                             <button
                                                 key={v.id}
                                                 type="button"
-                                                onClick={() => setVariantIndex(i)}
+                                                onClick={() =>
+                                                    setVariantIndex(i)
+                                                }
                                                 className={
-                                                    'flex min-w-[72px] flex-col items-center gap-0.5 rounded-2xl border px-4 py-3 text-sm font-semibold ' +
+                                                    'rounded-2xl border px-4 py-3 text-sm font-semibold whitespace-nowrap ' +
                                                     (selected
                                                         ? 'border-[#bf8438] bg-[#bf843829] text-[#241a10] dark:text-[#f6ecdd]'
                                                         : 'border-[#e6d7bb] bg-[#fbf5ea] text-[#8a7860] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#b7a58f]')
                                                 }
                                             >
-                                                <span>{v.volume_ml} мл</span>
-                                                <span className="text-[11px] font-medium opacity-75">
-                                                    {Number(v.price).toFixed(2)} ₴
-                                                </span>
+                                                {v.volume_ml} мл
                                             </button>
                                         );
                                     })}
@@ -120,10 +196,290 @@ export default function ProductShow({ product }) {
                                             <circle cx="18" cy="20" r="1" />
                                         </svg>
                                     )}
-                                    <span>{added ? 'Добавлено' : 'В корзину'}</span>
+                                    <span>
+                                        {added ? 'Добавлено' : 'В корзину'}
+                                    </span>
                                 </button>
                             </div>
                         </div>
+                    </div>
+
+                    {(product.perfumer ||
+                        product.release_year ||
+                        product.concentration ||
+                        product.top_notes ||
+                        product.accords ||
+                        product.longevity ||
+                        product.sillage) && (
+                        <div className="mt-12 flex flex-col gap-6">
+                            <h2 className="text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                                Профиль аромата
+                            </h2>
+
+                            {(product.perfumer ||
+                                product.release_year ||
+                                product.concentration) && (
+                                <div className="flex flex-wrap gap-x-8 gap-y-3 text-sm">
+                                    {product.perfumer && (
+                                        <div>
+                                            <span className="block text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                                Парфюмер
+                                            </span>
+                                            <span className="text-[#241a10] dark:text-[#f6ecdd]">
+                                                {product.perfumer}
+                                            </span>
+                                        </div>
+                                    )}
+                                    {product.release_year && (
+                                        <div>
+                                            <span className="block text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                                Год
+                                            </span>
+                                            <span className="text-[#241a10] dark:text-[#f6ecdd]">
+                                                {product.release_year}
+                                            </span>
+                                        </div>
+                                    )}
+                                    {product.concentration && (
+                                        <div>
+                                            <span className="block text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                                Концентрация
+                                            </span>
+                                            <span className="text-[#241a10] dark:text-[#f6ecdd]">
+                                                {product.concentration}
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {(product.longevity || product.sillage) && (
+                                <div className="flex flex-wrap gap-x-10 gap-y-3">
+                                    {product.longevity &&
+                                        LONGEVITY_LABELS[product.longevity] && (
+                                            <div className="flex flex-col gap-1.5">
+                                                <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                                    Стойкость
+                                                </span>
+                                                <div className="flex items-center gap-2">
+                                                    <LevelBar
+                                                        level={
+                                                            LONGEVITY_LABELS[
+                                                                product
+                                                                    .longevity
+                                                            ][1]
+                                                        }
+                                                    />
+                                                    <span className="text-sm text-[#241a10] dark:text-[#f6ecdd]">
+                                                        {
+                                                            LONGEVITY_LABELS[
+                                                                product
+                                                                    .longevity
+                                                            ][0]
+                                                        }
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        )}
+                                    {product.sillage &&
+                                        SILLAGE_LABELS[product.sillage] && (
+                                            <div className="flex flex-col gap-1.5">
+                                                <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                                    Шлейф
+                                                </span>
+                                                <div className="flex items-center gap-2">
+                                                    <LevelBar
+                                                        level={
+                                                            SILLAGE_LABELS[
+                                                                product.sillage
+                                                            ][1]
+                                                        }
+                                                    />
+                                                    <span className="text-sm text-[#241a10] dark:text-[#f6ecdd]">
+                                                        {
+                                                            SILLAGE_LABELS[
+                                                                product.sillage
+                                                            ][0]
+                                                        }
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        )}
+                                </div>
+                            )}
+
+                            {product.accords && product.accords.length > 0 && (
+                                <div className="flex flex-col gap-2.5">
+                                    <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                        Аккорды
+                                    </span>
+                                    <div className="flex flex-col gap-2">
+                                        {product.accords.map((accord) => (
+                                            <div
+                                                key={accord.name}
+                                                className="flex items-center gap-3"
+                                            >
+                                                <span className="w-36 shrink-0 text-sm text-[#241a10] dark:text-[#f6ecdd]">
+                                                    {accord.name}
+                                                </span>
+                                                <div className="h-2 flex-1 overflow-hidden rounded-full bg-[#e6d7bb] dark:bg-[#ffffff1a]">
+                                                    <div
+                                                        className="h-full rounded-full bg-[#bf8438]"
+                                                        style={{
+                                                            width: `${accord.percent}%`,
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {(product.top_notes ||
+                                product.heart_notes ||
+                                product.base_notes) && (
+                                <div className="grid gap-6 sm:grid-cols-3">
+                                    {[
+                                        ['Верхние ноты', product.top_notes],
+                                        ['Средние ноты', product.heart_notes],
+                                        ['Базовые ноты', product.base_notes],
+                                    ].map(
+                                        ([label, notes]) =>
+                                            notes &&
+                                            notes.length > 0 && (
+                                                <div
+                                                    key={label}
+                                                    className="flex flex-col gap-2"
+                                                >
+                                                    <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                                        {label}
+                                                    </span>
+                                                    <div className="flex flex-wrap gap-1.5">
+                                                        {notes.map((note) => (
+                                                            <span
+                                                                key={note}
+                                                                className="rounded-full border border-[#e6d7bb] bg-[#fbf5ea] px-3 py-1 text-xs text-[#8a7860] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#b7a58f]"
+                                                            >
+                                                                {note}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ),
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    <div className="mt-12 flex flex-col gap-6">
+                        <h2 className="text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                            Отзывы
+                        </h2>
+
+                        {auth.user ? (
+                            <form
+                                onSubmit={submitReview}
+                                className="flex flex-col gap-3 rounded-2xl border border-[#1e160c14] bg-[#fffaf1] p-5 dark:border-[#ffffff14] dark:bg-[#ffffff0a]"
+                            >
+                                <div className="flex items-center gap-1">
+                                    {[1, 2, 3, 4, 5].map((n) => (
+                                        <button
+                                            key={n}
+                                            type="button"
+                                            onClick={() => setRating(n)}
+                                            aria-label={`${n} из 5`}
+                                            className="p-0.5"
+                                        >
+                                            <svg
+                                                width="22"
+                                                height="22"
+                                                viewBox="0 0 24 24"
+                                                fill={
+                                                    n <= rating
+                                                        ? '#bf8438'
+                                                        : 'none'
+                                                }
+                                                stroke="#bf8438"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            >
+                                                <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
+                                            </svg>
+                                        </button>
+                                    ))}
+                                </div>
+                                <textarea
+                                    value={body}
+                                    onChange={(e) => setBody(e.target.value)}
+                                    placeholder="Поделитесь впечатлением от аромата"
+                                    minLength={10}
+                                    maxLength={2000}
+                                    required
+                                    rows={3}
+                                    className="rounded-xl border border-[#e6d7bb] bg-transparent p-3 text-sm text-[#241a10] dark:border-[#ffffff29] dark:text-[#f6ecdd]"
+                                />
+                                <div className="flex items-center gap-3">
+                                    <button
+                                        type="submit"
+                                        className="rounded-full bg-[#bf8438] px-5 py-2 text-sm font-bold text-[#241a10] uppercase dark:text-[#1c1408]"
+                                    >
+                                        {myReview
+                                            ? 'Обновить отзыв'
+                                            : 'Оставить отзыв'}
+                                    </button>
+                                    {myReview && (
+                                        <button
+                                            type="button"
+                                            onClick={deleteReview}
+                                            className="text-sm text-[#8a7860] underline dark:text-[#b7a58f]"
+                                        >
+                                            Удалить
+                                        </button>
+                                    )}
+                                </div>
+                            </form>
+                        ) : (
+                            <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                <Link href="/login" className="underline">
+                                    Войдите
+                                </Link>
+                                , чтобы оставить отзыв.
+                            </p>
+                        )}
+
+                        {product.reviews.length === 0 ? (
+                            <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                Пока нет отзывов — будьте первым.
+                            </p>
+                        ) : (
+                            <div className="flex flex-col gap-4">
+                                {product.reviews.map((review) => (
+                                    <div
+                                        key={review.id}
+                                        className="rounded-2xl border border-[#1e160c14] p-5 dark:border-[#ffffff14]"
+                                    >
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-sm font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                                                {review.user.name}
+                                            </span>
+                                            <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                                                {formatDate(review.created_at)}
+                                            </span>
+                                        </div>
+                                        <StarRating
+                                            value={review.rating}
+                                            size={12}
+                                        />
+                                        <p className="mt-2 text-sm leading-relaxed text-[#8a7860] dark:text-[#b7a58f]">
+                                            {review.body}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

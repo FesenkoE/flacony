@@ -43,7 +43,11 @@ export default function SellerShow({ seller, lots }) {
                     ) : (
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             {lots.map((lot) => (
-                                <LotCard key={lot.id} lot={lot} isOwn={isOwnStorefront} />
+                                <LotCard
+                                    key={lot.id}
+                                    lot={lot}
+                                    isOwn={isOwnStorefront}
+                                />
                             ))}
                         </div>
                     )}

@@ -13,10 +13,14 @@ class HomeController extends Controller
     {
         return Inertia::render('home', [
             'featuredProducts' => Product::with(['brand', 'variants'])
+                ->withAvg('reviews', 'rating')
+                ->withCount('reviews')
                 ->orderBy('id')
                 ->take(4)
                 ->get(),
             'newArrivals' => Product::with(['brand', 'variants'])
+                ->withAvg('reviews', 'rating')
+                ->withCount('reviews')
                 ->orderByDesc('id')
                 ->take(4)
                 ->get(),

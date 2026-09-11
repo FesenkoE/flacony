@@ -2,7 +2,12 @@ import { useMemo } from 'react';
 
 const PARTICLE_COUNT = 140;
 
-export default function DissolveCard({ active, children, className = '', ...rest }) {
+export default function DissolveCard({
+    active,
+    children,
+    className = '',
+    ...rest
+}) {
     const particles = useMemo(
         () =>
             Array.from({ length: PARTICLE_COUNT }, () => ({
@@ -17,13 +22,16 @@ export default function DissolveCard({ active, children, className = '', ...rest
     );
 
     return (
-        <div className={`relative ${active ? 'pointer-events-none' : ''}`} {...rest}>
+        <div
+            className={`relative ${active ? 'pointer-events-none' : ''}`}
+            {...rest}
+        >
             <div
                 className={
                     `${className} transition-all duration-300 ` +
                     (active
                         ? 'scale-97 opacity-0 blur-[3px] duration-700'
-                        : 'scale-100 opacity-100 blur-0')
+                        : 'blur-0 scale-100 opacity-100')
                 }
             >
                 {children}

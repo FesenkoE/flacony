@@ -78,6 +78,12 @@ export default function SiteHeader() {
                 {auth.user ? (
                     <>
                         <Link
+                            href="/favorites"
+                            className="hidden text-sm font-semibold text-[#241a10] sm:inline dark:text-[#f6ecdd]"
+                        >
+                            Избранное
+                        </Link>
+                        <Link
                             href="/sellers/lots/create"
                             className="hidden text-sm font-semibold text-[#241a10] sm:inline dark:text-[#f6ecdd]"
                         >
@@ -117,14 +123,22 @@ export default function SiteHeader() {
                                 className="border-[#1e160c14] bg-[#fffaf1] text-[#241a10] dark:border-[#ffffff1a] dark:bg-[#130f0b] dark:text-[#f6ecdd]"
                             >
                                 <DropdownMenuItem asChild>
-                                    <Link href="/dashboard">Личный кабинет</Link>
+                                    <Link href="/dashboard">
+                                        Личный кабинет
+                                    </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild>
-                                    <Link href={`/sellers/${auth.user.id}`}>Моя витрина</Link>
+                                    <Link href={`/sellers/${auth.user.id}`}>
+                                        Моя витрина
+                                    </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator className="bg-[#1e160c14] dark:bg-[#ffffff1a]" />
                                 <DropdownMenuItem asChild variant="destructive">
-                                    <Link href={logout()} as="button" className="w-full">
+                                    <Link
+                                        href={logout()}
+                                        as="button"
+                                        className="w-full"
+                                    >
                                         Выйти
                                     </Link>
                                 </DropdownMenuItem>

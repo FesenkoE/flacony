@@ -55,4 +55,9 @@ class User extends Authenticatable implements PasskeyUser
     {
         return $this->hasMany(Lot::class);
     }
+
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
+    }
 }

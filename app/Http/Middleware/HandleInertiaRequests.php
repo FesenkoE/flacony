@@ -45,6 +45,7 @@ class HandleInertiaRequests extends Middleware
                 'count' => array_sum($request->session()->get('cart', []))
                     + count($request->session()->get('cart_lots', [])),
             ],
+            'favoriteProductIds' => $request->user()?->favorites()->pluck('product_id') ?? [],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }

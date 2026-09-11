@@ -76,8 +76,8 @@ function LotRow({ lot }) {
                     {lot.product_name}
                 </span>
                 <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
-                    Остаток {lot.remaining_volume_ml} из {lot.total_volume_ml} мл ·{' '}
-                    {Number(lot.price_per_ml).toFixed(2)} ₴/мл
+                    Остаток {lot.remaining_volume_ml} из {lot.total_volume_ml}{' '}
+                    мл · {Number(lot.price_per_ml).toFixed(2)} ₴/мл
                 </span>
             </div>
             <div className="flex items-center gap-2">

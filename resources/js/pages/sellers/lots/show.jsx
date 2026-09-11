@@ -19,8 +19,10 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
     const stats = fakeStatsForLot(lot.id);
     const remaining = Number(lot.remaining_volume_ml);
     const total = Number(lot.total_volume_ml);
-    const bulkThreshold = lot.bulk_threshold_ml !== null ? Number(lot.bulk_threshold_ml) : null;
-    const bulkPrice = lot.bulk_price_per_ml !== null ? Number(lot.bulk_price_per_ml) : null;
+    const bulkThreshold =
+        lot.bulk_threshold_ml !== null ? Number(lot.bulk_threshold_ml) : null;
+    const bulkPrice =
+        lot.bulk_price_per_ml !== null ? Number(lot.bulk_price_per_ml) : null;
     const pricePerMl = Number(lot.price_per_ml);
     const sold = total - remaining;
     const soldPercent = total > 0 ? Math.round((sold / total) * 100) : 0;
@@ -107,19 +109,24 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                         <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#e6d7bb] dark:bg-[#ffffff1a]">
                                             <div
                                                 className="h-full rounded-full bg-[#bf8438]"
-                                                style={{ width: `${soldPercent}%` }}
+                                                style={{
+                                                    width: `${soldPercent}%`,
+                                                }}
                                             />
                                         </div>
                                         <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
-                                            Продано {sold} из {total} мл ({soldPercent}%) ·{' '}
+                                            Продано {sold} из {total} мл (
+                                            {soldPercent}%) ·{' '}
                                             {pricePerMl.toFixed(2)} ₴/мл
-                                            {bulkThreshold !== null && bulkPrice !== null && (
-                                                <>
-                                                    {' '}
-                                                    · от {bulkThreshold} мл — {bulkPrice.toFixed(2)}{' '}
-                                                    ₴/мл
-                                                </>
-                                            )}
+                                            {bulkThreshold !== null &&
+                                                bulkPrice !== null && (
+                                                    <>
+                                                        {' '}
+                                                        · от {bulkThreshold} мл
+                                                        — {bulkPrice.toFixed(2)}{' '}
+                                                        ₴/мл
+                                                    </>
+                                                )}
                                         </span>
                                     </div>
 
@@ -141,19 +148,24 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                         <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#e6d7bb] dark:bg-[#ffffff1a]">
                                             <div
                                                 className="h-full rounded-full bg-[#bf8438] transition-[width] duration-150"
-                                                style={{ width: `${(projectedRemaining / total) * 100}%` }}
+                                                style={{
+                                                    width: `${(projectedRemaining / total) * 100}%`,
+                                                }}
                                             />
                                         </div>
                                         <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
-                                            Останется {projectedRemaining} из {total} мл ·{' '}
-                                            {pricePerMl.toFixed(2)} ₴/мл
-                                            {bulkThreshold !== null && bulkPrice !== null && (
-                                                <>
-                                                    {' '}
-                                                    · от {bulkThreshold} мл — {bulkPrice.toFixed(2)}{' '}
-                                                    ₴/мл
-                                                </>
-                                            )}
+                                            Останется {projectedRemaining} из{' '}
+                                            {total} мл · {pricePerMl.toFixed(2)}{' '}
+                                            ₴/мл
+                                            {bulkThreshold !== null &&
+                                                bulkPrice !== null && (
+                                                    <>
+                                                        {' '}
+                                                        · от {bulkThreshold} мл
+                                                        — {bulkPrice.toFixed(2)}{' '}
+                                                        ₴/мл
+                                                    </>
+                                                )}
                                         </span>
                                     </div>
 
@@ -172,7 +184,11 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                             max={maxVolume}
                                             step={1}
                                             value={volume}
-                                            onChange={(e) => setVolume(Number(e.target.value))}
+                                            onChange={(e) =>
+                                                setVolume(
+                                                    Number(e.target.value),
+                                                )
+                                            }
                                             style={{ accentColor: '#bf8438' }}
                                             className="w-full"
                                         />
@@ -184,7 +200,9 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                         </span>
                                         <button
                                             type="button"
-                                            onClick={() => addLotToCart(lot.id, volume)}
+                                            onClick={() =>
+                                                addLotToCart(lot.id, volume)
+                                            }
                                             className="rounded-full bg-[#bf8438] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
                                         >
                                             {added ? 'Добавлено' : 'В корзину'}

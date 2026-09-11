@@ -57,7 +57,8 @@ export default function ForumCategory({ category, topics }) {
                                             {topic.title}
                                         </span>
                                         <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
-                                            {topic.author.name} · {formatDate(topic.created_at)}
+                                            {topic.author.name} ·{' '}
+                                            {formatDate(topic.created_at)}
                                         </span>
                                     </div>
                                     <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">

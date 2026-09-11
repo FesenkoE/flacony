@@ -99,7 +99,10 @@ function Hero() {
                         мл на попробовать до полного флакона.
                     </p>
 
-                    <div className="hero-fade-up" style={{ animationDelay: '0.46s' }}>
+                    <div
+                        className="hero-fade-up"
+                        style={{ animationDelay: '0.46s' }}
+                    >
                         <Link
                             href="/products"
                             className="hero-cta-sheen relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-[#bf8438] px-7 py-4 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
@@ -187,7 +190,10 @@ export default function Home({ featuredProducts, newArrivals, brands }) {
                         </div>
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                             {featuredProducts.map((product) => (
-                                <ProductCard key={product.id} product={product} />
+                                <ProductCard
+                                    key={product.id}
+                                    product={product}
+                                />
                             ))}
                         </div>
                     </div>
@@ -202,7 +208,10 @@ export default function Home({ featuredProducts, newArrivals, brands }) {
                         </h2>
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                             {newArrivals.map((product) => (
-                                <ProductCard key={product.id} product={product} />
+                                <ProductCard
+                                    key={product.id}
+                                    product={product}
+                                />
                             ))}
                         </div>
                     </div>
@@ -216,7 +225,10 @@ export default function Home({ featuredProducts, newArrivals, brands }) {
                     </h2>
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
                         {STEPS.map((step, i) => (
-                            <div key={step.title} className="flex flex-col gap-2">
+                            <div
+                                key={step.title}
+                                className="flex flex-col gap-2"
+                            >
                                 <span className="font-display text-3xl font-semibold text-[#bf8438] italic">
                                     {i + 1}
                                 </span>
@@ -240,7 +252,8 @@ export default function Home({ featuredProducts, newArrivals, brands }) {
                                 Создай аккаунт
                             </h2>
                             <p className="max-w-md text-sm leading-relaxed text-[#8a7860] dark:text-[#b7a58f]">
-                                Оформляй заказы быстрее и следи за историей покупок.
+                                Оформляй заказы быстрее и следи за историей
+                                покупок.
                             </p>
                             <Link
                                 href="/register"
