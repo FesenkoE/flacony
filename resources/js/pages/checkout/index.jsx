@@ -1,4 +1,4 @@
-import { Form, Head, Link, usePage } from '@inertiajs/react';
+import { Form, Head, Link, router, usePage } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
@@ -8,8 +8,81 @@ const fieldClass =
 const labelClass =
     'text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]';
 
-export default function CheckoutIndex({ items, total }) {
+function CheckoutItemRow({ item }) {
+    function setQuantity(quantity) {
+        router.patch(
+            `/cart/${item.product_variant_id}`,
+            { quantity },
+            { preserveScroll: true },
+        );
+    }
+
+    function remove() {
+        const href =
+            item.type === 'lot'
+                ? `/cart/lots/${item.lot_id}`
+                : `/cart/${item.product_variant_id}`;
+        router.delete(href, { preserveScroll: true });
+    }
+
+    return (
+        <div className="flex items-center justify-between gap-3 text-sm">
+            <div className="flex min-w-0 flex-1 flex-col">
+                <span className="truncate text-[#241a10] dark:text-[#f6ecdd]">
+                    {item.brand_name} — {item.product_name}
+                </span>
+                <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                    {item.type === 'lot' ? item.detail : `${item.volume_ml} мл`}
+                </span>
+            </div>
+
+            {item.type === 'variant' && (
+                <div className="flex items-center gap-2">
+                    <button
+                        type="button"
+                        onClick={() => setQuantity(item.quantity - 1)}
+                        className="flex h-7 w-7 items-center justify-center rounded-full border border-[#e6d7bb] text-[#241a10] dark:border-[#ffffff29] dark:text-[#f6ecdd]"
+                    >
+                        −
+                    </button>
+                    <span className="w-4 text-center text-[#241a10] dark:text-[#f6ecdd]">
+                        {item.quantity}
+                    </span>
+                    <button
+                        type="button"
+                        onClick={() => setQuantity(item.quantity + 1)}
+                        className="flex h-7 w-7 items-center justify-center rounded-full border border-[#e6d7bb] text-[#241a10] dark:border-[#ffffff29] dark:text-[#f6ecdd]"
+                    >
+                        +
+                    </button>
+                </div>
+            )}
+
+            <span className="w-20 shrink-0 text-right font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                {Number(item.subtotal).toFixed(2)} ₴
+            </span>
+
+            <button
+                type="button"
+                onClick={remove}
+                aria-label="Убрать"
+                className="shrink-0 text-[#8a7860] hover:text-[#c0645a] dark:text-[#b7a58f]"
+            >
+                ×
+            </button>
+        </div>
+    );
+}
+
+export default function CheckoutIndex({
+    items,
+    total,
+    deliveryMethods,
+    paymentMethods,
+}) {
     const { auth } = usePage().props;
+    const [firstName, ...lastNameParts] = auth.user.name.split(' ');
+    const lastName = lastNameParts.join(' ');
 
     return (
         <>
@@ -28,23 +101,12 @@ export default function CheckoutIndex({ items, total }) {
                         Оформление заказа
                     </h1>
 
-                    <div className="mb-6 flex flex-col gap-2 rounded-2xl border border-[#1e160c14] bg-[#fffaf1] p-4 dark:border-[#ffffff14] dark:bg-[#ffffff0a]">
+                    <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-[#1e160c14] bg-[#fffaf1] p-4 dark:border-[#ffffff14] dark:bg-[#ffffff0a]">
                         {items.map((item) => (
-                            <div
+                            <CheckoutItemRow
                                 key={`${item.type}-${item.key}`}
-                                className="flex items-baseline justify-between text-sm"
-                            >
-                                <span className="text-[#241a10] dark:text-[#f6ecdd]">
-                                    {item.brand_name} — {item.product_name}
-                                    <span className="text-[#8a7860] dark:text-[#b7a58f]">
-                                        {' '}
-                                        · {item.detail}
-                                    </span>
-                                </span>
-                                <span className="shrink-0 font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                                    {Number(item.subtotal).toFixed(2)} ₴
-                                </span>
-                            </div>
+                                item={item}
+                            />
                         ))}
                         <div className="mt-1 flex items-baseline justify-between border-t border-[#1e160c14] pt-2 dark:border-[#ffffff1a]">
                             <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
@@ -63,36 +125,107 @@ export default function CheckoutIndex({ items, total }) {
                     >
                         {({ errors, processing }) => (
                             <>
-                                <div className="flex flex-col gap-1.5">
-                                    <label
-                                        className={labelClass}
-                                        htmlFor="name"
-                                    >
-                                        Имя и фамилия
-                                    </label>
-                                    <input
-                                        id="name"
-                                        name="name"
-                                        defaultValue={auth.user.name}
-                                        className={fieldClass}
-                                    />
-                                    <InputError message={errors.name} />
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="flex flex-col gap-1.5">
+                                        <label
+                                            className={labelClass}
+                                            htmlFor="first_name"
+                                        >
+                                            Имя
+                                        </label>
+                                        <input
+                                            id="first_name"
+                                            name="first_name"
+                                            defaultValue={firstName}
+                                            className={fieldClass}
+                                        />
+                                        <InputError
+                                            message={errors.first_name}
+                                        />
+                                    </div>
+                                    <div className="flex flex-col gap-1.5">
+                                        <label
+                                            className={labelClass}
+                                            htmlFor="last_name"
+                                        >
+                                            Фамилия
+                                        </label>
+                                        <input
+                                            id="last_name"
+                                            name="last_name"
+                                            defaultValue={lastName}
+                                            className={fieldClass}
+                                        />
+                                        <InputError
+                                            message={errors.last_name}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="flex flex-col gap-1.5">
+                                        <label
+                                            className={labelClass}
+                                            htmlFor="email"
+                                        >
+                                            Email
+                                        </label>
+                                        <input
+                                            id="email"
+                                            name="email"
+                                            type="email"
+                                            defaultValue={auth.user.email}
+                                            className={fieldClass}
+                                        />
+                                        <InputError message={errors.email} />
+                                    </div>
+                                    <div className="flex flex-col gap-1.5">
+                                        <label
+                                            className={labelClass}
+                                            htmlFor="phone"
+                                        >
+                                            Телефон
+                                        </label>
+                                        <input
+                                            id="phone"
+                                            name="phone"
+                                            placeholder="+380..."
+                                            className={fieldClass}
+                                        />
+                                        <InputError message={errors.phone} />
+                                    </div>
                                 </div>
 
                                 <div className="flex flex-col gap-1.5">
                                     <label
                                         className={labelClass}
-                                        htmlFor="phone"
+                                        htmlFor="delivery_method"
                                     >
-                                        Телефон
+                                        Способ доставки
                                     </label>
-                                    <input
-                                        id="phone"
-                                        name="phone"
-                                        placeholder="+380..."
+                                    <select
+                                        id="delivery_method"
+                                        name="delivery_method"
+                                        defaultValue=""
                                         className={fieldClass}
+                                    >
+                                        <option value="" disabled>
+                                            Выберите способ доставки
+                                        </option>
+                                        {Object.entries(deliveryMethods).map(
+                                            ([value, label]) => (
+                                                <option
+                                                    key={value}
+                                                    value={value}
+                                                >
+                                                    {label}
+                                                </option>
+                                            ),
+                                        )}
+                                    </select>
+                                    <InputError
+                                        message={errors.delivery_method}
                                     />
-                                    <InputError message={errors.phone} />
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
@@ -126,12 +259,75 @@ export default function CheckoutIndex({ items, total }) {
                                     </div>
                                 </div>
 
-                                <InputError message={errors.items} />
+                                <div className="flex flex-col gap-1.5">
+                                    <label
+                                        className={labelClass}
+                                        htmlFor="payment_method"
+                                    >
+                                        Способ оплаты
+                                    </label>
+                                    <select
+                                        id="payment_method"
+                                        name="payment_method"
+                                        defaultValue=""
+                                        className={fieldClass}
+                                    >
+                                        <option value="" disabled>
+                                            Выберите способ оплаты
+                                        </option>
+                                        {Object.entries(paymentMethods).map(
+                                            ([value, label]) => (
+                                                <option
+                                                    key={value}
+                                                    value={value}
+                                                >
+                                                    {label}
+                                                </option>
+                                            ),
+                                        )}
+                                    </select>
+                                    <InputError
+                                        message={errors.payment_method}
+                                    />
+                                    <p className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                                        Онлайн-оплату картой пока не подключили
+                                        — если выберешь её, мы свяжемся, чтобы
+                                        уточнить оплату.
+                                    </p>
+                                </div>
 
-                                <p className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
-                                    Оплата наличными или переводом при получении
-                                    — онлайн-оплату пока не подключили.
-                                </p>
+                                <div className="flex flex-col gap-1.5">
+                                    <label
+                                        className={labelClass}
+                                        htmlFor="promo_code"
+                                    >
+                                        Промокод (необязательно)
+                                    </label>
+                                    <input
+                                        id="promo_code"
+                                        name="promo_code"
+                                        className={fieldClass}
+                                    />
+                                    <InputError message={errors.promo_code} />
+                                </div>
+
+                                <div className="flex flex-col gap-1.5">
+                                    <label
+                                        className={labelClass}
+                                        htmlFor="comment"
+                                    >
+                                        Комментарий к заказу (необязательно)
+                                    </label>
+                                    <textarea
+                                        id="comment"
+                                        name="comment"
+                                        rows={3}
+                                        className={fieldClass}
+                                    />
+                                    <InputError message={errors.comment} />
+                                </div>
+
+                                <InputError message={errors.items} />
 
                                 <button
                                     type="submit"

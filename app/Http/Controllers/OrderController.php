@@ -15,6 +15,8 @@ class OrderController extends Controller
 
         return Inertia::render('orders/show', [
             'order' => $order->load('items'),
+            'deliveryMethodLabel' => CheckoutController::DELIVERY_METHODS[$order->delivery_method] ?? $order->delivery_method,
+            'paymentMethodLabel' => CheckoutController::PAYMENT_METHODS[$order->payment_method] ?? $order->payment_method,
         ]);
     }
 }

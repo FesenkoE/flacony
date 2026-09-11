@@ -8,12 +8,25 @@ use App\Support\Cart;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class CheckoutController extends Controller
 {
+    public const DELIVERY_METHODS = [
+        'np_branch' => 'Нова Пошта — відділення',
+        'np_courier' => 'Нова Пошта — кур\'єр',
+        'courier' => 'Кур\'єр по місту',
+        'pickup' => 'Самовивіз',
+    ];
+
+    public const PAYMENT_METHODS = [
+        'cod' => 'Оплата при отриманні',
+        'card' => 'Банківською картою (скоро)',
+    ];
+
     public function index(Request $request): Response|RedirectResponse
     {
         $items = Cart::items();
@@ -25,6 +38,8 @@ class CheckoutController extends Controller
         return Inertia::render('checkout/index', [
             'items' => $items,
             'total' => $items->sum('subtotal'),
+            'deliveryMethods' => self::DELIVERY_METHODS,
+            'paymentMethods' => self::PAYMENT_METHODS,
         ]);
     }
 
@@ -37,13 +52,25 @@ class CheckoutController extends Controller
         }
 
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
             'phone' => ['required', 'string', 'max:32'],
             'city' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string', 'max:500'],
+            'delivery_method' => ['required', Rule::in(array_keys(self::DELIVERY_METHODS))],
+            'payment_method' => ['required', Rule::in(array_keys(self::PAYMENT_METHODS))],
+            'promo_code' => ['nullable', 'string', 'max:64'],
+            'comment' => ['nullable', 'string', 'max:1000'],
         ]);
 
-        $order = DB::transaction(function () use ($request, $validated, $items) {
+        $orderData = [
+            ...$validated,
+            'name' => "{$validated['first_name']} {$validated['last_name']}",
+        ];
+        unset($orderData['first_name'], $orderData['last_name']);
+
+        $order = DB::transaction(function () use ($request, $orderData, $items) {
             // ponytail: lock lot rows so two concurrent checkouts of the same
             // lot can't both succeed with more volume than remains.
             foreach ($items->where('type', 'lot') as $item) {
@@ -57,7 +84,7 @@ class CheckoutController extends Controller
             }
 
             $order = Order::create([
-                ...$validated,
+                ...$orderData,
                 'user_id' => $request->user()->id,
                 'total' => $items->sum('subtotal'),
             ]);

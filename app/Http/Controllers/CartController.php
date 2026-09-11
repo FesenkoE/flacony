@@ -42,6 +42,25 @@ class CartController extends Controller
         return back();
     }
 
+    public function update(Request $request, ProductVariant $variant): RedirectResponse
+    {
+        $validated = $request->validate([
+            'quantity' => ['required', 'integer', 'min:0', 'max:99'],
+        ]);
+
+        $cart = session('cart', []);
+
+        if ($validated['quantity'] === 0) {
+            unset($cart[$variant->id]);
+        } else {
+            $cart[$variant->id] = $validated['quantity'];
+        }
+
+        session(['cart' => $cart]);
+
+        return back();
+    }
+
     public function destroy(ProductVariant $variant): RedirectResponse
     {
         $cart = session('cart', []);

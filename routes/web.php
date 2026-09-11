@@ -61,6 +61,7 @@ Route::get('sellers/{user}', [SellerController::class, 'show'])->name('sellers.s
 
 Route::get('cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('cart', [CartController::class, 'store'])->name('cart.store');
+Route::patch('cart/{variant}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('cart/{variant}', [CartController::class, 'destroy'])->name('cart.destroy');
 Route::post('cart/lots', [CartController::class, 'storeLot'])->name('cart.lots.store');
 Route::delete('cart/lots/{lot}', [CartController::class, 'destroyLot'])->name('cart.lots.destroy');

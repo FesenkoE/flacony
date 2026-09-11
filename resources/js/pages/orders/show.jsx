@@ -3,7 +3,11 @@ import { formatDateTime } from '@/lib/format-date';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 
-export default function OrderShow({ order }) {
+export default function OrderShow({
+    order,
+    deliveryMethodLabel,
+    paymentMethodLabel,
+}) {
     return (
         <>
             <Head title={`Заказ №${order.id}`} />
@@ -27,8 +31,8 @@ export default function OrderShow({ order }) {
                             Заказ №{order.id} принят
                         </h1>
                         <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
-                            {formatDateTime(order.created_at)} · оплата
-                            наличными или переводом при получении
+                            {formatDateTime(order.created_at)} ·{' '}
+                            {paymentMethodLabel}
                         </p>
                     </div>
 
@@ -65,11 +69,22 @@ export default function OrderShow({ order }) {
                             Доставка
                         </span>
                         <span className="text-[#241a10] dark:text-[#f6ecdd]">
-                            {order.name} · {order.phone}
+                            {order.name} · {order.phone} · {order.email}
                         </span>
                         <span className="text-[#241a10] dark:text-[#f6ecdd]">
-                            {order.city}, {order.address}
+                            {deliveryMethodLabel} · {order.city},{' '}
+                            {order.address}
                         </span>
+                        {order.promo_code && (
+                            <span className="text-[#241a10] dark:text-[#f6ecdd]">
+                                Промокод: {order.promo_code}
+                            </span>
+                        )}
+                        {order.comment && (
+                            <span className="text-[#241a10] dark:text-[#f6ecdd]">
+                                Комментарий: {order.comment}
+                            </span>
+                        )}
                     </div>
 
                     <div className="flex justify-center gap-4">
