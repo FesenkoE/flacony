@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Laravel\Scout\Searchable;
 
 class Lot extends Model
 {
+    use Searchable;
+
     protected $fillable = [
         'user_id',
         'brand_name',
@@ -30,5 +33,18 @@ class Lot extends Model
         }
 
         return round($ml * $this->price_per_ml, 2);
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'brand_name' => $this->brand_name,
+            'product_name' => $this->product_name,
+        ];
+    }
+
+    public function shouldBeSearchable(): bool
+    {
+        return $this->remaining_volume_ml > 0;
     }
 }

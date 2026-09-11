@@ -1,0 +1,86 @@
+import { Head, router } from '@inertiajs/react';
+import { useState } from 'react';
+import LotCard from '@/components/lot-card';
+import ProductCard from '@/components/product-card';
+import SiteFooter from '@/components/site-footer';
+import SiteHeader from '@/components/site-header';
+
+export default function SearchIndex({ query, products, lots }) {
+    const [value, setValue] = useState(query);
+
+    function submit(e) {
+        e.preventDefault();
+        router.get('/search', { q: value }, { preserveState: true });
+    }
+
+    const hasResults = products.length > 0 || lots.length > 0;
+
+    return (
+        <>
+            <Head title={query ? `Поиск: ${query}` : 'Поиск'} />
+            <SiteHeader />
+            <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
+                <div className="mx-auto max-w-6xl p-6">
+                    <form onSubmit={submit} className="mb-8 flex gap-2">
+                        <input
+                            type="text"
+                            value={value}
+                            onChange={(e) => setValue(e.target.value)}
+                            placeholder="Аромат, бренд, нота..."
+                            autoFocus
+                            className="w-full max-w-md rounded-full border border-[#e6d7bb] bg-transparent px-4 py-2.5 text-sm text-[#241a10] dark:border-[#ffffff29] dark:text-[#f6ecdd]"
+                        />
+                        <button
+                            type="submit"
+                            className="rounded-full bg-[#bf8438] px-5 py-2.5 text-sm font-bold text-[#241a10] uppercase dark:text-[#1c1408]"
+                        >
+                            Найти
+                        </button>
+                    </form>
+
+                    {query === '' ? (
+                        <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                            Введите название аромата, бренда или ноты.
+                        </p>
+                    ) : !hasResults ? (
+                        <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                            По запросу «{query}» ничего не нашлось.
+                        </p>
+                    ) : (
+                        <div className="flex flex-col gap-10">
+                            {products.length > 0 && (
+                                <div className="flex flex-col gap-4">
+                                    <h2 className="text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                                        Каталог
+                                    </h2>
+                                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                        {products.map((product) => (
+                                            <ProductCard
+                                                key={product.id}
+                                                product={product}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {lots.length > 0 && (
+                                <div className="flex flex-col gap-4">
+                                    <h2 className="text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                                        Распив
+                                    </h2>
+                                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                        {lots.map((lot) => (
+                                            <LotCard key={lot.id} lot={lot} />
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
+            <SiteFooter />
+        </>
+    );
+}

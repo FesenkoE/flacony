@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Scout\Searchable;
 
 class Product extends Model
 {
+    use Searchable;
+
     protected $fillable = [
         'brand_id',
         'category_id',
@@ -60,5 +63,27 @@ class Product extends Model
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'brand' => $this->brand->name,
+            'category' => $this->category->name,
+            'description' => $this->description,
+            'perfumer' => $this->perfumer,
+            'notes' => implode(' ', [
+                ...($this->top_notes ?? []),
+                ...($this->heart_notes ?? []),
+                ...($this->base_notes ?? []),
+            ]),
+            'is_active' => $this->is_active,
+        ];
+    }
+
+    public function shouldBeSearchable(): bool
+    {
+        return $this->is_active;
     }
 }
