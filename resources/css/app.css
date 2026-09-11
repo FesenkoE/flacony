@@ -310,6 +310,17 @@
     }
 }
 
+@keyframes search-panel-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
 @keyframes search-backdrop-in {
     from {
         opacity: 0;
@@ -319,10 +330,27 @@
     }
 }
 
+@keyframes search-backdrop-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
 .search-panel {
     animation: search-panel-in 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .search-backdrop {
     animation: search-backdrop-in 0.28s ease-out both;
+}
+
+.search-panel.is-closing {
+    animation: search-panel-out 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.search-backdrop.is-closing {
+    animation: search-backdrop-out 0.2s ease-out both;
 }

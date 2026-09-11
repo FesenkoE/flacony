@@ -1,17 +1,34 @@
 import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
+const CLOSE_ANIMATION_MS = 200;
+
 export default function SearchOverlay({ open, onOpenChange }) {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState({ products: [], lots: [] });
     const [loading, setLoading] = useState(false);
+    const [mounted, setMounted] = useState(open);
+    const [closing, setClosing] = useState(false);
 
     useEffect(() => {
-        if (!open) {
+        if (open) {
+            setMounted(true);
+            setClosing(false);
+            return;
+        }
+
+        if (!mounted) return;
+
+        setClosing(true);
+        const timeout = setTimeout(() => {
+            setMounted(false);
+            setClosing(false);
             setQuery('');
             setResults({ products: [], lots: [] });
-        }
-    }, [open]);
+        }, CLOSE_ANIMATION_MS);
+
+        return () => clearTimeout(timeout);
+    }, [open, mounted]);
 
     useEffect(() => {
         if (!open) return;
@@ -51,18 +68,26 @@ export default function SearchOverlay({ open, onOpenChange }) {
         goToFullResults();
     }
 
-    if (!open) return null;
+    if (!mounted) return null;
 
     const hasResults = results.products.length > 0 || results.lots.length > 0;
 
     return (
         <>
             <div
-                className="search-backdrop fixed inset-0 z-40 bg-black/40"
+                className={
+                    'search-backdrop fixed inset-0 z-40 bg-black/40' +
+                    (closing ? ' is-closing' : '')
+                }
                 onClick={() => onOpenChange(false)}
             />
 
-            <div className="search-panel absolute top-full right-0 left-0 z-50 border-t border-[#1e160c14] bg-[#fffaf1] shadow-[0_24px_48px_-24px_rgba(0,0,0,0.4)] dark:border-[#ffffff1a] dark:bg-[#130f0b]">
+            <div
+                className={
+                    'search-panel absolute top-full right-0 left-0 z-50 border-t border-[#1e160c14] bg-[#fffaf1] shadow-[0_24px_48px_-24px_rgba(0,0,0,0.4)] dark:border-[#ffffff1a] dark:bg-[#130f0b]' +
+                    (closing ? ' is-closing' : '')
+                }
+            >
                 <div className="mx-auto max-w-6xl px-6 md:px-10">
                     <form
                         onSubmit={submit}
