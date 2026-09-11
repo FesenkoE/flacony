@@ -152,19 +152,19 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                 </p>
                             )}
 
-                            <div className="grid gap-x-8 sm:grid-cols-2 sm:divide-x sm:divide-[#1e160c14] dark:sm:divide-[#ffffff1a]">
+                            <div className="grid gap-x-10 gap-y-4 sm:grid-cols-2">
                                 {results.products.length > 0 && (
-                                    <div className="flex flex-col divide-y divide-[#1e160c14]/60 dark:divide-[#ffffff1a]">
-                                        <span className="px-1 pb-2 text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                    <div className="flex flex-col gap-1 sm:border-r sm:border-[#1e160c14]/60 sm:pr-10 dark:sm:border-[#ffffff1a]">
+                                        <span className="px-2 pb-1 text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
                                             Каталог
                                         </span>
                                         {results.products.map((product) => (
                                             <a
                                                 key={product.id}
                                                 href={`/products/${product.slug}`}
-                                                className="flex items-center gap-3 px-1 py-2.5 hover:bg-[#f6efe3] dark:hover:bg-[#ffffff0a]"
+                                                className="flex items-center gap-3 rounded-xl px-2 py-2 hover:bg-[#f6efe3] dark:hover:bg-[#ffffff0a]"
                                             >
-                                                <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#f6efe3] dark:bg-[#ffffff0a]">
+                                                <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#f6efe3] dark:bg-[#ffffff0a]">
                                                     {product.image_path ? (
                                                         <img
                                                             src={`/storage/${product.image_path}`}
@@ -173,7 +173,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                                         />
                                                     ) : (
                                                         <BottleIcon
-                                                            size={22}
+                                                            size={24}
                                                             tint={tintForId(
                                                                 product.id,
                                                             )}
@@ -199,15 +199,15 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                 )}
 
                                 {results.lots.length > 0 && (
-                                    <div className="flex flex-col divide-y divide-[#1e160c14]/60 sm:pl-8 dark:divide-[#ffffff1a]">
-                                        <span className="px-1 pb-2 text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                    <div className="flex flex-col gap-1">
+                                        <span className="px-2 pb-1 text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
                                             Распив
                                         </span>
                                         {results.lots.map((lot) => (
                                             <a
                                                 key={lot.id}
                                                 href={`/sellers/lots/${lot.id}`}
-                                                className="flex items-center gap-3 px-1 py-2.5 hover:bg-[#f6efe3] dark:hover:bg-[#ffffff0a]"
+                                                className="flex items-center gap-3 rounded-xl px-2 py-2 hover:bg-[#f6efe3] dark:hover:bg-[#ffffff0a]"
                                             >
                                                 <div className="flex min-w-0 flex-1 flex-col">
                                                     <span className="truncate text-sm font-semibold">
@@ -231,7 +231,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                 <button
                                     type="button"
                                     onClick={goToFullResults}
-                                    className="mt-2 w-full rounded-xl border-t border-[#1e160c14] px-1 pt-3 pb-1 text-left text-sm font-semibold text-[#bf8438] hover:bg-[#f6efe3] dark:border-[#ffffff1a] dark:hover:bg-[#ffffff0a]"
+                                    className="mt-3 w-full rounded-xl border-t border-[#1e160c14]/60 px-2 pt-4 pb-2 text-left text-sm font-semibold text-[#bf8438] hover:bg-[#f6efe3] dark:border-[#ffffff1a] dark:hover:bg-[#ffffff0a]"
                                 >
                                     Все результаты по «{query}» →
                                 </button>
