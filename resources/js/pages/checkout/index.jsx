@@ -1,4 +1,5 @@
 import { Form, Head, Link, router, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 import InputError from '@/components/input-error';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
@@ -7,6 +8,145 @@ const fieldClass =
     'w-full rounded-xl border border-[#e6d7bb] bg-[#fbf5ea] px-4 py-2.5 text-sm text-[#241a10] outline-none focus:border-[#bf8438] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#f6ecdd]';
 const labelClass =
     'text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]';
+
+const NOVA_POSHTA_METHODS = ['np_branch', 'np_courier'];
+
+function CityField({ city, onSelectCity, error }) {
+    const [query, setQuery] = useState(city?.name ?? '');
+    const [results, setResults] = useState([]);
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        if (query.trim().length < 2 || query === city?.name) {
+            setResults([]);
+            return;
+        }
+
+        const timeout = setTimeout(() => {
+            fetch(`/nova-poshta/cities?q=${encodeURIComponent(query)}`)
+                .then((r) => r.json())
+                .then((data) => {
+                    setResults(data);
+                    setOpen(true);
+                })
+                .catch(() => setResults([]));
+        }, 300);
+
+        return () => clearTimeout(timeout);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [query]);
+
+    return (
+        <div className="relative flex flex-col gap-1.5">
+            <label className={labelClass} htmlFor="city_query">
+                Город
+            </label>
+            <input
+                id="city_query"
+                autoComplete="off"
+                placeholder="Начните вводить город..."
+                value={query}
+                onChange={(e) => {
+                    setQuery(e.target.value);
+                    onSelectCity(null);
+                }}
+                onFocus={() => results.length > 0 && setOpen(true)}
+                onBlur={() => setTimeout(() => setOpen(false), 150)}
+                className={fieldClass}
+            />
+            <input type="hidden" name="city" value={city?.name ?? ''} />
+            {open && results.length > 0 && (
+                <div className="absolute top-full left-0 z-10 mt-1 max-h-56 w-full overflow-y-auto rounded-xl border border-[#e6d7bb] bg-[#fffaf1] shadow-lg dark:border-[#ffffff29] dark:bg-[#130f0b]">
+                    {results.map((c) => (
+                        <button
+                            key={c.ref}
+                            type="button"
+                            onMouseDown={() => {
+                                onSelectCity(c);
+                                setQuery(c.name);
+                                setOpen(false);
+                            }}
+                            className="block w-full px-3 py-2 text-left text-sm text-[#241a10] hover:bg-[#f6efe3] dark:text-[#f6ecdd] dark:hover:bg-[#ffffff0a]"
+                        >
+                            {c.name}{' '}
+                            <span className="text-[#8a7860] dark:text-[#b7a58f]">
+                                · {c.area}
+                            </span>
+                        </button>
+                    ))}
+                </div>
+            )}
+            <InputError message={error} />
+        </div>
+    );
+}
+
+function WarehouseField({ cityRef, error }) {
+    const [warehouses, setWarehouses] = useState([]);
+    const [filter, setFilter] = useState('');
+
+    useEffect(() => {
+        if (!cityRef) {
+            setWarehouses([]);
+            return;
+        }
+
+        fetch(`/nova-poshta/warehouses?city_ref=${cityRef}`)
+            .then((r) => r.json())
+            .then(setWarehouses)
+            .catch(() => setWarehouses([]));
+    }, [cityRef]);
+
+    if (!cityRef) {
+        return (
+            <div className="flex flex-col gap-1.5">
+                <label className={labelClass}>Отделение</label>
+                <p className="rounded-xl border border-dashed border-[#e6d7bb] px-4 py-2.5 text-sm text-[#8a7860] dark:border-[#ffffff29] dark:text-[#b7a58f]">
+                    Сначала выберите город
+                </p>
+            </div>
+        );
+    }
+
+    const filtered = filter
+        ? warehouses.filter((w) =>
+              w.description.toLowerCase().includes(filter.toLowerCase()),
+          )
+        : warehouses;
+
+    return (
+        <div className="flex flex-col gap-1.5">
+            <label className={labelClass} htmlFor="address">
+                Отделение
+            </label>
+            <input
+                type="text"
+                placeholder="Фильтр по адресу или номеру..."
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                className={fieldClass}
+            />
+            <select
+                id="address"
+                name="address"
+                defaultValue=""
+                className={fieldClass}
+            >
+                <option value="" disabled>
+                    {warehouses.length === 0
+                        ? 'Загрузка...'
+                        : `Выберите отделение (${filtered.length})`}
+                </option>
+                {filtered.map((w) => (
+                    <option key={w.ref} value={w.description}>
+                        {w.description}
+                    </option>
+                ))}
+            </select>
+            <InputError message={error} />
+        </div>
+    );
+}
 
 function CheckoutItemRow({ item }) {
     function setQuantity(quantity) {
@@ -83,6 +223,9 @@ export default function CheckoutIndex({
     const { auth } = usePage().props;
     const [firstName, ...lastNameParts] = auth.user.name.split(' ');
     const lastName = lastNameParts.join(' ');
+    const [deliveryMethod, setDeliveryMethod] = useState('');
+    const [city, setCity] = useState(null);
+    const usesNovaPoshta = NOVA_POSHTA_METHODS.includes(deliveryMethod);
 
     return (
         <>
@@ -206,7 +349,11 @@ export default function CheckoutIndex({
                                     <select
                                         id="delivery_method"
                                         name="delivery_method"
-                                        defaultValue=""
+                                        value={deliveryMethod}
+                                        onChange={(e) => {
+                                            setDeliveryMethod(e.target.value);
+                                            setCity(null);
+                                        }}
                                         className={fieldClass}
                                     >
                                         <option value="" disabled>
@@ -228,36 +375,71 @@ export default function CheckoutIndex({
                                     />
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="flex flex-col gap-1.5">
-                                        <label
-                                            className={labelClass}
-                                            htmlFor="city"
-                                        >
-                                            Город
-                                        </label>
-                                        <input
-                                            id="city"
-                                            name="city"
-                                            className={fieldClass}
+                                {usesNovaPoshta ? (
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <CityField
+                                            city={city}
+                                            onSelectCity={setCity}
+                                            error={errors.city}
                                         />
-                                        <InputError message={errors.city} />
+                                        {deliveryMethod === 'np_branch' ? (
+                                            <WarehouseField
+                                                cityRef={city?.ref}
+                                                error={errors.address}
+                                            />
+                                        ) : (
+                                            <div className="flex flex-col gap-1.5">
+                                                <label
+                                                    className={labelClass}
+                                                    htmlFor="address"
+                                                >
+                                                    Улица, дом, квартира
+                                                </label>
+                                                <input
+                                                    id="address"
+                                                    name="address"
+                                                    className={fieldClass}
+                                                />
+                                                <InputError
+                                                    message={errors.address}
+                                                />
+                                            </div>
+                                        )}
                                     </div>
-                                    <div className="flex flex-col gap-1.5">
-                                        <label
-                                            className={labelClass}
-                                            htmlFor="address"
-                                        >
-                                            Отделение / адрес
-                                        </label>
-                                        <input
-                                            id="address"
-                                            name="address"
-                                            className={fieldClass}
-                                        />
-                                        <InputError message={errors.address} />
+                                ) : (
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="flex flex-col gap-1.5">
+                                            <label
+                                                className={labelClass}
+                                                htmlFor="city"
+                                            >
+                                                Город
+                                            </label>
+                                            <input
+                                                id="city"
+                                                name="city"
+                                                className={fieldClass}
+                                            />
+                                            <InputError message={errors.city} />
+                                        </div>
+                                        <div className="flex flex-col gap-1.5">
+                                            <label
+                                                className={labelClass}
+                                                htmlFor="address"
+                                            >
+                                                Адрес
+                                            </label>
+                                            <input
+                                                id="address"
+                                                name="address"
+                                                className={fieldClass}
+                                            />
+                                            <InputError
+                                                message={errors.address}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
+                                )}
 
                                 <div className="flex flex-col gap-1.5">
                                     <label

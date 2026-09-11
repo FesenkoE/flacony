@@ -10,6 +10,7 @@ use App\Http\Controllers\ForumReplyController;
 use App\Http\Controllers\ForumTopicController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LotController;
+use App\Http\Controllers\NovaPoshtaController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
@@ -54,6 +55,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('checkout', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('nova-poshta/cities', [NovaPoshtaController::class, 'cities'])->name('nova-poshta.cities');
+    Route::get('nova-poshta/warehouses', [NovaPoshtaController::class, 'warehouses'])->name('nova-poshta.warehouses');
 });
 
 Route::get('sellers/lots/{lot}', [LotController::class, 'show'])->name('lots.show');
