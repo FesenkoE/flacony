@@ -1,4 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
+import SearchOverlay from '@/components/search-overlay';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -10,6 +12,18 @@ import { logout } from '@/routes';
 
 export default function SiteHeader() {
     const { auth, cart } = usePage().props;
+    const [searchOpen, setSearchOpen] = useState(false);
+
+    useEffect(() => {
+        function onKeyDown(e) {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                setSearchOpen(true);
+            }
+        }
+        window.addEventListener('keydown', onKeyDown);
+        return () => window.removeEventListener('keydown', onKeyDown);
+    }, []);
 
     return (
         <header className="site-header sticky top-0 z-10 border-b border-[#1e160c14] px-6 py-4 backdrop-blur-lg md:px-10 dark:border-[#ffffff14]">
@@ -50,8 +64,9 @@ export default function SiteHeader() {
                         Форум
                     </Link>
 
-                    <Link
-                        href="/search"
+                    <button
+                        type="button"
+                        onClick={() => setSearchOpen(true)}
                         className="flex items-center text-[#241a10] dark:text-[#f6ecdd]"
                         aria-label="Поиск"
                     >
@@ -68,7 +83,7 @@ export default function SiteHeader() {
                             <circle cx="11" cy="11" r="7" />
                             <path d="m21 21-4.3-4.3" />
                         </svg>
-                    </Link>
+                    </button>
 
                     <Link
                         href="/cart"
@@ -179,6 +194,8 @@ export default function SiteHeader() {
                     )}
                 </nav>
             </div>
+
+            <SearchOverlay open={searchOpen} onOpenChange={setSearchOpen} />
         </header>
     );
 }
