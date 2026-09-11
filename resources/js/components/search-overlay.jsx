@@ -58,11 +58,11 @@ export default function SearchOverlay({ open, onOpenChange }) {
     return (
         <>
             <div
-                className="fixed inset-0 z-40 bg-black/40"
+                className="search-backdrop fixed inset-0 z-40 bg-black/40"
                 onClick={() => onOpenChange(false)}
             />
 
-            <div className="absolute top-full right-0 left-0 z-50 border-t border-[#1e160c14] bg-[#fffaf1] shadow-[0_24px_48px_-24px_rgba(0,0,0,0.4)] dark:border-[#ffffff1a] dark:bg-[#130f0b]">
+            <div className="search-panel absolute top-full right-0 left-0 z-50 border-t border-[#1e160c14] bg-[#fffaf1] shadow-[0_24px_48px_-24px_rgba(0,0,0,0.4)] dark:border-[#ffffff1a] dark:bg-[#130f0b]">
                 <div className="mx-auto max-w-6xl px-6 md:px-10">
                     <form
                         onSubmit={submit}

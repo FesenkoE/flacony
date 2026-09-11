@@ -298,3 +298,31 @@
     );
     animation: hero-sheen 3.2s ease-in-out infinite;
 }
+
+@keyframes search-panel-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes search-backdrop-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.search-panel {
+    animation: search-panel-in 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.search-backdrop {
+    animation: search-backdrop-in 0.28s ease-out both;
+}
