@@ -24,6 +24,7 @@ export default function FavoritesIndex({ products }) {
                                 <ProductCard
                                     key={product.id}
                                     product={product}
+                                    dissolveOnUnfavorite
                                 />
                             ))}
                         </div>
