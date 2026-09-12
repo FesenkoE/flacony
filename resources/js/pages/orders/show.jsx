@@ -54,6 +54,17 @@ export default function OrderShow({
                                 </span>
                             </div>
                         ))}
+                        {Number(order.discount_amount) > 0 && (
+                            <div className="flex items-baseline justify-between text-sm">
+                                <span className="text-[#8a7860] dark:text-[#b7a58f]">
+                                    Скидка по промокоду {order.promo_code}
+                                </span>
+                                <span className="font-semibold text-[#bf8438]">
+                                    −{Number(order.discount_amount).toFixed(2)}{' '}
+                                    ₴
+                                </span>
+                            </div>
+                        )}
                         <div className="mt-1 flex items-baseline justify-between border-t border-[#1e160c14] pt-2 dark:border-[#ffffff1a]">
                             <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
                                 Итого

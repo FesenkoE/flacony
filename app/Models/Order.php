@@ -18,6 +18,7 @@ class Order extends Model
         'delivery_method',
         'payment_method',
         'promo_code',
+        'discount_amount',
         'comment',
         'status',
         'total',

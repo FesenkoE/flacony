@@ -13,6 +13,7 @@ use App\Http\Controllers\LotController;
 use App\Http\Controllers\NovaPoshtaController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SellerController;
@@ -54,6 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
     Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::post('checkout/promo/validate', [PromoCodeController::class, 'validate'])->name('checkout.promo.validate');
     Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::get('nova-poshta/cities', [NovaPoshtaController::class, 'cities'])->name('nova-poshta.cities');
     Route::get('nova-poshta/warehouses', [NovaPoshtaController::class, 'warehouses'])->name('nova-poshta.warehouses');

@@ -11,6 +11,11 @@ const labelClass =
 
 const NOVA_POSHTA_METHODS = ['np_branch', 'np_courier'];
 
+function readXsrfToken() {
+    const match = document.cookie.match(/(?:^|; )XSRF-TOKEN=([^;]*)/);
+    return match ? decodeURIComponent(match[1]) : '';
+}
+
 function CityField({ city, onSelectCity, error }) {
     const [query, setQuery] = useState(city?.name ?? '');
     const [results, setResults] = useState([]);
@@ -234,6 +239,96 @@ function CheckoutItemRow({ item }) {
     );
 }
 
+function PromoCodeField({ onDiscountChange }) {
+    const [code, setCode] = useState('');
+    const [status, setStatus] = useState('idle');
+    const [message, setMessage] = useState('');
+
+    function reset() {
+        setStatus('idle');
+        setMessage('');
+        onDiscountChange(0);
+    }
+
+    function check() {
+        if (!code.trim()) {
+            reset();
+            return;
+        }
+
+        setStatus('checking');
+
+        fetch('/checkout/promo/validate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'X-XSRF-TOKEN': readXsrfToken(),
+            },
+            body: JSON.stringify({ code }),
+        })
+            .then(async (r) => {
+                const data = await r.json();
+
+                if (!r.ok) {
+                    setStatus('invalid');
+                    setMessage(data.message ?? 'Промокод не найден.');
+                    onDiscountChange(0);
+                    return;
+                }
+
+                setStatus('valid');
+                setMessage(`Скидка ${Number(data.discount).toFixed(2)} ₴`);
+                onDiscountChange(data.discount);
+            })
+            .catch(() => {
+                setStatus('invalid');
+                setMessage('Не получилось проверить код, попробуй ещё раз.');
+                onDiscountChange(0);
+            });
+    }
+
+    return (
+        <div className="flex flex-col gap-1.5">
+            <label className={labelClass} htmlFor="promo_code">
+                Промокод (необязательно)
+            </label>
+            <div className="flex gap-2">
+                <input
+                    id="promo_code"
+                    name="promo_code"
+                    autoComplete="off"
+                    value={code}
+                    onChange={(e) => {
+                        setCode(e.target.value);
+                        reset();
+                    }}
+                    className={fieldClass}
+                />
+                <button
+                    type="button"
+                    onClick={check}
+                    disabled={status === 'checking'}
+                    className="shrink-0 rounded-xl border border-[#e6d7bb] px-4 text-sm font-semibold text-[#8a7860] hover:border-[#bf8438] hover:text-[#bf8438] disabled:opacity-60 dark:border-[#ffffff29] dark:text-[#b7a58f]"
+                >
+                    Применить
+                </button>
+            </div>
+            {message && (
+                <p
+                    className={
+                        status === 'valid'
+                            ? 'text-xs text-[#bf8438]'
+                            : 'text-xs text-red-500'
+                    }
+                >
+                    {message}
+                </p>
+            )}
+        </div>
+    );
+}
+
 export default function CheckoutIndex({
     items,
     total,
@@ -245,6 +340,7 @@ export default function CheckoutIndex({
     const lastName = lastNameParts.join(' ');
     const [deliveryMethod, setDeliveryMethod] = useState('');
     const [city, setCity] = useState(null);
+    const [discount, setDiscount] = useState(0);
     const usesNovaPoshta = NOVA_POSHTA_METHODS.includes(deliveryMethod);
 
     return (
@@ -271,12 +367,22 @@ export default function CheckoutIndex({
                                 item={item}
                             />
                         ))}
+                        {discount > 0 && (
+                            <div className="flex items-baseline justify-between text-sm">
+                                <span className="text-[#8a7860] dark:text-[#b7a58f]">
+                                    Скидка по промокоду
+                                </span>
+                                <span className="font-semibold text-[#bf8438]">
+                                    −{Number(discount).toFixed(2)} ₴
+                                </span>
+                            </div>
+                        )}
                         <div className="mt-1 flex items-baseline justify-between border-t border-[#1e160c14] pt-2 dark:border-[#ffffff1a]">
                             <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
                                 Итого
                             </span>
                             <span className="font-display text-xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                                {Number(total).toFixed(2)} ₴
+                                {Number(total - discount).toFixed(2)} ₴
                             </span>
                         </div>
                     </div>
@@ -498,20 +604,10 @@ export default function CheckoutIndex({
                                     </p>
                                 </div>
 
-                                <div className="flex flex-col gap-1.5">
-                                    <label
-                                        className={labelClass}
-                                        htmlFor="promo_code"
-                                    >
-                                        Промокод (необязательно)
-                                    </label>
-                                    <input
-                                        id="promo_code"
-                                        name="promo_code"
-                                        className={fieldClass}
-                                    />
-                                    <InputError message={errors.promo_code} />
-                                </div>
+                                <PromoCodeField
+                                    onDiscountChange={setDiscount}
+                                />
+                                <InputError message={errors.promo_code} />
 
                                 <div className="flex flex-col gap-1.5">
                                     <label

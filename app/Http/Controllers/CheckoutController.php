@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Lot;
 use App\Models\Order;
+use App\Models\PromoCode;
 use App\Support\Cart;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -83,10 +84,26 @@ class CheckoutController extends Controller
                 }
             }
 
+            $subtotal = $items->sum('subtotal');
+            $discount = 0;
+
+            if (! empty($orderData['promo_code'])) {
+                $promo = PromoCode::findByCode($orderData['promo_code'], lock: true);
+
+                if (! $promo) {
+                    throw ValidationException::withMessages(['promo_code' => 'Промокод не найден.']);
+                }
+
+                $promo->assertUsableFor($subtotal);
+                $discount = $promo->discountFor($subtotal);
+                $promo->increment('used_count');
+            }
+
             $order = Order::create([
                 ...$orderData,
                 'user_id' => $request->user()->id,
-                'total' => $items->sum('subtotal'),
+                'total' => $subtotal - $discount,
+                'discount_amount' => $discount,
             ]);
 
             foreach ($items as $item) {
