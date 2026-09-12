@@ -6,6 +6,7 @@ import { useAddToCart } from '@/hooks/use-add-to-cart';
 
 export default function ProductCard({ product }) {
     const [variantIndex, setVariantIndex] = useState(0);
+    const [pop, setPop] = useState(false);
     const { added, addToCart } = useAddToCart();
     const { auth, favoriteProductIds } = usePage().props;
     const variant = product.variants[variantIndex];
@@ -16,6 +17,9 @@ export default function ProductCard({ product }) {
         if (!auth.user) {
             router.visit('/login');
             return;
+        }
+        if (!isFavorited) {
+            setPop(true);
         }
         router.post(
             `/favorites/${product.id}`,
@@ -43,6 +47,8 @@ export default function ProductCard({ product }) {
                     strokeWidth="1.8"
                     strokeLinecap="round"
                     strokeLinejoin="round"
+                    className={pop ? 'favorite-pop' : ''}
+                    onAnimationEnd={() => setPop(false)}
                 >
                     <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
                 </svg>
