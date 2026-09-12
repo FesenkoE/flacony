@@ -28,6 +28,7 @@ void createInertiaApp({
             case name.startsWith('products/'):
             case name.startsWith('cart/'):
             case name.startsWith('sellers/'):
+            case name.startsWith('lots/'):
             case name.startsWith('account/'):
             case name.startsWith('blog/'):
             case name.startsWith('forum/'):
