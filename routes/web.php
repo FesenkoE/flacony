@@ -61,6 +61,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('nova-poshta/warehouses', [NovaPoshtaController::class, 'warehouses'])->name('nova-poshta.warehouses');
 });
 
+Route::get('lots', [LotController::class, 'index'])->name('lots.index');
 Route::get('sellers/lots/{lot}', [LotController::class, 'show'])->name('lots.show');
 Route::get('sellers/{user}', [SellerController::class, 'show'])->name('sellers.show');
 

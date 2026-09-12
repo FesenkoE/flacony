@@ -11,6 +11,28 @@ use Inertia\Response;
 
 class LotController extends Controller
 {
+    public function index(Request $request): Response
+    {
+        $lots = Lot::query()
+            ->with('seller:id,name')
+            ->where('remaining_volume_ml', '>', 0)
+            ->when($request->string('brand')->toString(), fn ($query, $brand) => $query->where('brand_name', $brand))
+            ->latest()
+            ->paginate(9)
+            ->withQueryString();
+
+        return Inertia::render('lots/index', [
+            'lots' => $lots,
+            'brands' => Lot::where('remaining_volume_ml', '>', 0)
+                ->distinct()
+                ->orderBy('brand_name')
+                ->pluck('brand_name'),
+            'filters' => [
+                'brand' => $request->string('brand')->toString() ?: null,
+            ],
+        ]);
+    }
+
     public function show(Request $request, Lot $lot): Response
     {
         $lot->load('seller:id,name');

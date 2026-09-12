@@ -19,10 +19,10 @@ export default function SiteFooter() {
                         Каталог
                     </Link>
                     <Link
-                        href="/sellers"
+                        href="/lots"
                         className="text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
-                        Продавцы
+                        Розпив
                     </Link>
                     <Link
                         href="/blog"

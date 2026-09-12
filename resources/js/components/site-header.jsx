@@ -44,10 +44,10 @@ export default function SiteHeader() {
                     </Link>
 
                     <Link
-                        href="/sellers"
+                        href="/lots"
                         className="hidden text-sm font-semibold text-[#241a10] sm:inline dark:text-[#f6ecdd]"
                     >
-                        Продавцы
+                        Розпив
                     </Link>
 
                     <Link

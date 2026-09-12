@@ -19,14 +19,14 @@ export default function BlogIndex({ posts }) {
                             Пока нет статей.
                         </p>
                     ) : (
-                        <div className="flex flex-col gap-8">
+                        <div className="flex flex-col gap-4">
                             {posts.map((post) => (
                                 <Link
                                     key={post.id}
                                     href={`/blog/${post.slug}`}
-                                    className="flex flex-col gap-2 border-b border-[#1e160c14] pb-8 last:border-0 dark:border-[#ffffff14]"
+                                    className="flex flex-col gap-3 rounded-3xl border border-[#1e160c14] bg-[#fffaf1] p-6 transition-colors hover:border-[#bf843866] dark:border-[#ffffff14] dark:bg-[#ffffff0a]"
                                 >
-                                    <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                                    <span className="w-fit rounded-full bg-[#bf84381a] px-3 py-1 text-[11px] font-semibold tracking-[0.08em] text-[#bf8438] uppercase">
                                         {formatDate(post.published_at)}
                                     </span>
                                     <h2 className="font-display text-3xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">

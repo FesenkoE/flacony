@@ -1,14 +1,17 @@
 import { Head, Link } from '@inertiajs/react';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
+import { useInitials } from '@/hooks/use-initials';
 
 export default function SellersIndex({ sellers }) {
+    const getInitials = useInitials();
+
     return (
         <>
             <Head title="Продавцы" />
             <SiteHeader />
             <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
-                <div className="mx-auto max-w-4xl p-6">
+                <div className="mx-auto max-w-6xl p-6">
                     <h1 className="mb-6 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                         Продавцы
                     </h1>
@@ -18,19 +21,25 @@ export default function SellersIndex({ sellers }) {
                             Пока никто не выставил распив на продажу.
                         </p>
                     ) : (
-                        <div className="flex flex-col gap-3">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                             {sellers.map((seller) => (
                                 <Link
                                     key={seller.id}
                                     href={`/sellers/${seller.id}`}
-                                    className="flex items-center justify-between rounded-2xl border border-[#1e160c14] bg-[#fffaf1] p-5 dark:border-[#ffffff14] dark:bg-[#ffffff0a]"
+                                    className="flex flex-col items-start gap-4 rounded-3xl border border-[#1e160c14] bg-[#fffaf1] p-6 transition-colors hover:border-[#bf843866] dark:border-[#ffffff14] dark:bg-[#ffffff0a]"
                                 >
-                                    <span className="font-display text-xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
-                                        {seller.name}
+                                    <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#bf8438] text-lg font-bold text-[#1c1408]">
+                                        {getInitials(seller.name)}
                                     </span>
-                                    <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
-                                        {seller.lots_count} лотов
-                                    </span>
+                                    <div className="flex flex-col gap-1">
+                                        <span className="font-display text-xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
+                                            {seller.name}
+                                        </span>
+                                        <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                            {seller.lots_count} лотов в
+                                            продаже
+                                        </span>
+                                    </div>
                                 </Link>
                             ))}
                         </div>
