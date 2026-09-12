@@ -72,13 +72,13 @@ export default function LotCard({ lot, isOwn = false }) {
                             </span>
                         </div>
 
-                        <div className="mt-auto flex items-center justify-between pt-5">
+                        <div className="mt-auto flex items-center justify-between gap-3 pt-5">
                             <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
                                 Остаток {remaining} мл
                             </span>
                             <Link
                                 href={`/sellers/lots/${lot.id}/edit`}
-                                className="rounded-full border border-[#e6d7bb] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#241a10] uppercase dark:border-[#ffffff29] dark:text-[#f6ecdd]"
+                                className="shrink-0 rounded-full border border-[#e6d7bb] px-5 py-2.5 text-sm font-bold tracking-[0.04em] whitespace-nowrap text-[#241a10] uppercase dark:border-[#ffffff29] dark:text-[#f6ecdd]"
                             >
                                 Редактировать
                             </Link>
@@ -132,14 +132,14 @@ export default function LotCard({ lot, isOwn = false }) {
                             />
                         </div>
 
-                        <div className="mt-auto flex items-center justify-between pt-4">
+                        <div className="mt-auto flex items-center justify-between gap-3 pt-4">
                             <span className="font-display text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                                 {price} ₴
                             </span>
                             <button
                                 type="button"
                                 onClick={() => addLotToCart(lot.id, volume)}
-                                className="rounded-full bg-[#bf8438] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                                className="shrink-0 rounded-full bg-[#bf8438] px-5 py-2.5 text-sm font-bold tracking-[0.04em] whitespace-nowrap text-[#1c1408] uppercase"
                             >
                                 {added ? 'Добавлено' : 'В корзину'}
                             </button>
