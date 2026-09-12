@@ -5,7 +5,10 @@ import DissolveCard from '@/components/dissolve-card';
 import StarRating from '@/components/star-rating';
 import { useAddToCart } from '@/hooks/use-add-to-cart';
 
-const UNFAVORITE_FADE_MS = 1300;
+// ponytail: matches DissolveCard's own fade transition (duration-700), not
+// the particle burst's full 0.9-1.2s — trades a barely-visible particle cut
+// for the grid reflowing right when the card actually looks gone.
+const UNFAVORITE_FADE_MS = 700;
 
 export default function ProductCard({
     product,
