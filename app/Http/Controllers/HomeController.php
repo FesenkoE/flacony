@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Brand;
+use App\Models\Lot;
 use App\Models\Product;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -25,6 +26,11 @@ class HomeController extends Controller
                 ->take(4)
                 ->get(),
             'brands' => Brand::orderBy('name')->get(),
+            'lots' => Lot::with('seller:id,name')
+                ->where('remaining_volume_ml', '>', 0)
+                ->latest()
+                ->take(3)
+                ->get(),
         ]);
     }
 }

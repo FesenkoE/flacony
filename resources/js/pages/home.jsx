@@ -1,6 +1,7 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import BottleIcon from '@/components/bottle-icon';
+import LotCard from '@/components/lot-card';
 import ProductCard from '@/components/product-card';
 import Reveal from '@/components/reveal';
 import SiteFooter from '@/components/site-footer';
@@ -147,7 +148,7 @@ function Hero() {
     );
 }
 
-export default function Home({ featuredProducts, newArrivals, brands }) {
+export default function Home({ featuredProducts, newArrivals, brands, lots }) {
     const { auth } = usePage().props;
 
     return (
@@ -216,6 +217,49 @@ export default function Home({ featuredProducts, newArrivals, brands }) {
                     </div>
                 </Reveal>
             )}
+
+            <Reveal className="border-t border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
+                <div className="mx-auto max-w-6xl px-6 py-16">
+                    <div className="mb-6 flex items-center justify-between">
+                        <div className="flex flex-col gap-1">
+                            <h2 className="text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                                Розпив від покупців
+                            </h2>
+                            <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                Остатки чужих флаконов от нескольких мл — и твой
+                                можно продать так же
+                            </p>
+                        </div>
+                        <Link
+                            href="/lots"
+                            className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                        >
+                            Весь розпив →
+                        </Link>
+                    </div>
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        {lots.map((lot) => (
+                            <LotCard key={lot.id} lot={lot} />
+                        ))}
+                        <Link
+                            href="/sellers/lots/create"
+                            className="flex h-full flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-[#e6d7bb] p-6 text-center transition-colors hover:border-[#bf8438] dark:border-[#ffffff29]"
+                        >
+                            <BottleIcon size={48} />
+                            <span className="font-display text-xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
+                                Есть что продать?
+                            </span>
+                            <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                Выставь остаток флакона и получи деньги за то,
+                                что не допробуешь
+                            </span>
+                            <span className="mt-2 rounded-full bg-[#bf8438] px-6 py-2.5 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase">
+                                Выставить лот
+                            </span>
+                        </Link>
+                    </div>
+                </div>
+            </Reveal>
 
             <Reveal className="border-t border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
                 <div className="mx-auto max-w-6xl px-6 py-16">
