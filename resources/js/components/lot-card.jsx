@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import { ShoppingCart } from 'lucide-react';
 import { useState } from 'react';
 import BottleIcon, { tintForId } from '@/components/bottle-icon';
 import { useAddLotToCart } from '@/hooks/use-add-lot-to-cart';
@@ -132,15 +133,16 @@ export default function LotCard({ lot, isOwn = false }) {
                             />
                         </div>
 
-                        <div className="mt-auto flex items-center justify-between gap-3 pt-4">
+                        <div className="mt-auto flex flex-col gap-3 pt-4">
                             <span className="font-display text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                                 {price} ₴
                             </span>
                             <button
                                 type="button"
                                 onClick={() => addLotToCart(lot.id, volume)}
-                                className="shrink-0 rounded-full bg-[#bf8438] px-5 py-2.5 text-sm font-bold tracking-[0.04em] whitespace-nowrap text-[#1c1408] uppercase"
+                                className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#bf8438] px-5 py-3 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
                             >
+                                <ShoppingCart size={16} strokeWidth={2.25} />
                                 {added ? 'Добавлено' : 'В корзину'}
                             </button>
                         </div>
