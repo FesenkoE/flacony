@@ -7,7 +7,11 @@ import { useAddToCart } from '@/hooks/use-add-to-cart';
 
 const UNFAVORITE_FADE_MS = 1300;
 
-export default function ProductCard({ product, dissolveOnUnfavorite = false }) {
+export default function ProductCard({
+    product,
+    dissolveOnUnfavorite = false,
+    flipKey,
+}) {
     const [variantIndex, setVariantIndex] = useState(0);
     const [pop, setPop] = useState(false);
     const [removing, setRemoving] = useState(false);
@@ -48,6 +52,7 @@ export default function ProductCard({ product, dissolveOnUnfavorite = false }) {
     return (
         <DissolveCard
             active={removing}
+            data-flip-key={flipKey}
             className="flex h-full flex-col overflow-hidden rounded-3xl border border-[#1e160c14] bg-[#fffaf1] shadow-[0_24px_48px_-24px_rgba(60,44,20,0.28)] dark:border-[#ffffff14] dark:bg-[#ffffff0a] dark:shadow-[0_20px_60px_-20px_rgba(0,0,0,0.7)] dark:backdrop-blur-lg"
         >
             <button

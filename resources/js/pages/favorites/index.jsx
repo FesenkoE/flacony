@@ -2,8 +2,11 @@ import { Head } from '@inertiajs/react';
 import ProductCard from '@/components/product-card';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
+import { useFlipList } from '@/hooks/use-flip-list';
 
 export default function FavoritesIndex({ products }) {
+    const listRef = useFlipList([products.length]);
+
     return (
         <>
             <Head title="Избранное" />
@@ -19,12 +22,16 @@ export default function FavoritesIndex({ products }) {
                             Пока пусто — добавляйте товары сердечком в каталоге.
                         </p>
                     ) : (
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <div
+                            ref={listRef}
+                            className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                        >
                             {products.map((product) => (
                                 <ProductCard
                                     key={product.id}
                                     product={product}
                                     dissolveOnUnfavorite
+                                    flipKey={product.id}
                                 />
                             ))}
                         </div>

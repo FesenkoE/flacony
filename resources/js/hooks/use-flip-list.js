@@ -27,10 +27,11 @@ export function useFlipList(deps) {
             const nextRect = el.getBoundingClientRect();
 
             if (prevRect) {
+                const deltaX = prevRect.left - nextRect.left;
                 const deltaY = prevRect.top - nextRect.top;
-                if (deltaY) {
+                if (deltaX || deltaY) {
                     el.style.transition = 'none';
-                    el.style.transform = `translateY(${deltaY}px)`;
+                    el.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
                     requestAnimationFrame(() => {
                         el.style.transition = 'transform 400ms ease';
                         el.style.transform = '';
