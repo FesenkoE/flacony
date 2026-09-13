@@ -136,8 +136,8 @@ function Hero() {
                     />
                     <div
                         style={{
-                            transform: `perspective(600px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translate(${tilt.shiftX}px, ${tilt.shiftY}px)`,
-                            transition: 'transform 0.1s ease-out',
+                            transform: `translate(${tilt.shiftX * 0.4}px, ${tilt.shiftY * 0.4}px)`,
+                            transition: 'transform 0.2s ease-out',
                         }}
                     >
                         <img
