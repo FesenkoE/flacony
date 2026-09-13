@@ -34,21 +34,8 @@ const ACCORD_TINTS = [
     '#4f331a',
 ];
 
-// ponytail: fixed pattern for up to 10 tiles on a 2/4-col grid, cycles via
-// index % length — a real masonry/packing algorithm would size tiles to
-// content, not worth it while the accord count stays in the tens.
-const BENTO_SPANS = [
-    'col-span-2 row-span-2',
-    'col-span-2',
-    'row-span-2',
-    '',
-    '',
-    'col-span-2',
-    '',
-    'row-span-2',
-    '',
-    '',
-];
+const DROPLET_MIN_SIZE = 56;
+const DROPLET_MAX_SIZE = 128;
 
 function pluralizeAromas(n) {
     const mod10 = n % 10;
@@ -119,30 +106,50 @@ function Hero({ topAccords }) {
                 </div>
             </div>
 
-            <div className="relative mx-auto max-w-[1600px] px-6 pb-20 md:px-12">
-                <div className="grid auto-rows-[110px] grid-cols-2 gap-3 sm:grid-cols-4">
-                    {topAccords.map((accord, i) => (
-                        <Link
-                            key={accord.name}
-                            href={`/products?note=${encodeURIComponent(accord.name)}`}
-                            className={
-                                'group relative flex flex-col justify-end overflow-hidden rounded-[1.25rem] p-5 transition-transform hover:scale-[1.02] ' +
-                                BENTO_SPANS[i % BENTO_SPANS.length]
-                            }
-                            style={{
-                                background: `linear-gradient(160deg, ${ACCORD_TINTS[i % ACCORD_TINTS.length]}, #1c130a)`,
-                            }}
-                        >
-                            <span className="font-display text-base leading-tight font-semibold break-words text-white italic sm:text-xl">
-                                {accord.name}
-                            </span>
-                            <span className="mt-1 text-xs text-white/70 sm:text-sm">
-                                {accord.count} {pluralizeAromas(accord.count)}
-                            </span>
-                        </Link>
-                    ))}
-                </div>
+            <div className="relative mx-auto max-w-[1600px] px-6 pb-16 md:px-12">
+                <AccordDroplets topAccords={topAccords} />
             </div>
+        </div>
+    );
+}
+
+function AccordDroplets({ topAccords }) {
+    const counts = topAccords.map((a) => a.count);
+    const min = Math.min(...counts);
+    const max = Math.max(min + 1, ...counts);
+
+    return (
+        <div className="flex flex-wrap items-end justify-center gap-x-7 gap-y-5">
+            {topAccords.map((accord, i) => {
+                const t = (accord.count - min) / (max - min);
+                const size =
+                    DROPLET_MIN_SIZE +
+                    (DROPLET_MAX_SIZE - DROPLET_MIN_SIZE) * Math.sqrt(t);
+                const tint = ACCORD_TINTS[i % ACCORD_TINTS.length];
+
+                return (
+                    <Link
+                        key={accord.name}
+                        href={`/products?note=${encodeURIComponent(accord.name)}`}
+                        className="group flex flex-col items-center gap-2"
+                    >
+                        <span
+                            className="rounded-full shadow-[0_10px_24px_-8px_rgba(28,19,10,0.55)] transition-transform group-hover:scale-110"
+                            style={{
+                                width: size,
+                                height: size,
+                                background: `radial-gradient(circle at 32% 26%, #ffffff73 0%, ${tint} 45%, #1c130a 100%)`,
+                            }}
+                        />
+                        <span className="font-display text-center text-sm text-[#241a10] italic dark:text-[#f6ecdd]">
+                            {accord.name}
+                        </span>
+                        <span className="text-[11px] text-[#8a7860] dark:text-[#b7a58f]">
+                            {accord.count} {pluralizeAromas(accord.count)}
+                        </span>
+                    </Link>
+                );
+            })}
         </div>
     );
 }
