@@ -25,8 +25,8 @@ const STEPS = [
 const SCENT_TAGS = [
     { label: 'Woody', top: '14%', left: '8%', delay: '0.2s' },
     { label: 'Amber', top: '84%', left: '6%', delay: '1.4s' },
-    { label: 'Citrus', top: '22%', right: '9%', delay: '0.8s' },
-    { label: 'Floral', top: '74%', right: '12%', delay: '2s' },
+    { label: 'Citrus', top: '9%', right: '4%', delay: '0.8s' },
+    { label: 'Floral', top: '90%', right: '5%', delay: '2s' },
 ];
 
 function Hero() {
@@ -140,7 +140,11 @@ function Hero() {
                             transition: 'transform 0.1s ease-out',
                         }}
                     >
-                        <BottleIcon size={220} />
+                        <img
+                            src="/images/products/dior-sauvage.jpg"
+                            alt="Dior Sauvage"
+                            className="h-[420px] w-[420px] rounded-[2rem] object-cover shadow-[0_50px_100px_-30px_rgba(0,0,0,0.7)]"
+                        />
                     </div>
                 </div>
             </div>
