@@ -8,6 +8,7 @@ use App\Models\ForumCategory;
 use App\Models\Lot;
 use App\Models\Post;
 use App\Models\Product;
+use App\Models\PromoCode;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -271,5 +272,10 @@ class DatabaseSeeder extends Seeder
                 );
             }
         }
+
+        PromoCode::firstOrCreate(
+            ['code' => 'WELCOME10'],
+            ['type' => 'percent', 'value' => 10, 'active' => true],
+        );
     }
 }

@@ -1,4 +1,5 @@
 import { Head, Link, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 import BottleIcon from '@/components/bottle-icon';
 import LotCard from '@/components/lot-card';
 import ProductCard from '@/components/product-card';
@@ -21,32 +22,131 @@ const STEPS = [
     },
 ];
 
-const ACCORD_TINTS = [
-    '#bf8438',
-    '#6b4420',
-    '#a8702e',
-    '#8a5a20',
-    '#c48a56',
-    '#5a3a18',
-    '#9c6b4f',
-    '#7a4f24',
-    '#b47a3c',
-    '#4f331a',
-];
-
-const DROPLET_MIN_SIZE = 56;
-const DROPLET_MAX_SIZE = 128;
-
-function pluralizeAromas(n) {
+function pluralizeLots(n) {
     const mod10 = n % 10;
     const mod100 = n % 100;
-    if (mod10 === 1 && mod100 !== 11) return 'аромат';
+    if (mod10 === 1 && mod100 !== 11) return 'лот';
     if ([2, 3, 4].includes(mod10) && ![12, 13, 14].includes(mod100))
-        return 'аромата';
-    return 'ароматов';
+        return 'лота';
+    return 'лотов';
 }
 
-function Hero({ topAccords }) {
+function buildSlides({ promoCode, newArrivals, activeLotsCount }) {
+    const slides = [];
+
+    if (promoCode) {
+        const discount =
+            promoCode.type === 'percent'
+                ? `${Number(promoCode.value)}%`
+                : `${Number(promoCode.value)} ₴`;
+        slides.push({
+            key: 'promo',
+            eyebrow: 'Промокод для новых покупателей',
+            title: `Скидка ${discount} на первый заказ`,
+            text: `Введи код ${promoCode.code} на чекауте — работает на весь каталог, без минимальной суммы.`,
+            cta: 'В каталог',
+            href: '/products',
+        });
+    }
+
+    if (newArrivals?.length > 0) {
+        const latest = newArrivals[0];
+        slides.push({
+            key: 'new',
+            eyebrow: 'Новинки',
+            title: `${latest.brand.name} — ${latest.name}`,
+            text: 'Последнее поступление в каталог — уже можно взять на пробу от 2 мл.',
+            cta: 'Смотреть новинки',
+            href: '/products',
+        });
+    }
+
+    slides.push({
+        key: 'lots',
+        eyebrow: 'Розпив',
+        title: `${activeLotsCount} ${pluralizeLots(activeLotsCount)} в наличии`,
+        text: 'Флаконы от других покупателей — раскуплены не полностью, можно взять несколько мл на пробу.',
+        cta: 'Смотреть розпив',
+        href: '/lots',
+    });
+
+    return slides;
+}
+
+function PromoSlider({ slides }) {
+    const [index, setIndex] = useState(0);
+    const [paused, setPaused] = useState(false);
+
+    useEffect(() => {
+        if (paused || slides.length < 2) return;
+        const timer = setInterval(() => {
+            setIndex((i) => (i + 1) % slides.length);
+        }, 5000);
+        return () => clearInterval(timer);
+    }, [paused, slides.length]);
+
+    return (
+        <div
+            className="relative overflow-hidden rounded-[1.5rem]"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+        >
+            <div
+                className="flex transition-transform duration-500 ease-out"
+                style={{ transform: `translateX(-${index * 100}%)` }}
+            >
+                {slides.map((slide) => (
+                    <div
+                        key={slide.key}
+                        className="flex w-full shrink-0 flex-col items-start gap-3 px-8 py-10 sm:px-12 sm:py-14"
+                        style={{
+                            background:
+                                'linear-gradient(135deg, #2a1c0f 0%, #6b4420 55%, #bf8438 100%)',
+                        }}
+                    >
+                        <span className="text-xs font-bold tracking-[0.2em] text-[#f6cf9a] uppercase">
+                            {slide.eyebrow}
+                        </span>
+                        <h2 className="font-display text-2xl leading-tight font-semibold text-white italic sm:text-3xl">
+                            {slide.title}
+                        </h2>
+                        <p className="max-w-md text-sm leading-relaxed text-white/75">
+                            {slide.text}
+                        </p>
+                        <Link
+                            href={slide.href}
+                            className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#f6ecdd] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                        >
+                            {slide.cta}
+                        </Link>
+                    </div>
+                ))}
+            </div>
+
+            {slides.length > 1 && (
+                <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-2">
+                    {slides.map((slide, i) => (
+                        <button
+                            key={slide.key}
+                            type="button"
+                            aria-label={`Слайд ${i + 1}`}
+                            onClick={() => setIndex(i)}
+                            className={
+                                'h-2 rounded-full transition-all ' +
+                                (i === index
+                                    ? 'w-6 bg-[#f6ecdd]'
+                                    : 'w-2 bg-[#f6ecdd66]')
+                            }
+                        />
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}
+
+function Hero({ promoCode, newArrivals, activeLotsCount }) {
+    const slides = buildSlides({ promoCode, newArrivals, activeLotsCount });
     return (
         <div className="relative overflow-hidden bg-[#f6efe3] dark:bg-[#0d0b09]">
             <div className="hero-bg absolute inset-0" />
@@ -107,49 +207,8 @@ function Hero({ topAccords }) {
             </div>
 
             <div className="relative mx-auto max-w-[1600px] px-6 pb-16 md:px-12">
-                <AccordDroplets topAccords={topAccords} />
+                <PromoSlider slides={slides} />
             </div>
-        </div>
-    );
-}
-
-function AccordDroplets({ topAccords }) {
-    const counts = topAccords.map((a) => a.count);
-    const min = Math.min(...counts);
-    const max = Math.max(min + 1, ...counts);
-
-    return (
-        <div className="flex flex-wrap items-end justify-center gap-x-7 gap-y-5">
-            {topAccords.map((accord, i) => {
-                const t = (accord.count - min) / (max - min);
-                const size =
-                    DROPLET_MIN_SIZE +
-                    (DROPLET_MAX_SIZE - DROPLET_MIN_SIZE) * Math.sqrt(t);
-                const tint = ACCORD_TINTS[i % ACCORD_TINTS.length];
-
-                return (
-                    <Link
-                        key={accord.name}
-                        href={`/products?note=${encodeURIComponent(accord.name)}`}
-                        className="group flex flex-col items-center gap-2"
-                    >
-                        <span
-                            className="rounded-full shadow-[0_10px_24px_-8px_rgba(28,19,10,0.55)] transition-transform group-hover:scale-110"
-                            style={{
-                                width: size,
-                                height: size,
-                                background: `radial-gradient(circle at 32% 26%, #ffffff73 0%, ${tint} 45%, #1c130a 100%)`,
-                            }}
-                        />
-                        <span className="font-display text-center text-sm text-[#241a10] italic dark:text-[#f6ecdd]">
-                            {accord.name}
-                        </span>
-                        <span className="text-[11px] text-[#8a7860] dark:text-[#b7a58f]">
-                            {accord.count} {pluralizeAromas(accord.count)}
-                        </span>
-                    </Link>
-                );
-            })}
         </div>
     );
 }
@@ -159,7 +218,8 @@ export default function Home({
     newArrivals,
     brands,
     lots,
-    topAccords,
+    promoCode,
+    activeLotsCount,
 }) {
     const { auth } = usePage().props;
 
@@ -167,7 +227,11 @@ export default function Home({
         <>
             <Head title="Flacony — парфюмерия на распив и в розницу" />
             <SiteHeader />
-            <Hero topAccords={topAccords} />
+            <Hero
+                promoCode={promoCode}
+                newArrivals={newArrivals}
+                activeLotsCount={activeLotsCount}
+            />
 
             {brands.length > 0 && (
                 <Reveal className="border-b border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">

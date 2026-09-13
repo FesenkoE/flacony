@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Lot;
 use App\Models\Product;
+use App\Models\PromoCode;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -31,26 +32,8 @@ class HomeController extends Controller
                 ->latest()
                 ->take(4)
                 ->get(),
-            'topAccords' => $this->topAccords(),
+            'promoCode' => PromoCode::where('active', true)->first(['code', 'type', 'value']),
+            'activeLotsCount' => Lot::where('remaining_volume_ml', '>', 0)->count(),
         ]);
-    }
-
-    private function topAccords(): array
-    {
-        $counts = [];
-
-        foreach (Product::pluck('accords') as $accords) {
-            foreach ($accords ?? [] as $accord) {
-                $counts[$accord['name']] = ($counts[$accord['name']] ?? 0) + 1;
-            }
-        }
-
-        arsort($counts);
-
-        return collect($counts)
-            ->take(10)
-            ->map(fn ($count, $name) => ['name' => $name, 'count' => $count])
-            ->values()
-            ->all();
     }
 }
