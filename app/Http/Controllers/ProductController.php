@@ -33,7 +33,7 @@ class ProductController extends Controller
                 });
             })
             ->latest()
-            ->paginate(9)
+            ->paginate(10)
             ->withQueryString();
 
         return Inertia::render('products/index', [

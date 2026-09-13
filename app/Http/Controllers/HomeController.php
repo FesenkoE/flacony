@@ -17,13 +17,13 @@ class HomeController extends Controller
                 ->withAvg('reviews', 'rating')
                 ->withCount('reviews')
                 ->orderBy('id')
-                ->take(4)
+                ->take(5)
                 ->get(),
             'newArrivals' => Product::with(['brand', 'variants'])
                 ->withAvg('reviews', 'rating')
                 ->withCount('reviews')
                 ->orderByDesc('id')
-                ->take(4)
+                ->take(5)
                 ->get(),
             'brands' => Brand::orderBy('name')->get(),
             'lots' => Lot::with('seller:id,name')

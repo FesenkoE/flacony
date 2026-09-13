@@ -188,7 +188,7 @@ export default function Home({ featuredProducts, newArrivals, brands, lots }) {
                                 Весь каталог →
                             </Link>
                         </div>
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
                             {featuredProducts.map((product) => (
                                 <ProductCard
                                     key={product.id}
@@ -206,7 +206,7 @@ export default function Home({ featuredProducts, newArrivals, brands, lots }) {
                         <h2 className="mb-6 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                             Новинки
                         </h2>
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
                             {newArrivals.map((product) => (
                                 <ProductCard
                                     key={product.id}
