@@ -29,7 +29,7 @@ class HomeController extends Controller
             'lots' => Lot::with('seller:id,name')
                 ->where('remaining_volume_ml', '>', 0)
                 ->latest()
-                ->take(3)
+                ->take(4)
                 ->get(),
         ]);
     }
