@@ -27,7 +27,7 @@ export default function SiteHeader() {
 
     return (
         <header className="site-header sticky top-0 z-10 border-b border-[#1e160c14] px-6 py-4 backdrop-blur-lg md:px-10 dark:border-[#ffffff14]">
-            <div className="mx-auto flex max-w-6xl items-center justify-between">
+            <div className="mx-auto flex max-w-[1600px] items-center justify-between">
                 <Link href="/" className="flex items-center gap-2">
                     <span className="h-2.5 w-2.5 rounded-full bg-[#bf8438]" />
                     <span className="text-sm font-bold tracking-[0.22em] text-[#241a10] dark:text-[#f6ecdd]">

@@ -13,7 +13,7 @@ export default function FavoritesIndex({ products }) {
             <Head title="Избранное" />
             <div className="flex min-h-screen flex-col bg-[#f6efe3] dark:bg-[#0d0b09]">
                 <SiteHeader />
-                <div className="mx-auto w-full max-w-6xl flex-1 p-6">
+                <div className="mx-auto w-full max-w-[1600px] flex-1 p-6">
                     <h1 className="mb-6 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                         Избранное
                     </h1>

@@ -11,7 +11,7 @@ export default function SellersIndex({ sellers }) {
             <Head title="Продавцы" />
             <SiteHeader />
             <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
-                <div className="mx-auto max-w-6xl p-6">
+                <div className="mx-auto max-w-[1600px] p-6">
                     <h1 className="mb-6 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                         Продавцы
                     </h1>
@@ -36,8 +36,7 @@ export default function SellersIndex({ sellers }) {
                                             {seller.name}
                                         </span>
                                         <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
-                                            {seller.lots_count} лотов в
-                                            продаже
+                                            {seller.lots_count} лотов в продаже
                                         </span>
                                     </div>
                                 </Link>

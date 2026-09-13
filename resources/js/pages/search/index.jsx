@@ -25,7 +25,7 @@ export default function SearchIndex({ query, products, lots, brands }) {
             <Head title={query ? `Поиск: ${query}` : 'Поиск'} />
             <SiteHeader />
             <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
-                <div className="mx-auto max-w-6xl p-6">
+                <div className="mx-auto max-w-[1600px] p-6">
                     <h1 className="mb-1 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                         Поиск
                     </h1>

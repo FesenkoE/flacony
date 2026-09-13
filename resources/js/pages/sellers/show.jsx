@@ -12,7 +12,7 @@ export default function SellerShow({ seller, lots }) {
             <Head title={`Витрина ${seller.name}`} />
             <SiteHeader />
             <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
-                <div className="mx-auto max-w-6xl p-6">
+                <div className="mx-auto max-w-[1600px] p-6">
                     <Link
                         href="/sellers"
                         className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"

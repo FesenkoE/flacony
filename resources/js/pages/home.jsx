@@ -56,7 +56,7 @@ function Hero() {
         >
             <div className="hero-bg absolute inset-0" />
 
-            <div className="relative mx-auto grid min-h-[760px] max-w-6xl grid-cols-1 items-center gap-6 px-6 md:grid-cols-[1.1fr_0.9fr] md:px-12">
+            <div className="relative mx-auto grid min-h-[760px] max-w-[1600px] grid-cols-1 items-center gap-6 px-6 md:grid-cols-[1.1fr_0.9fr] md:px-12">
                 {SCENT_TAGS.map((tag) => (
                     <span
                         key={tag.label}
@@ -159,7 +159,7 @@ export default function Home({ featuredProducts, newArrivals, brands, lots }) {
 
             {brands.length > 0 && (
                 <Reveal className="border-b border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
-                    <div className="mx-auto max-w-6xl px-6 py-10">
+                    <div className="mx-auto max-w-[1600px] px-6 py-10">
                         <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
                             {brands.map((brand) => (
                                 <span
@@ -176,7 +176,7 @@ export default function Home({ featuredProducts, newArrivals, brands, lots }) {
 
             {featuredProducts.length > 0 && (
                 <Reveal className="bg-[#f6efe3] dark:bg-[#0d0b09]">
-                    <div className="mx-auto max-w-6xl px-6 py-16">
+                    <div className="mx-auto max-w-[1600px] px-6 py-16">
                         <div className="mb-6 flex items-center justify-between">
                             <h2 className="text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                                 Популярное
@@ -202,7 +202,7 @@ export default function Home({ featuredProducts, newArrivals, brands, lots }) {
 
             {newArrivals.length > 0 && (
                 <Reveal className="border-t border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
-                    <div className="mx-auto max-w-6xl px-6 py-16">
+                    <div className="mx-auto max-w-[1600px] px-6 py-16">
                         <h2 className="mb-6 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                             Новинки
                         </h2>
@@ -219,7 +219,7 @@ export default function Home({ featuredProducts, newArrivals, brands, lots }) {
             )}
 
             <Reveal className="border-t border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
-                <div className="mx-auto max-w-6xl px-6 py-16">
+                <div className="mx-auto max-w-[1600px] px-6 py-16">
                     <div className="mb-6 flex items-center justify-between">
                         <div className="flex flex-col gap-1">
                             <h2 className="text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
@@ -262,7 +262,7 @@ export default function Home({ featuredProducts, newArrivals, brands, lots }) {
             </Reveal>
 
             <Reveal className="border-t border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
-                <div className="mx-auto max-w-6xl px-6 py-16">
+                <div className="mx-auto max-w-[1600px] px-6 py-16">
                     <h2 className="mb-10 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                         Как это работает
                     </h2>
@@ -289,7 +289,7 @@ export default function Home({ featuredProducts, newArrivals, brands, lots }) {
 
             {!auth.user && (
                 <Reveal className="hero-bg relative overflow-hidden border-t border-[#1e160c14] dark:border-[#ffffff14]">
-                    <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 px-6 py-16 md:grid-cols-[1fr_auto] md:py-20">
+                    <div className="relative mx-auto grid max-w-[1600px] grid-cols-1 items-center gap-8 px-6 py-16 md:grid-cols-[1fr_auto] md:py-20">
                         <div className="flex flex-col items-center gap-4 text-center md:items-start md:text-left">
                             <h2 className="text-3xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                                 Создай аккаунт

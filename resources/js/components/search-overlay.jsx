@@ -89,7 +89,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
                     (closing ? ' is-closing' : '')
                 }
             >
-                <div className="mx-auto max-w-6xl px-6 md:px-10">
+                <div className="mx-auto max-w-[1600px] px-6 md:px-10">
                     <form
                         onSubmit={submit}
                         className="flex items-center gap-3 border-b border-[#1e160c14] py-4 dark:border-[#ffffff1a]"

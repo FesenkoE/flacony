@@ -3,7 +3,7 @@ import { Link } from '@inertiajs/react';
 export default function SiteFooter() {
     return (
         <footer className="border-t border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
-            <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-12 md:flex-row md:items-start md:justify-between">
+            <div className="mx-auto flex max-w-[1600px] flex-col gap-6 px-6 py-12 md:flex-row md:items-start md:justify-between">
                 <div className="flex items-center gap-2">
                     <span className="h-2.5 w-2.5 rounded-full bg-[#bf8438]" />
                     <span className="text-sm font-bold tracking-[0.22em] text-[#241a10] dark:text-[#f6ecdd]">
