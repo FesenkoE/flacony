@@ -12,7 +12,12 @@ export default function FavoritesIndex({ products }) {
         <>
             <Head title="Избранное" />
             <SiteHeader />
-            <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
+            <div
+                className={
+                    'bg-[#f6efe3] dark:bg-[#0d0b09]' +
+                    (products.length > 0 ? ' min-h-screen' : '')
+                }
+            >
                 <div className="mx-auto max-w-6xl p-6">
                     <h1 className="mb-6 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                         Избранное
