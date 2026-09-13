@@ -1,4 +1,5 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
+import BottleIcon from '@/components/bottle-icon';
 import ProductCard from '@/components/product-card';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
@@ -18,9 +19,22 @@ export default function FavoritesIndex({ products }) {
                     </h1>
 
                     {products.length === 0 ? (
-                        <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
-                            Пока пусто — добавляйте товары сердечком в каталоге.
-                        </p>
+                        <div className="flex flex-col items-center gap-4 rounded-3xl border border-[#1e160c14] bg-[#fffaf1] px-6 py-20 text-center dark:border-[#ffffff14] dark:bg-[#ffffff0a]">
+                            <BottleIcon size={88} />
+                            <h2 className="font-display text-2xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
+                                Пока пусто
+                            </h2>
+                            <p className="max-w-sm text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                Добавляй ароматы сердечком в каталоге — здесь
+                                будет твой список желаний
+                            </p>
+                            <Link
+                                href="/products"
+                                className="mt-2 rounded-full bg-[#bf8438] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                            >
+                                Смотреть каталог
+                            </Link>
+                        </div>
                     ) : (
                         <div
                             ref={listRef}
