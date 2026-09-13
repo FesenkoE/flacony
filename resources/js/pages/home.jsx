@@ -232,7 +232,7 @@ function Hero({ avgPricePerMl }) {
 
                 <div className="relative flex h-[480px] items-center justify-center">
                     <div
-                        className="hero-glow absolute h-[380px] w-[380px] rounded-full blur-[16px]"
+                        className="hero-glow pointer-events-none absolute h-[380px] w-[380px] rounded-full blur-[16px]"
                         style={{
                             background:
                                 'radial-gradient(circle, #bf843870 0%, transparent 70%)',
