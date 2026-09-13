@@ -151,8 +151,12 @@ function Hero({ promoCode, newArrivals, activeLotsCount }) {
         <div className="relative overflow-hidden bg-[#f6efe3] dark:bg-[#0d0b09]">
             <div className="hero-bg absolute inset-0" />
 
-            <div className="relative mx-auto max-w-[1600px] px-6 pt-20 pb-10 md:px-12">
-                <div className="flex max-w-2xl flex-col gap-5">
+            <div className="relative mx-auto max-w-[1600px] px-6 pt-8 md:px-12">
+                <PromoSlider slides={slides} />
+            </div>
+
+            <div className="relative mx-auto max-w-[1600px] px-6 py-12 md:px-12">
+                <div className="flex max-w-2xl flex-col gap-3">
                     <span
                         className="hero-fade-up text-[13px] font-bold tracking-[0.3em] text-[#bf8438]"
                         style={{ animationDelay: '0.05s' }}
@@ -161,19 +165,17 @@ function Hero({ promoCode, newArrivals, activeLotsCount }) {
                     </span>
 
                     <h1
-                        className="hero-fade-up text-5xl leading-[1.04] font-bold text-[#241a10] md:text-6xl dark:text-[#f6ecdd]"
+                        className="hero-fade-up text-3xl leading-[1.1] font-bold text-[#241a10] md:text-4xl dark:text-[#f6ecdd]"
                         style={{ animationDelay: '0.18s' }}
                     >
-                        Пробуй ароматы,
-                        <br />
-                        не переплачивая{' '}
+                        Пробуй ароматы, не переплачивая{' '}
                         <span className="font-display font-semibold text-[#bf8438] italic">
                             за флакон
                         </span>
                     </h1>
 
                     <p
-                        className="hero-fade-up max-w-[440px] text-base leading-relaxed text-[#8a7860] dark:text-[#b7a58f]"
+                        className="hero-fade-up max-w-[440px] text-sm leading-relaxed text-[#8a7860] dark:text-[#b7a58f]"
                         style={{ animationDelay: '0.32s' }}
                     >
                         Официальный каталог и распив нишевой парфюмерии — от 5
@@ -181,12 +183,12 @@ function Hero({ promoCode, newArrivals, activeLotsCount }) {
                     </p>
 
                     <div
-                        className="hero-fade-up"
+                        className="hero-fade-up mt-1"
                         style={{ animationDelay: '0.46s' }}
                     >
                         <Link
                             href="/products"
-                            className="hero-cta-sheen relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-[#bf8438] px-7 py-4 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                            className="hero-cta-sheen relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-[#bf8438] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
                         >
                             Смотреть каталог
                             <svg
@@ -204,10 +206,6 @@ function Hero({ promoCode, newArrivals, activeLotsCount }) {
                         </Link>
                     </div>
                 </div>
-            </div>
-
-            <div className="relative mx-auto max-w-[1600px] px-6 pb-16 md:px-12">
-                <PromoSlider slides={slides} />
             </div>
         </div>
     );
