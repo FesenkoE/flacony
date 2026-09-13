@@ -26,6 +26,9 @@ class ProductController extends Controller
             ->when($request->string('category')->toString(), function ($query, $category) {
                 $query->whereRelation('category', 'slug', $category);
             })
+            ->when($request->string('note')->toString(), function ($query, $note) {
+                $query->whereJsonContains('accords', ['name' => $note]);
+            })
             ->when($minPrice || $maxPrice, function ($query) use ($minPrice, $maxPrice) {
                 $query->whereHas('variants', function ($q) use ($minPrice, $maxPrice) {
                     $q->when($minPrice, fn ($q) => $q->where('price', '>=', $minPrice))
@@ -43,6 +46,7 @@ class ProductController extends Controller
             'filters' => [
                 'brand' => $request->string('brand')->toString() ?: null,
                 'category' => $request->string('category')->toString() ?: null,
+                'note' => $request->string('note')->toString() ?: null,
                 'min_price' => $minPrice,
                 'max_price' => $maxPrice,
             ],

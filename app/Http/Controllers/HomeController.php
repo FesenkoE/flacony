@@ -31,6 +31,26 @@ class HomeController extends Controller
                 ->latest()
                 ->take(4)
                 ->get(),
+            'topAccords' => $this->topAccords(),
         ]);
+    }
+
+    private function topAccords(): array
+    {
+        $counts = [];
+
+        foreach (Product::pluck('accords') as $accords) {
+            foreach ($accords ?? [] as $accord) {
+                $counts[$accord['name']] = ($counts[$accord['name']] ?? 0) + 1;
+            }
+        }
+
+        arsort($counts);
+
+        return collect($counts)
+            ->take(4)
+            ->map(fn ($count, $name) => ['name' => $name, 'count' => $count])
+            ->values()
+            ->all();
     }
 }

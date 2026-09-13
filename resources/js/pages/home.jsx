@@ -1,5 +1,4 @@
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Citrus, Flame, Flower2, TreePine } from 'lucide-react';
 import BottleIcon from '@/components/bottle-icon';
 import LotCard from '@/components/lot-card';
 import ProductCard from '@/components/product-card';
@@ -22,40 +21,23 @@ const STEPS = [
     },
 ];
 
-const SCENT_TAGS = [
-    { label: 'Woody', icon: TreePine, top: '14%', left: '8%', delay: '0.2s' },
-    { label: 'Amber', icon: Flame, top: '84%', left: '6%', delay: '1.4s' },
-    { label: 'Citrus', icon: Citrus, top: '22%', right: '9%', delay: '0.8s' },
-    {
-        label: 'Floral',
-        icon: Flower2,
-        top: '74%',
-        right: '12%',
-        delay: '2s',
-    },
-];
+const ACCORD_TINTS = ['#bf8438', '#8a5a20', '#a8702e', '#6b4420'];
 
-function Hero() {
+function pluralizeAromas(n) {
+    const mod10 = n % 10;
+    const mod100 = n % 100;
+    if (mod10 === 1 && mod100 !== 11) return 'аромат';
+    if ([2, 3, 4].includes(mod10) && ![12, 13, 14].includes(mod100))
+        return 'аромата';
+    return 'ароматов';
+}
+
+function Hero({ topAccords }) {
     return (
         <div className="relative min-h-[760px] overflow-hidden bg-[#f6efe3] dark:bg-[#0d0b09]">
             <div className="hero-bg absolute inset-0" />
 
             <div className="relative mx-auto grid min-h-[760px] max-w-[1600px] grid-cols-1 items-center gap-6 px-6 md:grid-cols-[1.1fr_0.9fr] md:px-12">
-                {SCENT_TAGS.map((tag) => (
-                    <span
-                        key={tag.label}
-                        className="hero-float hero-tag absolute hidden items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs tracking-wide backdrop-blur-[10px] md:flex"
-                        style={{
-                            top: tag.top,
-                            left: tag.left,
-                            right: tag.right,
-                            animationDelay: tag.delay,
-                        }}
-                    >
-                        <tag.icon size={13} strokeWidth={1.75} />
-                        {tag.label}
-                    </span>
-                ))}
                 <div className="flex flex-col gap-5">
                     <span
                         className="hero-fade-up text-[13px] font-bold tracking-[0.3em] text-[#bf8438]"
@@ -109,30 +91,44 @@ function Hero() {
                     </div>
                 </div>
 
-                <div
-                    className="relative flex h-[480px] items-center justify-center overflow-hidden rounded-[2rem]"
-                    style={{
-                        background:
-                            'linear-gradient(135deg, #2a1c0f 0%, #6b4420 55%, #bf8438 100%)',
-                    }}
-                >
-                    <span className="font-display pointer-events-none text-[260px] leading-none text-white/10 italic select-none">
-                        F
-                    </span>
+                <div className="grid h-auto grid-cols-1 gap-4 sm:h-[480px] sm:grid-cols-2">
+                    {topAccords.map((accord, i) => (
+                        <Link
+                            key={accord.name}
+                            href={`/products?note=${encodeURIComponent(accord.name)}`}
+                            className="group relative flex flex-col justify-end overflow-hidden rounded-[1.5rem] p-6 transition-transform hover:scale-[1.02]"
+                            style={{
+                                background: `linear-gradient(160deg, ${ACCORD_TINTS[i % ACCORD_TINTS.length]}, #1c130a)`,
+                            }}
+                        >
+                            <span className="font-display text-3xl leading-tight font-semibold break-words text-white italic">
+                                {accord.name}
+                            </span>
+                            <span className="mt-1.5 text-sm text-white/70">
+                                {accord.count} {pluralizeAromas(accord.count)}
+                            </span>
+                        </Link>
+                    ))}
                 </div>
             </div>
         </div>
     );
 }
 
-export default function Home({ featuredProducts, newArrivals, brands, lots }) {
+export default function Home({
+    featuredProducts,
+    newArrivals,
+    brands,
+    lots,
+    topAccords,
+}) {
     const { auth } = usePage().props;
 
     return (
         <>
             <Head title="Flacony — парфюмерия на распив и в розницу" />
             <SiteHeader />
-            <Hero />
+            <Hero topAccords={topAccords} />
 
             {brands.length > 0 && (
                 <Reveal className="border-b border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">

@@ -45,6 +45,16 @@ export default function ProductsIndex({
                         Каталог
                     </h1>
 
+                    {filters.note && (
+                        <Link
+                            href={buildUrl(filters, { note: undefined })}
+                            className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-[#bf8438] bg-[#bf843829] px-4 py-1.5 text-sm font-medium text-[#241a10] dark:text-[#f6ecdd]"
+                        >
+                            Аромат: {filters.note}
+                            <span aria-hidden>✕</span>
+                        </Link>
+                    )}
+
                     <div className="mb-6 flex flex-wrap gap-2">
                         <Link
                             href={buildUrl(filters, { brand: undefined })}
