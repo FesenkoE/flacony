@@ -28,8 +28,8 @@ export default function LotCard({ lot, isOwn = false }) {
 
     return (
         <div className="flex h-full flex-col overflow-hidden rounded-3xl border border-[#1e160c14] bg-[#fffaf1] dark:border-[#ffffff14] dark:bg-[#ffffff0a] dark:backdrop-blur-lg">
-            <div className="scent-card-photo flex aspect-[3/2] items-center justify-center">
-                <BottleIcon size={72} tint={tintForId(lot.id)} />
+            <div className="scent-card-photo flex aspect-square items-center justify-center overflow-hidden">
+                <BottleIcon tint={tintForId(lot.id)} />
             </div>
 
             <div className="flex flex-1 flex-col p-6">
