@@ -11,14 +11,9 @@ export default function FavoritesIndex({ products }) {
     return (
         <>
             <Head title="Избранное" />
-            <SiteHeader />
-            <div
-                className={
-                    'bg-[#f6efe3] dark:bg-[#0d0b09]' +
-                    (products.length > 0 ? ' min-h-screen' : '')
-                }
-            >
-                <div className="mx-auto max-w-6xl p-6">
+            <div className="flex min-h-screen flex-col bg-[#f6efe3] dark:bg-[#0d0b09]">
+                <SiteHeader />
+                <div className="mx-auto w-full max-w-6xl flex-1 p-6">
                     <h1 className="mb-6 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                         Избранное
                     </h1>
@@ -56,8 +51,8 @@ export default function FavoritesIndex({ products }) {
                         </div>
                     )}
                 </div>
+                <SiteFooter />
             </div>
-            <SiteFooter />
         </>
     );
 }
