@@ -1,6 +1,6 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import BottleIcon from '@/components/bottle-icon';
+import BottleIcon, { tintForId } from '@/components/bottle-icon';
 import LotCard from '@/components/lot-card';
 import ProductCard from '@/components/product-card';
 import Reveal from '@/components/reveal';
@@ -31,6 +31,19 @@ function pluralizeLots(n) {
     return 'лотов';
 }
 
+function BigStat({ value, label }) {
+    return (
+        <div className="flex flex-col items-center text-center">
+            <span className="font-display text-7xl leading-none font-bold text-white sm:text-8xl">
+                {value}
+            </span>
+            <span className="mt-2 text-xs tracking-[0.15em] text-white/70 uppercase">
+                {label}
+            </span>
+        </div>
+    );
+}
+
 function buildSlides({ promoCode, newArrivals, activeLotsCount }) {
     const slides = [];
 
@@ -46,6 +59,7 @@ function buildSlides({ promoCode, newArrivals, activeLotsCount }) {
             text: `Введи код ${promoCode.code} на чекауте — работает на весь каталог, без минимальной суммы.`,
             cta: 'В каталог',
             href: '/products',
+            visual: <BigStat value={`-${discount}`} label="на первый заказ" />,
         });
     }
 
@@ -58,6 +72,19 @@ function buildSlides({ promoCode, newArrivals, activeLotsCount }) {
             text: 'Последнее поступление в каталог — уже можно взять на пробу от 2 мл.',
             cta: 'Смотреть новинки',
             href: '/products',
+            visual: (
+                <div className="flex h-[180px] w-[180px] items-center justify-center overflow-hidden rounded-[1.25rem] bg-white/10">
+                    {latest.image_path ? (
+                        <img
+                            src={`/storage/${latest.image_path}`}
+                            alt={`${latest.brand.name} ${latest.name}`}
+                            className="h-full w-full object-cover"
+                        />
+                    ) : (
+                        <BottleIcon tint={tintForId(latest.id)} size={96} />
+                    )}
+                </div>
+            ),
         });
     }
 
@@ -68,6 +95,12 @@ function buildSlides({ promoCode, newArrivals, activeLotsCount }) {
         text: 'Флаконы от других покупателей — раскуплены не полностью, можно взять несколько мл на пробу.',
         cta: 'Смотреть розпив',
         href: '/lots',
+        visual: (
+            <BigStat
+                value={activeLotsCount}
+                label={pluralizeLots(activeLotsCount)}
+            />
+        ),
     });
 
     return slides;
@@ -98,27 +131,32 @@ function PromoSlider({ slides }) {
                 {slides.map((slide) => (
                     <div
                         key={slide.key}
-                        className="flex w-full shrink-0 flex-col items-start gap-3 px-8 py-10 sm:px-12 sm:py-14"
+                        className="flex w-full shrink-0 items-center gap-6 px-8 py-10 sm:px-12 sm:py-14"
                         style={{
                             background:
                                 'linear-gradient(135deg, #2a1c0f 0%, #6b4420 55%, #bf8438 100%)',
                         }}
                     >
-                        <span className="text-xs font-bold tracking-[0.2em] text-[#f6cf9a] uppercase">
-                            {slide.eyebrow}
-                        </span>
-                        <h2 className="font-display text-2xl leading-tight font-semibold text-white italic sm:text-3xl">
-                            {slide.title}
-                        </h2>
-                        <p className="max-w-md text-sm leading-relaxed text-white/75">
-                            {slide.text}
-                        </p>
-                        <Link
-                            href={slide.href}
-                            className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#f6ecdd] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
-                        >
-                            {slide.cta}
-                        </Link>
+                        <div className="flex flex-1 flex-col items-start gap-3">
+                            <span className="text-xs font-bold tracking-[0.2em] text-[#f6cf9a] uppercase">
+                                {slide.eyebrow}
+                            </span>
+                            <h2 className="font-display text-2xl leading-tight font-semibold text-white italic sm:text-3xl">
+                                {slide.title}
+                            </h2>
+                            <p className="max-w-md text-sm leading-relaxed text-white/75">
+                                {slide.text}
+                            </p>
+                            <Link
+                                href={slide.href}
+                                className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#f6ecdd] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                            >
+                                {slide.cta}
+                            </Link>
+                        </div>
+                        <div className="hidden shrink-0 sm:flex sm:items-center sm:justify-center">
+                            {slide.visual}
+                        </div>
                     </div>
                 ))}
             </div>
