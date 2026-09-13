@@ -21,7 +21,34 @@ const STEPS = [
     },
 ];
 
-const ACCORD_TINTS = ['#bf8438', '#8a5a20', '#a8702e', '#6b4420'];
+const ACCORD_TINTS = [
+    '#bf8438',
+    '#6b4420',
+    '#a8702e',
+    '#8a5a20',
+    '#c48a56',
+    '#5a3a18',
+    '#9c6b4f',
+    '#7a4f24',
+    '#b47a3c',
+    '#4f331a',
+];
+
+// ponytail: fixed pattern for up to 10 tiles on a 2/4-col grid, cycles via
+// index % length — a real masonry/packing algorithm would size tiles to
+// content, not worth it while the accord count stays in the tens.
+const BENTO_SPANS = [
+    'col-span-2 row-span-2',
+    'col-span-2',
+    'row-span-2',
+    '',
+    '',
+    'col-span-2',
+    '',
+    'row-span-2',
+    '',
+    '',
+];
 
 function pluralizeAromas(n) {
     const mod10 = n % 10;
@@ -34,11 +61,11 @@ function pluralizeAromas(n) {
 
 function Hero({ topAccords }) {
     return (
-        <div className="relative min-h-[760px] overflow-hidden bg-[#f6efe3] dark:bg-[#0d0b09]">
+        <div className="relative overflow-hidden bg-[#f6efe3] dark:bg-[#0d0b09]">
             <div className="hero-bg absolute inset-0" />
 
-            <div className="relative mx-auto grid min-h-[760px] max-w-[1600px] grid-cols-1 items-center gap-6 px-6 md:grid-cols-[1.1fr_0.9fr] md:px-12">
-                <div className="flex flex-col gap-5">
+            <div className="relative mx-auto max-w-[1600px] px-6 pt-20 pb-10 md:px-12">
+                <div className="flex max-w-2xl flex-col gap-5">
                     <span
                         className="hero-fade-up text-[13px] font-bold tracking-[0.3em] text-[#bf8438]"
                         style={{ animationDelay: '0.05s' }}
@@ -90,21 +117,26 @@ function Hero({ topAccords }) {
                         </Link>
                     </div>
                 </div>
+            </div>
 
-                <div className="grid h-auto grid-cols-1 gap-4 sm:h-[480px] sm:grid-cols-2">
+            <div className="relative mx-auto max-w-[1600px] px-6 pb-20 md:px-12">
+                <div className="grid auto-rows-[110px] grid-cols-2 gap-3 sm:grid-cols-4">
                     {topAccords.map((accord, i) => (
                         <Link
                             key={accord.name}
                             href={`/products?note=${encodeURIComponent(accord.name)}`}
-                            className="group relative flex flex-col justify-end overflow-hidden rounded-[1.5rem] p-6 transition-transform hover:scale-[1.02]"
+                            className={
+                                'group relative flex flex-col justify-end overflow-hidden rounded-[1.25rem] p-5 transition-transform hover:scale-[1.02] ' +
+                                BENTO_SPANS[i % BENTO_SPANS.length]
+                            }
                             style={{
                                 background: `linear-gradient(160deg, ${ACCORD_TINTS[i % ACCORD_TINTS.length]}, #1c130a)`,
                             }}
                         >
-                            <span className="font-display text-3xl leading-tight font-semibold break-words text-white italic">
+                            <span className="font-display text-base leading-tight font-semibold break-words text-white italic sm:text-xl">
                                 {accord.name}
                             </span>
-                            <span className="mt-1.5 text-sm text-white/70">
+                            <span className="mt-1 text-xs text-white/70 sm:text-sm">
                                 {accord.count} {pluralizeAromas(accord.count)}
                             </span>
                         </Link>

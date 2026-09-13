@@ -48,7 +48,7 @@ class HomeController extends Controller
         arsort($counts);
 
         return collect($counts)
-            ->take(4)
+            ->take(10)
             ->map(fn ($count, $name) => ['name' => $name, 'count' => $count])
             ->values()
             ->all();
