@@ -31,6 +31,10 @@ class HomeController extends Controller
                 ->latest()
                 ->take(4)
                 ->get(),
+            'avgPricePerMl' => round(
+                Lot::where('remaining_volume_ml', '>', 0)->avg('price_per_ml') ?? 30,
+                2
+            ),
         ]);
     }
 }

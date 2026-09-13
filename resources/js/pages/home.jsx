@@ -1,4 +1,5 @@
 import { Head, Link, usePage } from '@inertiajs/react';
+import { Citrus, Flame, Flower2, TreePine } from 'lucide-react';
 import { useState } from 'react';
 import BottleIcon from '@/components/bottle-icon';
 import LotCard from '@/components/lot-card';
@@ -23,13 +24,117 @@ const STEPS = [
 ];
 
 const SCENT_TAGS = [
-    { label: 'Woody', top: '14%', left: '8%', delay: '0.2s' },
-    { label: 'Amber', top: '84%', left: '6%', delay: '1.4s' },
-    { label: 'Citrus', top: '22%', right: '9%', delay: '0.8s' },
-    { label: 'Floral', top: '74%', right: '12%', delay: '2s' },
+    { label: 'Woody', icon: TreePine, top: '14%', left: '8%', delay: '0.2s' },
+    { label: 'Amber', icon: Flame, top: '84%', left: '6%', delay: '1.4s' },
+    { label: 'Citrus', icon: Citrus, top: '22%', right: '9%', delay: '0.8s' },
+    {
+        label: 'Floral',
+        icon: Flower2,
+        top: '74%',
+        right: '12%',
+        delay: '2s',
+    },
 ];
 
-function Hero() {
+const POUR_BODY_PATH =
+    'M52,50 C44,52 34,58 28,68 C27,70 26,72 26,74 L26,170 A8,8 0 0 0 34,178 L86,178 A8,8 0 0 0 94,170 L94,74 C94,72 93,70 92,68 C86,58 76,52 68,50 Z';
+
+function PourDemo({ avgPricePerMl }) {
+    const MAX_ML = 15;
+    const [volume, setVolume] = useState(5);
+
+    const bodyTop = 60;
+    const bodyBottom = 176;
+    const fillHeight = ((bodyBottom - bodyTop) * volume) / MAX_ML;
+    const fillY = bodyBottom - fillHeight;
+    const price = Math.round(volume * avgPricePerMl);
+
+    return (
+        <div className="flex flex-col items-center gap-6">
+            <svg
+                width="160"
+                height="220"
+                viewBox="0 0 120 200"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <defs>
+                    <clipPath id="pourBodyClip">
+                        <path d={POUR_BODY_PATH} />
+                    </clipPath>
+                    <linearGradient id="pourLiquid" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#e2a457" />
+                        <stop offset="100%" stopColor="#8a5a20" />
+                    </linearGradient>
+                </defs>
+
+                <g clipPath="url(#pourBodyClip)">
+                    <rect
+                        x="20"
+                        width="80"
+                        y={fillY}
+                        height={fillHeight}
+                        fill="url(#pourLiquid)"
+                        style={{
+                            transition: 'y 0.3s ease-out, height 0.3s ease-out',
+                        }}
+                    />
+                </g>
+
+                <path
+                    d={POUR_BODY_PATH}
+                    fill="none"
+                    stroke="#bf8438"
+                    strokeOpacity="0.55"
+                    strokeWidth="2"
+                />
+                <rect
+                    x="52"
+                    y="28"
+                    width="16"
+                    height="24"
+                    fill="none"
+                    stroke="#bf8438"
+                    strokeOpacity="0.55"
+                    strokeWidth="2"
+                />
+                <rect
+                    x="44"
+                    y="6"
+                    width="32"
+                    height="24"
+                    rx="8"
+                    fill="#bf8438"
+                />
+            </svg>
+
+            <div className="flex w-full max-w-[260px] flex-col gap-2">
+                <div className="flex items-baseline justify-between">
+                    <span className="font-display text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                        {volume} мл
+                    </span>
+                    <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                        ~{price} ₴
+                    </span>
+                </div>
+                <input
+                    type="range"
+                    min={1}
+                    max={MAX_ML}
+                    step={1}
+                    value={volume}
+                    onChange={(e) => setVolume(Number(e.target.value))}
+                    style={{ accentColor: '#bf8438' }}
+                    className="w-full"
+                />
+                <span className="text-center text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                    Столько распива можно взять на пробу
+                </span>
+            </div>
+        </div>
+    );
+}
+
+function Hero({ avgPricePerMl }) {
     const [tilt, setTilt] = useState({ x: 0, y: 0, shiftX: 0, shiftY: 0 });
 
     function handleMouseMove(e) {
@@ -60,7 +165,7 @@ function Hero() {
                 {SCENT_TAGS.map((tag) => (
                     <span
                         key={tag.label}
-                        className="hero-float hero-tag absolute hidden rounded-full px-3.5 py-1.5 text-xs tracking-wide backdrop-blur-[10px] md:block"
+                        className="hero-float hero-tag absolute hidden items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs tracking-wide backdrop-blur-[10px] md:flex"
                         style={{
                             top: tag.top,
                             left: tag.left,
@@ -68,6 +173,7 @@ function Hero() {
                             animationDelay: tag.delay,
                         }}
                     >
+                        <tag.icon size={13} strokeWidth={1.75} />
                         {tag.label}
                     </span>
                 ))}
@@ -134,28 +240,27 @@ function Hero() {
                             transition: 'transform 0.12s ease-out',
                         }}
                     />
-                    <div
-                        style={{
-                            transform: `perspective(600px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translate(${tilt.shiftX}px, ${tilt.shiftY}px)`,
-                            transition: 'transform 0.1s ease-out',
-                        }}
-                    >
-                        <BottleIcon size={220} />
-                    </div>
+                    <PourDemo avgPricePerMl={avgPricePerMl} />
                 </div>
             </div>
         </div>
     );
 }
 
-export default function Home({ featuredProducts, newArrivals, brands, lots }) {
+export default function Home({
+    featuredProducts,
+    newArrivals,
+    brands,
+    lots,
+    avgPricePerMl,
+}) {
     const { auth } = usePage().props;
 
     return (
         <>
             <Head title="Flacony — парфюмерия на распив и в розницу" />
             <SiteHeader />
-            <Hero />
+            <Hero avgPricePerMl={avgPricePerMl} />
 
             {brands.length > 0 && (
                 <Reveal className="border-b border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
