@@ -1,4 +1,5 @@
 import { Head, Link, usePage } from '@inertiajs/react';
+import { Banknote, Droplet, Truck } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import BottleIcon, { tintForId } from '@/components/bottle-icon';
 import LotCard from '@/components/lot-card';
@@ -29,6 +30,46 @@ function pluralizeLots(n) {
     if ([2, 3, 4].includes(mod10) && ![12, 13, 14].includes(mod100))
         return 'лота';
     return 'лотов';
+}
+
+const TRUST_BADGES = [
+    {
+        icon: Truck,
+        title: 'Нова Пошта',
+        text: "Відділення або кур'єр по всій Україні",
+    },
+    {
+        icon: Droplet,
+        title: 'Розпив від 2 мл',
+        text: 'Пробуй перед покупкою повного флакона',
+    },
+    {
+        icon: Banknote,
+        title: 'Оплата при отриманні',
+        text: "Або карткою — без обов'язкової передоплати",
+    },
+];
+
+function TrustBadges() {
+    return (
+        <div className="flex flex-col gap-5">
+            {TRUST_BADGES.map((badge) => (
+                <div key={badge.title} className="flex items-start gap-3">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#bf84381a] text-[#bf8438]">
+                        <badge.icon size={18} strokeWidth={1.75} />
+                    </span>
+                    <div className="flex flex-col">
+                        <span className="text-sm font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                            {badge.title}
+                        </span>
+                        <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                            {badge.text}
+                        </span>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
 }
 
 function BigStat({ value, label }) {
@@ -193,7 +234,7 @@ function Hero({ promoCode, newArrivals, activeLotsCount }) {
                 <PromoSlider slides={slides} />
             </div>
 
-            <div className="relative mx-auto max-w-[1600px] px-6 py-12 md:px-12">
+            <div className="relative mx-auto flex max-w-[1600px] items-center justify-between gap-10 px-6 py-12 md:px-12">
                 <div className="flex max-w-2xl flex-col gap-3">
                     <span
                         className="hero-fade-up text-[13px] font-bold tracking-[0.3em] text-[#bf8438]"
@@ -243,6 +284,10 @@ function Hero({ promoCode, newArrivals, activeLotsCount }) {
                             </svg>
                         </Link>
                     </div>
+                </div>
+
+                <div className="hidden shrink-0 lg:block">
+                    <TrustBadges />
                 </div>
             </div>
         </div>
