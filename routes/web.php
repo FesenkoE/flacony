@@ -21,6 +21,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+Route::post('locale/{locale}', function (string $locale) {
+    $locale = in_array($locale, \App\Http\Middleware\HandleLocale::SUPPORTED, true) ? $locale : 'uk';
+
+    return back()->cookie('locale', $locale, 60 * 24 * 365);
+})->name('locale.update');
+
 Route::get('search', [SearchController::class, 'index'])->name('search');
 Route::get('search/live', [SearchController::class, 'live'])->name('search.live');
 

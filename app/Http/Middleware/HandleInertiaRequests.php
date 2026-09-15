@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -47,6 +48,8 @@ class HandleInertiaRequests extends Middleware
             ],
             'favoriteProductIds' => $request->user()?->favorites()->pluck('product_id') ?? [],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'locale' => App::getLocale(),
+            'translations' => app('translator')->getLoader()->load(App::getLocale(), '*', '*'),
         ];
     }
 }
