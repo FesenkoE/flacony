@@ -7,8 +7,8 @@ export default function StarRating({ value, size = 14 }) {
                     width={size}
                     height={size}
                     viewBox="0 0 24 24"
-                    fill={n <= Math.round(value) ? '#bf8438' : 'none'}
-                    stroke="#bf8438"
+                    fill={n <= Math.round(value) ? '#c79a5f' : 'none'}
+                    stroke="#c79a5f"
                     strokeWidth="1.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"

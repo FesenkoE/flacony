@@ -34,7 +34,7 @@ export default function LotCard({ lot, isOwn = false }) {
 
             <div className="flex flex-1 flex-col p-6">
                 <div className="flex flex-col gap-1.5">
-                    <span className="text-xs font-bold tracking-[0.18em] text-[#bf8438] uppercase">
+                    <span className="text-xs font-bold tracking-[0.18em] text-[#c79a5f] uppercase">
                         {lot.brand_name}
                     </span>
                     <h3 className="font-display text-2xl leading-none font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
@@ -43,7 +43,7 @@ export default function LotCard({ lot, isOwn = false }) {
                     {!isOwn && lot.seller && (
                         <Link
                             href={`/sellers/${lot.seller.id}`}
-                            className="w-fit text-xs text-[#8a7860] hover:text-[#bf8438] dark:text-[#b7a58f]"
+                            className="w-fit text-xs text-[#7d6952] hover:text-[#c79a5f] dark:text-[#b7a58f]"
                         >
                             Продавец: {lot.seller.name}
                         </Link>
@@ -55,11 +55,11 @@ export default function LotCard({ lot, isOwn = false }) {
                         <div className="mt-4 flex flex-col gap-1.5">
                             <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#e6d7bb] dark:bg-[#ffffff1a]">
                                 <div
-                                    className="h-full rounded-full bg-[#bf8438]"
+                                    className="h-full rounded-full bg-[#c79a5f]"
                                     style={{ width: `${soldPercent}%` }}
                                 />
                             </div>
-                            <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                            <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                                 Продано {sold} из {total} мл ({soldPercent}%) ·{' '}
                                 {pricePerMl.toFixed(2)} ₴/мл
                                 {bulkThreshold !== null &&
@@ -74,7 +74,7 @@ export default function LotCard({ lot, isOwn = false }) {
                         </div>
 
                         <div className="mt-auto flex items-center justify-between gap-3 pt-5">
-                            <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                            <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                 Остаток {remaining} мл
                             </span>
                             <Link
@@ -90,13 +90,13 @@ export default function LotCard({ lot, isOwn = false }) {
                         <div className="mt-4 flex flex-col gap-1.5">
                             <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#e6d7bb] dark:bg-[#ffffff1a]">
                                 <div
-                                    className="h-full rounded-full bg-[#bf8438] transition-[width] duration-150"
+                                    className="h-full rounded-full bg-[#c79a5f] transition-[width] duration-150"
                                     style={{
                                         width: `${(projectedRemaining / total) * 100}%`,
                                     }}
                                 />
                             </div>
-                            <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                            <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                                 Останется {projectedRemaining} из {total} мл ·{' '}
                                 {pricePerMl.toFixed(2)} ₴/мл
                                 {bulkThreshold !== null &&
@@ -112,7 +112,7 @@ export default function LotCard({ lot, isOwn = false }) {
 
                         <div className="mt-5 flex flex-col gap-2">
                             <div className="flex items-center justify-between">
-                                <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                                     Сколько мл
                                 </span>
                                 <span className="text-sm font-semibold text-[#241a10] dark:text-[#f6ecdd]">
@@ -128,7 +128,7 @@ export default function LotCard({ lot, isOwn = false }) {
                                 onChange={(e) =>
                                     setVolume(Number(e.target.value))
                                 }
-                                style={{ accentColor: '#bf8438' }}
+                                style={{ accentColor: '#c79a5f' }}
                                 className="w-full"
                             />
                         </div>
@@ -140,7 +140,7 @@ export default function LotCard({ lot, isOwn = false }) {
                             <button
                                 type="button"
                                 onClick={() => addLotToCart(lot.id, volume)}
-                                className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#bf8438] px-5 py-3 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                                className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#c79a5f] px-5 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                             >
                                 <ShoppingCart size={16} strokeWidth={2.25} />
                                 {added ? 'Добавлено' : 'В корзину'}

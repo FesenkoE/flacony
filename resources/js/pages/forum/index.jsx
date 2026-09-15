@@ -15,7 +15,7 @@ export default function ForumIndex({ categories }) {
                     </h1>
 
                     {categories.length === 0 ? (
-                        <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                        <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                             Разделов пока нет.
                         </p>
                     ) : (
@@ -24,9 +24,9 @@ export default function ForumIndex({ categories }) {
                                 <Link
                                     key={category.id}
                                     href={`/forum/${category.slug}`}
-                                    className="flex items-center gap-4 rounded-3xl border border-[#1e160c14] bg-[#fffaf1] p-6 transition-colors hover:border-[#bf843866] dark:border-[#ffffff14] dark:bg-[#ffffff0a]"
+                                    className="flex items-center gap-4 rounded-3xl border border-[#1e160c14] bg-[#fffaf1] p-6 transition-colors hover:border-[#c79a5f66] dark:border-[#ffffff14] dark:bg-[#ffffff0a]"
                                 >
-                                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#bf84381a] text-[#bf8438]">
+                                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#c79a5f1a] text-[#c79a5f]">
                                         <MessageCircle
                                             size={20}
                                             strokeWidth={1.75}
@@ -37,12 +37,12 @@ export default function ForumIndex({ categories }) {
                                             {category.name}
                                         </span>
                                         {category.description && (
-                                            <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                            <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                                 {category.description}
                                             </span>
                                         )}
                                     </div>
-                                    <span className="shrink-0 text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                    <span className="shrink-0 text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                         {category.topics_count} тем
                                     </span>
                                 </Link>

@@ -4,9 +4,9 @@ import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 
 const fieldClass =
-    'w-full rounded-xl border border-[#e6d7bb] bg-[#fbf5ea] px-4 py-2.5 text-sm text-[#241a10] outline-none focus:border-[#bf8438] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#f6ecdd]';
+    'w-full rounded-xl border border-[#e6d7bb] bg-[#fbf5ea] px-4 py-2.5 text-sm text-[#241a10] outline-none focus:border-[#c79a5f] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#f6ecdd]';
 const labelClass =
-    'text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]';
+    'text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]';
 
 export default function ForumTopicCreate({ category }) {
     return (
@@ -17,7 +17,7 @@ export default function ForumTopicCreate({ category }) {
                 <div className="mx-auto max-w-xl p-6">
                     <Link
                         href={`/forum/${category.slug}`}
-                        className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                        className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
                         ← {category.name}
                     </Link>
@@ -69,7 +69,7 @@ export default function ForumTopicCreate({ category }) {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="mt-2 self-start rounded-full bg-[#bf8438] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase disabled:opacity-60"
+                                    className="mt-2 self-start rounded-full bg-[#c79a5f] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60"
                                 >
                                     Создать тему
                                 </button>

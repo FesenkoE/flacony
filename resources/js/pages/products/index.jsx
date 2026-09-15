@@ -48,7 +48,7 @@ export default function ProductsIndex({
                     {filters.note && (
                         <Link
                             href={buildUrl(filters, { note: undefined })}
-                            className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-[#bf8438] bg-[#bf843829] px-4 py-1.5 text-sm font-medium text-[#241a10] dark:text-[#f6ecdd]"
+                            className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-[#c79a5f] bg-[#c79a5f29] px-4 py-1.5 text-sm font-medium text-[#241a10] dark:text-[#f6ecdd]"
                         >
                             Аромат: {filters.note}
                             <span aria-hidden>✕</span>
@@ -61,8 +61,8 @@ export default function ProductsIndex({
                             className={
                                 'rounded-full border px-4 py-1.5 text-sm font-medium ' +
                                 (!filters.brand
-                                    ? 'border-[#bf8438] bg-[#bf843829] text-[#241a10] dark:text-[#f6ecdd]'
-                                    : 'border-[#e6d7bb] text-[#8a7860] dark:border-[#ffffff29] dark:text-[#b7a58f]')
+                                    ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
+                                    : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
                             }
                         >
                             Все бренды
@@ -74,8 +74,8 @@ export default function ProductsIndex({
                                 className={
                                     'rounded-full border px-4 py-1.5 text-sm font-medium ' +
                                     (filters.brand === brand.slug
-                                        ? 'border-[#bf8438] bg-[#bf843829] text-[#241a10] dark:text-[#f6ecdd]'
-                                        : 'border-[#e6d7bb] text-[#8a7860] dark:border-[#ffffff29] dark:text-[#b7a58f]')
+                                        ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
+                                        : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
                                 }
                             >
                                 {brand.name}
@@ -89,8 +89,8 @@ export default function ProductsIndex({
                             className={
                                 'rounded-full border px-4 py-1.5 text-sm font-medium ' +
                                 (!filters.category
-                                    ? 'border-[#bf8438] bg-[#bf843829] text-[#241a10] dark:text-[#f6ecdd]'
-                                    : 'border-[#e6d7bb] text-[#8a7860] dark:border-[#ffffff29] dark:text-[#b7a58f]')
+                                    ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
+                                    : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
                             }
                         >
                             Все категории
@@ -104,8 +104,8 @@ export default function ProductsIndex({
                                 className={
                                     'rounded-full border px-4 py-1.5 text-sm font-medium ' +
                                     (filters.category === category.slug
-                                        ? 'border-[#bf8438] bg-[#bf843829] text-[#241a10] dark:text-[#f6ecdd]'
-                                        : 'border-[#e6d7bb] text-[#8a7860] dark:border-[#ffffff29] dark:text-[#b7a58f]')
+                                        ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
+                                        : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
                                 }
                             >
                                 {category.name}
@@ -117,7 +117,7 @@ export default function ProductsIndex({
                         onSubmit={applyPriceFilter}
                         className="mb-8 flex flex-wrap items-center gap-2"
                     >
-                        <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                        <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                             Цена, ₴
                         </span>
                         <input
@@ -128,7 +128,7 @@ export default function ProductsIndex({
                             onChange={(e) => setMinPrice(e.target.value)}
                             className="w-24 rounded-full border border-[#e6d7bb] bg-transparent px-3.5 py-1.5 text-sm text-[#241a10] dark:border-[#ffffff29] dark:text-[#f6ecdd]"
                         />
-                        <span className="text-[#8a7860] dark:text-[#b7a58f]">
+                        <span className="text-[#7d6952] dark:text-[#b7a58f]">
                             —
                         </span>
                         <input
@@ -141,7 +141,7 @@ export default function ProductsIndex({
                         />
                         <button
                             type="submit"
-                            className="rounded-full border border-[#bf8438] px-4 py-1.5 text-sm font-medium text-[#241a10] dark:text-[#f6ecdd]"
+                            className="rounded-full border border-[#c79a5f] px-4 py-1.5 text-sm font-medium text-[#241a10] dark:text-[#f6ecdd]"
                         >
                             Применить
                         </button>
@@ -151,7 +151,7 @@ export default function ProductsIndex({
                                     min_price: undefined,
                                     max_price: undefined,
                                 })}
-                                className="text-sm text-[#8a7860] underline dark:text-[#b7a58f]"
+                                className="text-sm text-[#7d6952] underline dark:text-[#b7a58f]"
                             >
                                 Сбросить
                             </Link>
@@ -174,8 +174,8 @@ export default function ProductsIndex({
                                     className={
                                         'rounded-full border px-3.5 py-1.5 text-sm ' +
                                         (link.active
-                                            ? 'border-[#bf8438] bg-[#bf843829] text-[#241a10] dark:text-[#f6ecdd]'
-                                            : 'border-[#e6d7bb] text-[#8a7860] dark:border-[#ffffff29] dark:text-[#b7a58f]') +
+                                            ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
+                                            : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]') +
                                         (!link.url
                                             ? ' pointer-events-none opacity-40'
                                             : '')

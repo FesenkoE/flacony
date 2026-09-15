@@ -14,7 +14,7 @@ export default function ConfirmButton({
     description,
     confirmLabel = 'Удалить',
     onConfirm,
-    className = 'text-xs text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]',
+    className = 'text-xs text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]',
 }) {
     const [open, setOpen] = useState(false);
 
@@ -35,7 +35,7 @@ export default function ConfirmButton({
                     {title}
                 </DialogTitle>
                 {description && (
-                    <DialogDescription className="text-[#8a7860] dark:text-[#b7a58f]">
+                    <DialogDescription className="text-[#7d6952] dark:text-[#b7a58f]">
                         {description}
                     </DialogDescription>
                 )}
@@ -53,7 +53,7 @@ export default function ConfirmButton({
                             setOpen(false);
                             onConfirm();
                         }}
-                        className="rounded-full bg-[#bf8438] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                        className="rounded-full bg-[#c79a5f] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                     >
                         {confirmLabel}
                     </button>

@@ -12,11 +12,11 @@ const actionButtonBase =
 
 const viewButtonClass =
     actionButtonBase +
-    ' border-[#e6d7bb] text-[#8a7860] hover:border-[#6d9b8f] hover:bg-[#6d9b8f1a] hover:text-[#4f7a6f] dark:border-[#ffffff29] dark:text-[#b7a58f] dark:hover:border-[#8fc4b6] dark:hover:bg-[#8fc4b61a] dark:hover:text-[#8fc4b6]';
+    ' border-[#e6d7bb] text-[#7d6952] hover:border-[#6d9b8f] hover:bg-[#6d9b8f1a] hover:text-[#4f7a6f] dark:border-[#ffffff29] dark:text-[#b7a58f] dark:hover:border-[#8fc4b6] dark:hover:bg-[#8fc4b61a] dark:hover:text-[#8fc4b6]';
 
 const editButtonClass =
     actionButtonBase +
-    ' border-[#bf8438] text-[#bf8438] hover:bg-[#bf8438] hover:text-[#1c1408]';
+    ' border-[#c79a5f] text-[#c79a5f] hover:bg-[#c79a5f] hover:text-[#3d2712]';
 
 const deleteButtonClass =
     actionButtonBase +
@@ -70,13 +70,13 @@ function LotRow({ lot }) {
             className="flex items-center justify-between gap-4 rounded-2xl border border-[#1e160c14] bg-[#fffaf1] p-4 dark:border-[#ffffff14] dark:bg-[#ffffff0a]"
         >
             <div className="flex flex-col gap-1">
-                <span className="text-xs font-bold tracking-[0.1em] text-[#bf8438] uppercase">
+                <span className="text-xs font-bold tracking-[0.1em] text-[#c79a5f] uppercase">
                     {lot.brand_name}
                 </span>
                 <span className="font-display text-lg font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                     {lot.product_name}
                 </span>
-                <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                     Остаток {lot.remaining_volume_ml} из {lot.total_volume_ml}{' '}
                     мл · {Number(lot.price_per_ml).toFixed(2)} ₴/мл
                 </span>
@@ -123,7 +123,7 @@ export default function AccountIndex({ lots, orders }) {
                     <h1 className="text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                         Личный кабинет
                     </h1>
-                    <p className="mt-1 text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                    <p className="mt-1 text-sm text-[#7d6952] dark:text-[#b7a58f]">
                         {auth.user.name} · {auth.user.email}
                     </p>
 
@@ -155,7 +155,7 @@ export default function AccountIndex({ lots, orders }) {
                     </div>
 
                     {orders.length === 0 ? (
-                        <p className="mt-4 text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                        <p className="mt-4 text-sm text-[#7d6952] dark:text-[#b7a58f]">
                             Ты ещё не оформлял заказы.
                         </p>
                     ) : (
@@ -170,7 +170,7 @@ export default function AccountIndex({ lots, orders }) {
                                         <span className="font-display text-lg font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                                             Заказ №{order.id}
                                         </span>
-                                        <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                                        <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                                             {formatDate(order.created_at)}
                                         </span>
                                     </div>
@@ -188,14 +188,14 @@ export default function AccountIndex({ lots, orders }) {
                         </h2>
                         <Link
                             href="/sellers/lots/create"
-                            className="rounded-full bg-[#bf8438] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                            className="rounded-full bg-[#c79a5f] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                         >
                             + Добавить лот
                         </Link>
                     </div>
 
                     {lots.length === 0 ? (
-                        <p className="mt-4 text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                        <p className="mt-4 text-sm text-[#7d6952] dark:text-[#b7a58f]">
                             Ты ещё не выставлял лоты на распив.
                         </p>
                     ) : (

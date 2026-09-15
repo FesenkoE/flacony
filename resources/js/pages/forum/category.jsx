@@ -14,7 +14,7 @@ export default function ForumCategory({ category, topics }) {
                 <div className="mx-auto max-w-3xl p-6">
                     <Link
                         href="/forum"
-                        className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                        className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
                         ← Форум
                     </Link>
@@ -26,14 +26,14 @@ export default function ForumCategory({ category, topics }) {
                         {auth.user ? (
                             <Link
                                 href={`/forum/${category.slug}/create`}
-                                className="rounded-full bg-[#bf8438] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                                className="rounded-full bg-[#c79a5f] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                             >
                                 + Новая тема
                             </Link>
                         ) : (
                             <Link
                                 href="/login"
-                                className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                                className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                             >
                                 Войти, чтобы создать тему
                             </Link>
@@ -41,7 +41,7 @@ export default function ForumCategory({ category, topics }) {
                     </div>
 
                     {topics.length === 0 ? (
-                        <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                        <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                             В этом разделе пока нет тем.
                         </p>
                     ) : (
@@ -56,12 +56,12 @@ export default function ForumCategory({ category, topics }) {
                                         <span className="font-display text-lg font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                                             {topic.title}
                                         </span>
-                                        <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                                        <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                                             {topic.author.name} ·{' '}
                                             {formatDate(topic.created_at)}
                                         </span>
                                     </div>
-                                    <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                    <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                         {topic.replies_count} ответов
                                     </span>
                                 </Link>

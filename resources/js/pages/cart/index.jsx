@@ -18,14 +18,14 @@ function CartRow({ item }) {
             className="flex items-center justify-between gap-4 rounded-2xl border border-[#1e160c14] bg-[#fffaf1] p-4 dark:border-[#ffffff14] dark:bg-[#ffffff0a]"
         >
             <div className="flex flex-col gap-1">
-                <span className="text-xs font-bold tracking-[0.1em] text-[#bf8438] uppercase">
+                <span className="text-xs font-bold tracking-[0.1em] text-[#c79a5f] uppercase">
                     {item.brand_name}
                     {item.type === 'lot' && ' · распив'}
                 </span>
                 <span className="font-display text-xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                     {item.product_name}
                 </span>
-                <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                     {item.detail}
                 </span>
             </div>
@@ -54,7 +54,7 @@ export default function CartIndex({ items, total }) {
                 <div className="mx-auto max-w-2xl p-6">
                     <Link
                         href="/products"
-                        className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                        className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
                         ← Каталог
                     </Link>
@@ -64,7 +64,7 @@ export default function CartIndex({ items, total }) {
                     </h1>
 
                     {items.length === 0 ? (
-                        <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                        <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                             Корзина пуста.
                         </p>
                     ) : (
@@ -77,7 +77,7 @@ export default function CartIndex({ items, total }) {
                             ))}
 
                             <div className="mt-2 flex items-baseline justify-between border-t border-[#1e160c14] pt-4 dark:border-[#ffffff1a]">
-                                <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                     Итого
                                 </span>
                                 <span className="font-display text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
@@ -87,7 +87,7 @@ export default function CartIndex({ items, total }) {
 
                             <Link
                                 href={auth.user ? '/checkout' : '/login'}
-                                className="mt-2 rounded-full bg-[#bf8438] px-7 py-3.5 text-center text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                                className="mt-2 rounded-full bg-[#c79a5f] px-7 py-3.5 text-center text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                             >
                                 {auth.user
                                     ? 'Оформить заказ'

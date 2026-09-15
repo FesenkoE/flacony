@@ -2,9 +2,9 @@ import { Form, Link } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 
 const fieldClass =
-    'w-full rounded-xl border border-[#e6d7bb] bg-[#fbf5ea] px-4 py-2.5 text-sm text-[#241a10] outline-none focus:border-[#bf8438] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#f6ecdd]';
+    'w-full rounded-xl border border-[#e6d7bb] bg-[#fbf5ea] px-4 py-2.5 text-sm text-[#241a10] outline-none focus:border-[#c79a5f] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#f6ecdd]';
 const labelClass =
-    'text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]';
+    'text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]';
 
 export default function LotForm({
     action,
@@ -19,7 +19,7 @@ export default function LotForm({
         <div className="mx-auto max-w-xl p-6">
             <Link
                 href={backHref}
-                className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
             >
                 {backLabel}
             </Link>
@@ -112,7 +112,7 @@ export default function LotForm({
 
                         <div className="h-px bg-[#1e160c14] dark:bg-[#ffffff1a]" />
 
-                        <p className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                        <p className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                             Необязательно: скидка при покупке от определённого
                             объёма.
                         </p>
@@ -165,7 +165,7 @@ export default function LotForm({
                         <button
                             type="submit"
                             disabled={processing}
-                            className="mt-2 rounded-full bg-[#bf8438] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase disabled:opacity-60"
+                            className="mt-2 rounded-full bg-[#c79a5f] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60"
                         >
                             {submitLabel}
                         </button>

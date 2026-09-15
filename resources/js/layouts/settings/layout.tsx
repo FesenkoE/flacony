@@ -55,8 +55,8 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                                         className={cn(
                                             'rounded-full px-4 py-2 text-sm font-semibold',
                                             isCurrentOrParentUrl(item.href)
-                                                ? 'bg-[#bf843829] text-[#241a10] dark:text-[#f6ecdd]'
-                                                : 'text-[#8a7860] dark:text-[#b7a58f]',
+                                                ? 'bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
+                                                : 'text-[#7d6952] dark:text-[#b7a58f]',
                                         )}
                                     >
                                         {item.title}

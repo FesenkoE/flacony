@@ -11,7 +11,7 @@ function ReplyCard({ reply }) {
                 <span className="text-sm font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                     {reply.author.name}
                 </span>
-                <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                     {formatDate(reply.created_at)}
                 </span>
             </div>
@@ -33,7 +33,7 @@ export default function ForumTopic({ topic, replies }) {
                 <div className="mx-auto max-w-3xl p-6">
                     <Link
                         href={`/forum/${topic.category.slug}`}
-                        className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                        className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
                         ← {topic.category.name}
                     </Link>
@@ -62,13 +62,13 @@ export default function ForumTopic({ topic, replies }) {
                                             name="body"
                                             rows={4}
                                             placeholder="Написать ответ…"
-                                            className="w-full rounded-xl border border-[#e6d7bb] bg-[#fbf5ea] px-4 py-3 text-sm text-[#241a10] outline-none focus:border-[#bf8438] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#f6ecdd]"
+                                            className="w-full rounded-xl border border-[#e6d7bb] bg-[#fbf5ea] px-4 py-3 text-sm text-[#241a10] outline-none focus:border-[#c79a5f] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#f6ecdd]"
                                         />
                                         <InputError message={errors.body} />
                                         <button
                                             type="submit"
                                             disabled={processing}
-                                            className="self-start rounded-full bg-[#bf8438] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase disabled:opacity-60"
+                                            className="self-start rounded-full bg-[#c79a5f] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60"
                                         >
                                             Ответить
                                         </button>
@@ -76,10 +76,10 @@ export default function ForumTopic({ topic, replies }) {
                                 )}
                             </Form>
                         ) : (
-                            <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                            <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                 <Link
                                     href="/login"
-                                    className="text-[#bf8438] hover:text-[#a8702e]"
+                                    className="text-[#c79a5f] hover:text-[#a8702e]"
                                 >
                                     Войди
                                 </Link>

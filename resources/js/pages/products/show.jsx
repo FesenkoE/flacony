@@ -30,7 +30,7 @@ function LevelBar({ level }) {
                     className={
                         'h-1.5 w-6 rounded-full ' +
                         (n <= level
-                            ? 'bg-[#bf8438]'
+                            ? 'bg-[#c79a5f]'
                             : 'bg-[#e6d7bb] dark:bg-[#ffffff1a]')
                     }
                 />
@@ -68,7 +68,7 @@ export default function ProductShow({ product, myReview }) {
                 <div className="mx-auto max-w-4xl p-6">
                     <Link
                         href="/products"
-                        className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                        className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
                         ← Каталог
                     </Link>
@@ -91,19 +91,19 @@ export default function ProductShow({ product, myReview }) {
 
                         <div className="flex flex-col gap-5">
                             <div className="flex flex-col gap-2">
-                                <span className="text-xs font-bold tracking-[0.18em] text-[#bf8438] uppercase">
+                                <span className="text-xs font-bold tracking-[0.18em] text-[#c79a5f] uppercase">
                                     {product.brand.name}
                                 </span>
                                 <h1 className="font-display text-5xl leading-none font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                                     {product.name}
                                 </h1>
-                                <div className="mt-1 h-0.5 w-9 rounded-full bg-[#bf8438]" />
+                                <div className="mt-1 h-0.5 w-9 rounded-full bg-[#c79a5f]" />
                                 {product.reviews.length > 0 && (
                                     <div className="mt-1 flex items-center gap-2">
                                         <StarRating
                                             value={product.reviews_avg_rating}
                                         />
-                                        <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                        <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                             {Number(
                                                 product.reviews_avg_rating,
                                             ).toFixed(1)}{' '}
@@ -117,7 +117,7 @@ export default function ProductShow({ product, myReview }) {
                             </div>
 
                             {product.description && (
-                                <p className="text-sm leading-relaxed text-[#8a7860] dark:text-[#b7a58f]">
+                                <p className="text-sm leading-relaxed text-[#7d6952] dark:text-[#b7a58f]">
                                     {product.description}
                                 </p>
                             )}
@@ -125,7 +125,7 @@ export default function ProductShow({ product, myReview }) {
                             <div className="h-px bg-[#1e160c14] dark:bg-[#ffffff1a]" />
 
                             <div className="flex flex-col gap-2">
-                                <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                                     Объём
                                 </span>
                                 <div className="flex gap-2.5">
@@ -141,8 +141,8 @@ export default function ProductShow({ product, myReview }) {
                                                 className={
                                                     'rounded-2xl border px-4 py-3 text-sm font-semibold whitespace-nowrap ' +
                                                     (selected
-                                                        ? 'border-[#bf8438] bg-[#bf843829] text-[#241a10] dark:text-[#f6ecdd]'
-                                                        : 'border-[#e6d7bb] bg-[#fbf5ea] text-[#8a7860] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#b7a58f]')
+                                                        ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
+                                                        : 'border-[#e6d7bb] bg-[#fbf5ea] text-[#7d6952] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#b7a58f]')
                                                 }
                                             >
                                                 {v.volume_ml} мл
@@ -157,14 +157,14 @@ export default function ProductShow({ product, myReview }) {
                                     <span className="font-display text-3xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                                         {Number(variant.price).toFixed(2)} ₴
                                     </span>
-                                    <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                                    <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                                         {variant.volume_ml} мл
                                     </span>
                                 </div>
                                 <button
                                     type="button"
                                     onClick={() => addToCart(variant.id)}
-                                    className="flex w-full items-center justify-center gap-2 rounded-full bg-[#bf8438] px-5 py-3.5 text-sm font-bold tracking-[0.04em] text-[#241a10] uppercase dark:text-[#1c1408]"
+                                    className="flex w-full items-center justify-center gap-2 rounded-full bg-[#c79a5f] px-5 py-3.5 text-sm font-bold tracking-[0.04em] text-[#241a10] uppercase dark:text-[#3d2712]"
                                 >
                                     {added ? (
                                         <svg
@@ -222,7 +222,7 @@ export default function ProductShow({ product, myReview }) {
                                 <div className="flex flex-wrap gap-x-8 gap-y-3 text-sm">
                                     {product.perfumer && (
                                         <div>
-                                            <span className="block text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                            <span className="block text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                                                 Парфюмер
                                             </span>
                                             <span className="text-[#241a10] dark:text-[#f6ecdd]">
@@ -232,7 +232,7 @@ export default function ProductShow({ product, myReview }) {
                                     )}
                                     {product.release_year && (
                                         <div>
-                                            <span className="block text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                            <span className="block text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                                                 Год
                                             </span>
                                             <span className="text-[#241a10] dark:text-[#f6ecdd]">
@@ -242,7 +242,7 @@ export default function ProductShow({ product, myReview }) {
                                     )}
                                     {product.concentration && (
                                         <div>
-                                            <span className="block text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                            <span className="block text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                                                 Концентрация
                                             </span>
                                             <span className="text-[#241a10] dark:text-[#f6ecdd]">
@@ -258,7 +258,7 @@ export default function ProductShow({ product, myReview }) {
                                     {product.longevity &&
                                         LONGEVITY_LABELS[product.longevity] && (
                                             <div className="flex flex-col gap-1.5">
-                                                <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                                <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                                                     Стойкость
                                                 </span>
                                                 <div className="flex items-center gap-2">
@@ -284,7 +284,7 @@ export default function ProductShow({ product, myReview }) {
                                     {product.sillage &&
                                         SILLAGE_LABELS[product.sillage] && (
                                             <div className="flex flex-col gap-1.5">
-                                                <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                                <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                                                     Шлейф
                                                 </span>
                                                 <div className="flex items-center gap-2">
@@ -310,7 +310,7 @@ export default function ProductShow({ product, myReview }) {
 
                             {product.accords && product.accords.length > 0 && (
                                 <div className="flex flex-col gap-2.5">
-                                    <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                    <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                                         Аккорды
                                     </span>
                                     <div className="flex flex-col gap-2">
@@ -324,7 +324,7 @@ export default function ProductShow({ product, myReview }) {
                                                 </span>
                                                 <div className="h-2 flex-1 overflow-hidden rounded-full bg-[#e6d7bb] dark:bg-[#ffffff1a]">
                                                     <div
-                                                        className="h-full rounded-full bg-[#bf8438]"
+                                                        className="h-full rounded-full bg-[#c79a5f]"
                                                         style={{
                                                             width: `${accord.percent}%`,
                                                         }}
@@ -352,14 +352,14 @@ export default function ProductShow({ product, myReview }) {
                                                     key={label}
                                                     className="flex flex-col gap-2"
                                                 >
-                                                    <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                                    <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                                                         {label}
                                                     </span>
                                                     <div className="flex flex-wrap gap-1.5">
                                                         {notes.map((note) => (
                                                             <span
                                                                 key={note}
-                                                                className="rounded-full border border-[#e6d7bb] bg-[#fbf5ea] px-3 py-1 text-xs text-[#8a7860] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#b7a58f]"
+                                                                className="rounded-full border border-[#e6d7bb] bg-[#fbf5ea] px-3 py-1 text-xs text-[#7d6952] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#b7a58f]"
                                                             >
                                                                 {note}
                                                             </span>
@@ -398,10 +398,10 @@ export default function ProductShow({ product, myReview }) {
                                                 viewBox="0 0 24 24"
                                                 fill={
                                                     n <= rating
-                                                        ? '#bf8438'
+                                                        ? '#c79a5f'
                                                         : 'none'
                                                 }
-                                                stroke="#bf8438"
+                                                stroke="#c79a5f"
                                                 strokeWidth="1.5"
                                                 strokeLinecap="round"
                                                 strokeLinejoin="round"
@@ -424,7 +424,7 @@ export default function ProductShow({ product, myReview }) {
                                 <div className="flex items-center gap-3">
                                     <button
                                         type="submit"
-                                        className="rounded-full bg-[#bf8438] px-5 py-2 text-sm font-bold text-[#241a10] uppercase dark:text-[#1c1408]"
+                                        className="rounded-full bg-[#c79a5f] px-5 py-2 text-sm font-bold text-[#241a10] uppercase dark:text-[#3d2712]"
                                     >
                                         {myReview
                                             ? 'Обновить отзыв'
@@ -434,7 +434,7 @@ export default function ProductShow({ product, myReview }) {
                                         <button
                                             type="button"
                                             onClick={deleteReview}
-                                            className="text-sm text-[#8a7860] underline dark:text-[#b7a58f]"
+                                            className="text-sm text-[#7d6952] underline dark:text-[#b7a58f]"
                                         >
                                             Удалить
                                         </button>
@@ -442,7 +442,7 @@ export default function ProductShow({ product, myReview }) {
                                 </div>
                             </form>
                         ) : (
-                            <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                            <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                 <Link href="/login" className="underline">
                                     Войдите
                                 </Link>
@@ -451,7 +451,7 @@ export default function ProductShow({ product, myReview }) {
                         )}
 
                         {product.reviews.length === 0 ? (
-                            <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                            <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                 Пока нет отзывов — будьте первым.
                             </p>
                         ) : (
@@ -465,7 +465,7 @@ export default function ProductShow({ product, myReview }) {
                                             <span className="text-sm font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                                                 {review.user.name}
                                             </span>
-                                            <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                                            <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                                                 {formatDate(review.created_at)}
                                             </span>
                                         </div>
@@ -473,7 +473,7 @@ export default function ProductShow({ product, myReview }) {
                                             value={review.rating}
                                             size={12}
                                         />
-                                        <p className="mt-2 text-sm leading-relaxed text-[#8a7860] dark:text-[#b7a58f]">
+                                        <p className="mt-2 text-sm leading-relaxed text-[#7d6952] dark:text-[#b7a58f]">
                                             {review.body}
                                         </p>
                                     </div>

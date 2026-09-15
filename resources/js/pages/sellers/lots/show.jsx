@@ -46,7 +46,7 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                 <div className="mx-auto max-w-4xl p-6">
                     <Link
                         href={`/sellers/${lot.seller.id}`}
-                        className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                        className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
                         ← Витрина {lot.seller.name}
                     </Link>
@@ -58,7 +58,7 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
 
                         <div className="flex flex-col gap-5">
                             <div className="flex flex-col gap-2">
-                                <span className="text-xs font-bold tracking-[0.18em] text-[#bf8438] uppercase">
+                                <span className="text-xs font-bold tracking-[0.18em] text-[#c79a5f] uppercase">
                                     {lot.brand_name} · распив
                                 </span>
                                 <h1 className="font-display text-5xl leading-none font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
@@ -66,7 +66,7 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                 </h1>
                             </div>
 
-                            <div className="flex items-center gap-5 text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                            <div className="flex items-center gap-5 text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                 <span className="flex items-center gap-1.5">
                                     <svg
                                         width="16"
@@ -108,13 +108,13 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                     <div className="flex flex-col gap-1.5">
                                         <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#e6d7bb] dark:bg-[#ffffff1a]">
                                             <div
-                                                className="h-full rounded-full bg-[#bf8438]"
+                                                className="h-full rounded-full bg-[#c79a5f]"
                                                 style={{
                                                     width: `${soldPercent}%`,
                                                 }}
                                             />
                                         </div>
-                                        <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                        <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                             Продано {sold} из {total} мл (
                                             {soldPercent}%) ·{' '}
                                             {pricePerMl.toFixed(2)} ₴/мл
@@ -131,12 +131,12 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                     </div>
 
                                     <div className="mt-2 flex items-center gap-3">
-                                        <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                        <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                             Остаток {remaining} мл
                                         </span>
                                         <Link
                                             href={`/sellers/lots/${lot.id}/edit`}
-                                            className="rounded-full bg-[#bf8438] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                                            className="rounded-full bg-[#c79a5f] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                                         >
                                             Редактировать
                                         </Link>
@@ -147,13 +147,13 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                     <div className="flex flex-col gap-1.5">
                                         <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#e6d7bb] dark:bg-[#ffffff1a]">
                                             <div
-                                                className="h-full rounded-full bg-[#bf8438] transition-[width] duration-150"
+                                                className="h-full rounded-full bg-[#c79a5f] transition-[width] duration-150"
                                                 style={{
                                                     width: `${(projectedRemaining / total) * 100}%`,
                                                 }}
                                             />
                                         </div>
-                                        <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                        <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                             Останется {projectedRemaining} из{' '}
                                             {total} мл · {pricePerMl.toFixed(2)}{' '}
                                             ₴/мл
@@ -171,7 +171,7 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
 
                                     <div className="flex flex-col gap-2">
                                         <div className="flex items-center justify-between">
-                                            <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                            <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                                                 Сколько мл
                                             </span>
                                             <span className="text-sm font-semibold text-[#241a10] dark:text-[#f6ecdd]">
@@ -189,7 +189,7 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                                     Number(e.target.value),
                                                 )
                                             }
-                                            style={{ accentColor: '#bf8438' }}
+                                            style={{ accentColor: '#c79a5f' }}
                                             className="w-full"
                                         />
                                     </div>
@@ -203,7 +203,7 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                             onClick={() =>
                                                 addLotToCart(lot.id, volume)
                                             }
-                                            className="rounded-full bg-[#bf8438] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                                            className="rounded-full bg-[#c79a5f] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                                         >
                                             {added ? 'Добавлено' : 'В корзину'}
                                         </button>
@@ -215,7 +215,7 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
 
                     <div className="mt-12 flex items-center justify-between rounded-2xl border border-[#1e160c14] bg-[#fffaf1] p-5 dark:border-[#ffffff14] dark:bg-[#ffffff0a]">
                         <div className="flex flex-col gap-1">
-                            <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                            <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                                 Продавец
                             </span>
                             <span className="font-display text-xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">

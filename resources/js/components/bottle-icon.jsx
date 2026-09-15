@@ -1,12 +1,12 @@
 import { useId } from 'react';
 
-const TINTS = ['#bf8438', '#a8702e', '#c48a56', '#9c6b4f'];
+const TINTS = ['#c79a5f', '#a8702e', '#c48a56', '#9c6b4f'];
 
 export function tintForId(id) {
     return TINTS[id % TINTS.length];
 }
 
-export default function BottleIcon({ size = 104, tint = '#bf8438' }) {
+export default function BottleIcon({ size = 104, tint = '#c79a5f' }) {
     const height = Math.round((size / 104) * 152);
     const gradientId = `bottleGrad-${useId()}`;
 

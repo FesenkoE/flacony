@@ -20,7 +20,7 @@ export default function OrderShow({
                             height="40"
                             viewBox="0 0 24 24"
                             fill="none"
-                            stroke="#bf8438"
+                            stroke="#c79a5f"
                             strokeWidth="1.8"
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -30,7 +30,7 @@ export default function OrderShow({
                         <h1 className="font-display text-2xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                             Заказ №{order.id} принят
                         </h1>
-                        <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                        <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                             {formatDateTime(order.created_at)} ·{' '}
                             {paymentMethodLabel}
                         </p>
@@ -44,7 +44,7 @@ export default function OrderShow({
                             >
                                 <span className="text-[#241a10] dark:text-[#f6ecdd]">
                                     {item.brand_name} — {item.product_name}
-                                    <span className="text-[#8a7860] dark:text-[#b7a58f]">
+                                    <span className="text-[#7d6952] dark:text-[#b7a58f]">
                                         {' '}
                                         · {item.detail}
                                     </span>
@@ -56,17 +56,17 @@ export default function OrderShow({
                         ))}
                         {Number(order.discount_amount) > 0 && (
                             <div className="flex items-baseline justify-between text-sm">
-                                <span className="text-[#8a7860] dark:text-[#b7a58f]">
+                                <span className="text-[#7d6952] dark:text-[#b7a58f]">
                                     Скидка по промокоду {order.promo_code}
                                 </span>
-                                <span className="font-semibold text-[#bf8438]">
+                                <span className="font-semibold text-[#c79a5f]">
                                     −{Number(order.discount_amount).toFixed(2)}{' '}
                                     ₴
                                 </span>
                             </div>
                         )}
                         <div className="mt-1 flex items-baseline justify-between border-t border-[#1e160c14] pt-2 dark:border-[#ffffff1a]">
-                            <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                            <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                 Итого
                             </span>
                             <span className="font-display text-xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
@@ -76,7 +76,7 @@ export default function OrderShow({
                     </div>
 
                     <div className="mb-6 flex flex-col gap-1 rounded-2xl border border-[#1e160c14] bg-[#fffaf1] p-4 text-sm dark:border-[#ffffff14] dark:bg-[#ffffff0a]">
-                        <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                        <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                             Доставка
                         </span>
                         <span className="text-[#241a10] dark:text-[#f6ecdd]">
@@ -101,13 +101,13 @@ export default function OrderShow({
                     <div className="flex justify-center gap-4">
                         <Link
                             href="/dashboard"
-                            className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                            className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                         >
                             Личный кабинет
                         </Link>
                         <Link
                             href="/products"
-                            className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                            className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                         >
                             Продолжить покупки
                         </Link>

@@ -14,13 +14,13 @@ export default function BlogShow({ post }) {
                 <div className="mx-auto max-w-2xl p-6">
                     <Link
                         href="/blog"
-                        className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                        className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
                         ← Блог
                     </Link>
 
                     <div className="mt-6 mb-8 flex flex-col gap-2">
-                        <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                        <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                             {formatDate(post.published_at)}
                             {post.author && <> · {post.author.name}</>}
                         </span>

@@ -70,8 +70,8 @@ export default function ProductCard({
                     width="18"
                     height="18"
                     viewBox="0 0 24 24"
-                    fill={isFavorited ? '#bf8438' : 'none'}
-                    stroke={isFavorited ? '#bf8438' : 'currentColor'}
+                    fill={isFavorited ? '#c79a5f' : 'none'}
+                    stroke={isFavorited ? '#c79a5f' : 'currentColor'}
                     strokeWidth="1.8"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -95,20 +95,20 @@ export default function ProductCard({
                 </div>
 
                 <div className="flex flex-col gap-1.5 p-6 pb-3">
-                    <span className="text-xs font-bold tracking-[0.18em] text-[#bf8438] uppercase">
+                    <span className="text-xs font-bold tracking-[0.18em] text-[#c79a5f] uppercase">
                         {product.brand.name}
                     </span>
                     <h3 className="font-display text-[34px] leading-none font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                         {product.name}
                     </h3>
-                    <div className="mt-0.5 h-0.5 w-7 rounded-full bg-[#bf8438]" />
+                    <div className="mt-0.5 h-0.5 w-7 rounded-full bg-[#c79a5f]" />
                     {product.reviews_count > 0 && (
                         <div className="mt-1 flex items-center gap-1.5">
                             <StarRating
                                 value={product.reviews_avg_rating}
                                 size={12}
                             />
-                            <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                            <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                                 ({product.reviews_count})
                             </span>
                         </div>
@@ -120,7 +120,7 @@ export default function ProductCard({
                 <div className="h-px bg-[#1e160c14] dark:bg-[#ffffff1a]" />
 
                 <div className="flex flex-col gap-2">
-                    <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                    <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                         Объём
                     </span>
                     <div className="flex gap-2.5">
@@ -134,8 +134,8 @@ export default function ProductCard({
                                     className={
                                         'rounded-2xl border px-3.5 py-2.5 text-sm font-semibold whitespace-nowrap ' +
                                         (selected
-                                            ? 'border-[#bf8438] bg-[#bf843829] text-[#241a10] dark:text-[#f6ecdd]'
-                                            : 'border-[#e6d7bb] bg-[#fbf5ea] text-[#8a7860] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#b7a58f]')
+                                            ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
+                                            : 'border-[#e6d7bb] bg-[#fbf5ea] text-[#7d6952] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#b7a58f]')
                                     }
                                 >
                                     {v.volume_ml} мл
@@ -150,14 +150,14 @@ export default function ProductCard({
                         <span className="font-display text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                             {Number(variant.price).toFixed(2)} ₴
                         </span>
-                        <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                        <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                             {variant.volume_ml} мл
                         </span>
                     </div>
                     <button
                         type="button"
                         onClick={() => addToCart(variant.id)}
-                        className="flex w-full items-center justify-center gap-2 rounded-full bg-[#bf8438] px-5 py-3.5 text-sm font-bold tracking-[0.04em] text-[#241a10] uppercase dark:text-[#1c1408]"
+                        className="flex w-full items-center justify-center gap-2 rounded-full bg-[#c79a5f] px-5 py-3.5 text-sm font-bold tracking-[0.04em] text-[#241a10] uppercase dark:text-[#3d2712]"
                     >
                         {added ? (
                             <svg

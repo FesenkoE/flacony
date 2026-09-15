@@ -5,9 +5,9 @@ import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 
 const fieldClass =
-    'w-full rounded-xl border border-[#e6d7bb] bg-[#fbf5ea] px-4 py-2.5 text-sm text-[#241a10] outline-none focus:border-[#bf8438] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#f6ecdd]';
+    'w-full rounded-xl border border-[#e6d7bb] bg-[#fbf5ea] px-4 py-2.5 text-sm text-[#241a10] outline-none focus:border-[#c79a5f] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#f6ecdd]';
 const labelClass =
-    'text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]';
+    'text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]';
 
 const NOVA_POSHTA_METHODS = ['np_branch', 'np_courier'];
 
@@ -74,7 +74,7 @@ function CityField({ city, onSelectCity, error }) {
                             className="block w-full px-3 py-2 text-left text-sm text-[#241a10] hover:bg-[#f6efe3] dark:text-[#f6ecdd] dark:hover:bg-[#ffffff0a]"
                         >
                             {c.name}{' '}
-                            <span className="text-[#8a7860] dark:text-[#b7a58f]">
+                            <span className="text-[#7d6952] dark:text-[#b7a58f]">
                                 · {c.area}
                             </span>
                         </button>
@@ -112,7 +112,7 @@ function WarehouseField({ cityRef, error }) {
         return (
             <div className="flex flex-col gap-1.5">
                 <label className={labelClass}>Отделение</label>
-                <p className="rounded-xl border border-dashed border-[#e6d7bb] px-4 py-2.5 text-sm text-[#8a7860] dark:border-[#ffffff29] dark:text-[#b7a58f]">
+                <p className="rounded-xl border border-dashed border-[#e6d7bb] px-4 py-2.5 text-sm text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]">
                     Сначала выберите город
                 </p>
             </div>
@@ -196,7 +196,7 @@ function CheckoutItemRow({ item }) {
                 <span className="truncate text-[#241a10] dark:text-[#f6ecdd]">
                     {item.brand_name} — {item.product_name}
                 </span>
-                <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                     {item.type === 'lot' ? item.detail : `${item.volume_ml} мл`}
                 </span>
             </div>
@@ -231,7 +231,7 @@ function CheckoutItemRow({ item }) {
                 type="button"
                 onClick={remove}
                 aria-label="Убрать"
-                className="shrink-0 text-[#8a7860] hover:text-[#c0645a] dark:text-[#b7a58f]"
+                className="shrink-0 text-[#7d6952] hover:text-[#c0645a] dark:text-[#b7a58f]"
             >
                 ×
             </button>
@@ -309,7 +309,7 @@ function PromoCodeField({ onDiscountChange }) {
                     type="button"
                     onClick={check}
                     disabled={status === 'checking'}
-                    className="shrink-0 rounded-xl border border-[#e6d7bb] px-4 text-sm font-semibold text-[#8a7860] hover:border-[#bf8438] hover:text-[#bf8438] disabled:opacity-60 dark:border-[#ffffff29] dark:text-[#b7a58f]"
+                    className="shrink-0 rounded-xl border border-[#e6d7bb] px-4 text-sm font-semibold text-[#7d6952] hover:border-[#c79a5f] hover:text-[#c79a5f] disabled:opacity-60 dark:border-[#ffffff29] dark:text-[#b7a58f]"
                 >
                     Применить
                 </button>
@@ -318,7 +318,7 @@ function PromoCodeField({ onDiscountChange }) {
                 <p
                     className={
                         status === 'valid'
-                            ? 'text-xs text-[#bf8438]'
+                            ? 'text-xs text-[#c79a5f]'
                             : 'text-xs text-red-500'
                     }
                 >
@@ -351,7 +351,7 @@ export default function CheckoutIndex({
                 <div className="mx-auto max-w-2xl p-6">
                     <Link
                         href="/cart"
-                        className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                        className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
                         ← Корзина
                     </Link>
@@ -369,16 +369,16 @@ export default function CheckoutIndex({
                         ))}
                         {discount > 0 && (
                             <div className="flex items-baseline justify-between text-sm">
-                                <span className="text-[#8a7860] dark:text-[#b7a58f]">
+                                <span className="text-[#7d6952] dark:text-[#b7a58f]">
                                     Скидка по промокоду
                                 </span>
-                                <span className="font-semibold text-[#bf8438]">
+                                <span className="font-semibold text-[#c79a5f]">
                                     −{Number(discount).toFixed(2)} ₴
                                 </span>
                             </div>
                         )}
                         <div className="mt-1 flex items-baseline justify-between border-t border-[#1e160c14] pt-2 dark:border-[#ffffff1a]">
-                            <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                            <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                 Итого
                             </span>
                             <span className="font-display text-xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
@@ -597,7 +597,7 @@ export default function CheckoutIndex({
                                     <InputError
                                         message={errors.payment_method}
                                     />
-                                    <p className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                                    <p className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                                         Онлайн-оплату картой пока не подключили
                                         — если выберешь её, мы свяжемся, чтобы
                                         уточнить оплату.
@@ -630,7 +630,7 @@ export default function CheckoutIndex({
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="mt-1 rounded-full bg-[#bf8438] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase disabled:opacity-60"
+                                    className="mt-1 rounded-full bg-[#c79a5f] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60"
                                 >
                                     Подтвердить заказ
                                 </button>

@@ -103,7 +103,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
                             strokeWidth="1.8"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            className="shrink-0 text-[#8a7860] dark:text-[#b7a58f]"
+                            className="shrink-0 text-[#7d6952] dark:text-[#b7a58f]"
                         >
                             <circle cx="11" cy="11" r="7" />
                             <path d="m21 21-4.3-4.3" />
@@ -114,13 +114,13 @@ export default function SearchOverlay({ open, onOpenChange }) {
                             onChange={(e) => setQuery(e.target.value)}
                             placeholder="Аромат, бренд, нота..."
                             autoFocus
-                            className="w-full bg-transparent text-sm text-[#241a10] outline-none placeholder:text-[#8a7860] dark:text-[#f6ecdd] dark:placeholder:text-[#b7a58f]"
+                            className="w-full bg-transparent text-sm text-[#241a10] outline-none placeholder:text-[#7d6952] dark:text-[#f6ecdd] dark:placeholder:text-[#b7a58f]"
                         />
                         <button
                             type="button"
                             onClick={() => onOpenChange(false)}
                             aria-label="Закрыть"
-                            className="shrink-0 text-[#8a7860] dark:text-[#b7a58f]"
+                            className="shrink-0 text-[#7d6952] dark:text-[#b7a58f]"
                         >
                             <svg
                                 width="18"
@@ -141,13 +141,13 @@ export default function SearchOverlay({ open, onOpenChange }) {
                     {query.trim() !== '' && (
                         <div className="max-h-[60vh] overflow-y-auto py-3">
                             {loading && !hasResults && (
-                                <p className="px-1 py-4 text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                <p className="px-1 py-4 text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                     Ищем...
                                 </p>
                             )}
 
                             {!loading && !hasResults && (
-                                <p className="px-1 py-4 text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                                <p className="px-1 py-4 text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                     По запросу «{query}» ничего не нашлось.
                                 </p>
                             )}
@@ -155,7 +155,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
                             <div className="grid gap-x-10 gap-y-4 sm:grid-cols-2">
                                 {results.products.length > 0 && (
                                     <div className="flex flex-col gap-1 sm:border-r sm:border-[#1e160c14]/60 sm:pr-10 dark:sm:border-[#ffffff1a]">
-                                        <span className="px-2 pb-1 text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                        <span className="px-2 pb-1 text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                                             Каталог
                                         </span>
                                         {results.products.map((product) => (
@@ -186,7 +186,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                                         {product.name}
                                                     </span>
                                                 </div>
-                                                <span className="shrink-0 text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                                                <span className="shrink-0 text-xs text-[#7d6952] dark:text-[#b7a58f]">
                                                     от{' '}
                                                     {Number(
                                                         product.price,
@@ -200,7 +200,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
 
                                 {results.lots.length > 0 && (
                                     <div className="flex flex-col gap-1">
-                                        <span className="px-2 pb-1 text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                                        <span className="px-2 pb-1 text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                                             Распив
                                         </span>
                                         {results.lots.map((lot) => (
@@ -215,7 +215,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                                         {lot.product_name}
                                                     </span>
                                                 </div>
-                                                <span className="shrink-0 text-xs text-[#8a7860] dark:text-[#b7a58f]">
+                                                <span className="shrink-0 text-xs text-[#7d6952] dark:text-[#b7a58f]">
                                                     {Number(
                                                         lot.price_per_ml,
                                                     ).toFixed(0)}{' '}
@@ -231,7 +231,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                 <button
                                     type="button"
                                     onClick={goToFullResults}
-                                    className="mt-3 w-full rounded-xl border-t border-[#1e160c14]/60 px-2 pt-4 pb-2 text-left text-sm font-semibold text-[#bf8438] hover:bg-[#f6efe3] dark:border-[#ffffff1a] dark:hover:bg-[#ffffff0a]"
+                                    className="mt-3 w-full rounded-xl border-t border-[#1e160c14]/60 px-2 pt-4 pb-2 text-left text-sm font-semibold text-[#c79a5f] hover:bg-[#f6efe3] dark:border-[#ffffff1a] dark:hover:bg-[#ffffff0a]"
                                 >
                                     Все результаты по «{query}» →
                                 </button>
