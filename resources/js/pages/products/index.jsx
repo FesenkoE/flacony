@@ -1,192 +1,241 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { useState } from 'react';
+import { SlidersHorizontal } from 'lucide-react';
 import ProductCard from '@/components/product-card';
+import ProductFilters from '@/components/product-filters';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
+import {
+    Sheet,
+    SheetContent,
+    SheetTitle,
+    SheetTrigger,
+} from '@/components/ui/sheet';
+import { useTranslations } from '@/hooks/use-translations';
+import { pluralizeRu } from '@/lib/pluralize';
 
-function buildUrl(filters, overrides) {
-    const params = new URLSearchParams();
-    Object.entries({ ...filters, ...overrides }).forEach(([key, value]) => {
-        if (value) params.set(key, value);
-    });
-    const query = params.toString();
-    return query ? `/products?${query}` : '/products';
+const SORT_OPTIONS = [
+    { value: 'newest', label: 'Сначала новые' },
+    { value: 'price_asc', label: 'Сначала дешевле' },
+    { value: 'price_desc', label: 'Сначала дороже' },
+    { value: 'rating', label: 'По рейтингу' },
+];
+
+function pluralizeProducts(n) {
+    return pluralizeRu(n, ['товар', 'товара', 'товаров']);
 }
 
 export default function ProductsIndex({
     products,
     brands,
     categories,
+    concentrations,
+    accords,
+    volumes,
     filters,
 }) {
-    const [minPrice, setMinPrice] = useState(filters.min_price ?? '');
-    const [maxPrice, setMaxPrice] = useState(filters.max_price ?? '');
+    const t = useTranslations();
 
-    function applyPriceFilter(e) {
-        e.preventDefault();
-        router.get(
-            '/products',
-            {
-                ...filters,
-                min_price: minPrice || undefined,
-                max_price: maxPrice || undefined,
-            },
-            { preserveState: true, preserveScroll: true },
-        );
+    function updateFilters(overrides) {
+        const next = { ...filters, ...overrides };
+        Object.entries(next).forEach(([key, value]) => {
+            const isEmpty =
+                value === undefined ||
+                value === null ||
+                value === '' ||
+                (Array.isArray(value) && value.length === 0);
+            if (isEmpty) delete next[key];
+        });
+        router.get('/products', next, {
+            preserveState: true,
+            preserveScroll: true,
+        });
     }
+
+    const activeChips = [
+        ...(filters.category ?? []).map((slug) => ({
+            key: 'category',
+            value: slug,
+            label: categories.find((c) => c.slug === slug)?.name ?? slug,
+        })),
+        ...(filters.brand ?? []).map((slug) => ({
+            key: 'brand',
+            value: slug,
+            label: brands.find((b) => b.slug === slug)?.name ?? slug,
+        })),
+        ...(filters.concentration ?? []).map((value) => ({
+            key: 'concentration',
+            value,
+            label: value,
+        })),
+        ...(filters.accord ?? []).map((value) => ({
+            key: 'accord',
+            value,
+            label: value,
+        })),
+        ...(filters.volume ?? []).map((value) => ({
+            key: 'volume',
+            value,
+            label: `${value} мл`,
+        })),
+    ];
+    if (filters.min_price || filters.max_price) {
+        activeChips.push({
+            key: 'price',
+            value: null,
+            label: t('Цена: {min}–{max} ₴', {
+                min: filters.min_price ?? 0,
+                max: filters.max_price ?? '∞',
+            }),
+        });
+    }
+
+    function removeChip(chip) {
+        if (chip.key === 'price') {
+            updateFilters({ min_price: undefined, max_price: undefined });
+            return;
+        }
+        const current = filters[chip.key] ?? [];
+        updateFilters({
+            [chip.key]: current.filter((v) => String(v) !== String(chip.value)),
+        });
+    }
+
+    const filterProps = {
+        filters,
+        onUpdate: updateFilters,
+        categories,
+        brands,
+        concentrations,
+        accords,
+        volumes,
+    };
 
     return (
         <>
-            <Head title="Каталог" />
+            <Head title={t('Каталог')} />
             <SiteHeader />
             <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
                 <div className="mx-auto max-w-[1600px] p-6">
                     <h1 className="mb-6 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                        Каталог
+                        {t('Каталог')}
                     </h1>
 
-                    {filters.note && (
-                        <Link
-                            href={buildUrl(filters, { note: undefined })}
-                            className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-[#c79a5f] bg-[#c79a5f29] px-4 py-1.5 text-sm font-medium text-[#241a10] dark:text-[#f6ecdd]"
-                        >
-                            Аромат: {filters.note}
-                            <span aria-hidden>✕</span>
-                        </Link>
-                    )}
+                    <div className="flex gap-8">
+                        <aside className="hidden w-64 shrink-0 lg:block">
+                            <div className="sticky top-6 max-h-[calc(100vh-3rem)] overflow-y-auto pr-2">
+                                <ProductFilters {...filterProps} />
+                            </div>
+                        </aside>
 
-                    <div className="mb-6 flex flex-wrap gap-2">
-                        <Link
-                            href={buildUrl(filters, { brand: undefined })}
-                            className={
-                                'rounded-full border px-4 py-1.5 text-sm font-medium ' +
-                                (!filters.brand
-                                    ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
-                                    : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
-                            }
-                        >
-                            Все бренды
-                        </Link>
-                        {brands.map((brand) => (
-                            <Link
-                                key={brand.id}
-                                href={buildUrl(filters, { brand: brand.slug })}
-                                className={
-                                    'rounded-full border px-4 py-1.5 text-sm font-medium ' +
-                                    (filters.brand === brand.slug
-                                        ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
-                                        : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
-                                }
-                            >
-                                {brand.name}
-                            </Link>
-                        ))}
-                    </div>
+                        <div className="min-w-0 flex-1">
+                            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                                <div className="flex items-center gap-3">
+                                    <Sheet>
+                                        <SheetTrigger asChild>
+                                            <button
+                                                type="button"
+                                                className="flex items-center gap-2 rounded-full border border-[#c79a5f] px-4 py-1.5 text-sm font-medium text-[#241a10] lg:hidden dark:text-[#f6ecdd]"
+                                            >
+                                                <SlidersHorizontal className="h-4 w-4" />
+                                                {t('Фильтры')}
+                                            </button>
+                                        </SheetTrigger>
+                                        <SheetContent
+                                            side="left"
+                                            className="w-full max-w-sm gap-0 overflow-y-auto border-[#1e160c14] bg-[#f6efe3] p-6 dark:border-[#ffffff1a] dark:bg-[#0d0b09]"
+                                        >
+                                            <SheetTitle className="mb-4 text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                                                {t('Фильтры')}
+                                            </SheetTitle>
+                                            <ProductFilters {...filterProps} />
+                                        </SheetContent>
+                                    </Sheet>
+                                    <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
+                                        {t('Найдено {count} {word}', {
+                                            count: products.total,
+                                            word: t(
+                                                pluralizeProducts(
+                                                    products.total,
+                                                ),
+                                            ),
+                                        })}
+                                    </span>
+                                </div>
 
-                    <div className="mb-6 flex flex-wrap gap-2">
-                        <Link
-                            href={buildUrl(filters, { category: undefined })}
-                            className={
-                                'rounded-full border px-4 py-1.5 text-sm font-medium ' +
-                                (!filters.category
-                                    ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
-                                    : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
-                            }
-                        >
-                            Все категории
-                        </Link>
-                        {categories.map((category) => (
-                            <Link
-                                key={category.id}
-                                href={buildUrl(filters, {
-                                    category: category.slug,
-                                })}
-                                className={
-                                    'rounded-full border px-4 py-1.5 text-sm font-medium ' +
-                                    (filters.category === category.slug
-                                        ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
-                                        : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
-                                }
-                            >
-                                {category.name}
-                            </Link>
-                        ))}
-                    </div>
-
-                    <form
-                        onSubmit={applyPriceFilter}
-                        className="mb-8 flex flex-wrap items-center gap-2"
-                    >
-                        <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
-                            Цена, ₴
-                        </span>
-                        <input
-                            type="number"
-                            min="0"
-                            placeholder="от"
-                            value={minPrice}
-                            onChange={(e) => setMinPrice(e.target.value)}
-                            className="w-24 rounded-full border border-[#e6d7bb] bg-transparent px-3.5 py-1.5 text-sm text-[#241a10] dark:border-[#ffffff29] dark:text-[#f6ecdd]"
-                        />
-                        <span className="text-[#7d6952] dark:text-[#b7a58f]">
-                            —
-                        </span>
-                        <input
-                            type="number"
-                            min="0"
-                            placeholder="до"
-                            value={maxPrice}
-                            onChange={(e) => setMaxPrice(e.target.value)}
-                            className="w-24 rounded-full border border-[#e6d7bb] bg-transparent px-3.5 py-1.5 text-sm text-[#241a10] dark:border-[#ffffff29] dark:text-[#f6ecdd]"
-                        />
-                        <button
-                            type="submit"
-                            className="rounded-full border border-[#c79a5f] px-4 py-1.5 text-sm font-medium text-[#241a10] dark:text-[#f6ecdd]"
-                        >
-                            Применить
-                        </button>
-                        {(filters.min_price || filters.max_price) && (
-                            <Link
-                                href={buildUrl(filters, {
-                                    min_price: undefined,
-                                    max_price: undefined,
-                                })}
-                                className="text-sm text-[#7d6952] underline dark:text-[#b7a58f]"
-                            >
-                                Сбросить
-                            </Link>
-                        )}
-                    </form>
-
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
-                        {products.data.map((product) => (
-                            <ProductCard key={product.id} product={product} />
-                        ))}
-                    </div>
-
-                    {products.last_page > 1 && (
-                        <div className="mt-8 flex flex-wrap gap-2">
-                            {products.links.map((link, i) => (
-                                <Link
-                                    key={i}
-                                    href={link.url || '#'}
-                                    preserveScroll
-                                    className={
-                                        'rounded-full border px-3.5 py-1.5 text-sm ' +
-                                        (link.active
-                                            ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
-                                            : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]') +
-                                        (!link.url
-                                            ? ' pointer-events-none opacity-40'
-                                            : '')
+                                <select
+                                    value={filters.sort ?? 'newest'}
+                                    onChange={(e) =>
+                                        updateFilters({ sort: e.target.value })
                                     }
-                                    dangerouslySetInnerHTML={{
-                                        __html: link.label,
-                                    }}
-                                />
-                            ))}
+                                    className="rounded-full border border-[#e6d7bb] bg-transparent px-3.5 py-1.5 text-sm text-[#241a10] dark:border-[#ffffff29] dark:bg-[#0d0b09] dark:text-[#f6ecdd]"
+                                >
+                                    {SORT_OPTIONS.map((option) => (
+                                        <option
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {t(option.label)}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {activeChips.length > 0 && (
+                                <div className="mb-6 flex flex-wrap items-center gap-2">
+                                    {activeChips.map((chip) => (
+                                        <button
+                                            key={`${chip.key}-${chip.value}`}
+                                            type="button"
+                                            onClick={() => removeChip(chip)}
+                                            className="inline-flex items-center gap-2 rounded-full border border-[#c79a5f] bg-[#c79a5f29] px-4 py-1.5 text-sm font-medium text-[#241a10] dark:text-[#f6ecdd]"
+                                        >
+                                            {chip.label}
+                                            <span aria-hidden>✕</span>
+                                        </button>
+                                    ))}
+                                    <Link
+                                        href="/products"
+                                        className="text-sm text-[#7d6952] underline dark:text-[#b7a58f]"
+                                    >
+                                        {t('Сбросить всё')}
+                                    </Link>
+                                </div>
+                            )}
+
+                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                                {products.data.map((product) => (
+                                    <ProductCard
+                                        key={product.id}
+                                        product={product}
+                                    />
+                                ))}
+                            </div>
+
+                            {products.last_page > 1 && (
+                                <div className="mt-8 flex flex-wrap gap-2">
+                                    {products.links.map((link, i) => (
+                                        <Link
+                                            key={i}
+                                            href={link.url || '#'}
+                                            preserveScroll
+                                            className={
+                                                'rounded-full border px-3.5 py-1.5 text-sm ' +
+                                                (link.active
+                                                    ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
+                                                    : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]') +
+                                                (!link.url
+                                                    ? ' pointer-events-none opacity-40'
+                                                    : '')
+                                            }
+                                            dangerouslySetInnerHTML={{
+                                                __html: link.label,
+                                            }}
+                                        />
+                                    ))}
+                                </div>
+                            )}
                         </div>
-                    )}
+                    </div>
                 </div>
             </div>
             <SiteFooter />
