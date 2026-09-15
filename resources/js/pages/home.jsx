@@ -1,12 +1,13 @@
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Banknote, Droplet, Truck } from 'lucide-react';
+import { Banknote, Droplet, Heart, History, Store, Truck } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import BottleIcon, { tintForId } from '@/components/bottle-icon';
 import LotCard from '@/components/lot-card';
 import ProductCard from '@/components/product-card';
-import Reveal from '@/components/reveal';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
+import StarRating from '@/components/star-rating';
+import { useTranslations } from '@/hooks/use-translations';
 
 const STEPS = [
     {
@@ -20,6 +21,28 @@ const STEPS = [
     {
         title: 'Добавь в корзину',
         text: 'Собери несколько ароматов сразу и оформи заказ.',
+    },
+];
+
+// ponytail: макет для превью — настоящих отзывов в базе только 2 (тестовые), заменить на реальные через Review::latest(), когда наберётся достаточно
+const MOCK_TESTIMONIALS = [
+    {
+        name: 'Оля К.',
+        rating: 5,
+        text: 'Взяла 5 мл Sauvage на пробу перед тем, как брать полный флакон — стойкость именно такая, как обещали. Отделение получила на следующий день.',
+        product: 'Dior — Sauvage',
+    },
+    {
+        name: 'Максим П.',
+        rating: 5,
+        text: 'Продал остаток своего Aventus за пару дней после того, как надоел. Деньги пришли сразу после того, как покупатель забрал с Новой Почты.',
+        product: 'Продавец на маркетплейсе',
+    },
+    {
+        name: 'Ірина Д.',
+        rating: 4,
+        text: 'Заказывала розпив трёх ароматов сразу, чтобы выбрать один на подарок. Разлив был аккуратный, флаконы подписаны.',
+        product: 'Byredo — Gypsy Water',
     },
 ];
 
@@ -50,20 +73,27 @@ const TRUST_BADGES = [
     },
 ];
 
+const ACCOUNT_BENEFITS = [
+    { icon: History, text: 'История заказов' },
+    { icon: Heart, text: 'Список избранного' },
+    { icon: Store, text: 'Своя витрина продавца' },
+];
+
 function TrustBadges() {
+    const t = useTranslations();
     return (
         <div className="flex flex-col gap-5">
             {TRUST_BADGES.map((badge) => (
                 <div key={badge.title} className="flex items-start gap-3">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#bf84381a] text-[#bf8438]">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#c79a5f1a] text-[#c79a5f]">
                         <badge.icon size={18} strokeWidth={1.75} />
                     </span>
                     <div className="flex flex-col">
                         <span className="text-sm font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                            {badge.title}
+                            {t(badge.title)}
                         </span>
-                        <span className="text-xs text-[#8a7860] dark:text-[#b7a58f]">
-                            {badge.text}
+                        <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
+                            {t(badge.text)}
                         </span>
                     </div>
                 </div>
@@ -85,7 +115,7 @@ function BigStat({ value, label }) {
     );
 }
 
-function buildSlides({ promoCode, newArrivals, activeLotsCount }) {
+function buildSlides({ promoCode, newArrivals, activeLotsCount, t }) {
     const slides = [];
 
     if (promoCode) {
@@ -95,12 +125,20 @@ function buildSlides({ promoCode, newArrivals, activeLotsCount }) {
                 : `${Number(promoCode.value)} ₴`;
         slides.push({
             key: 'promo',
-            eyebrow: 'Промокод для новых покупателей',
-            title: `Скидка ${discount} на первый заказ`,
-            text: `Введи код ${promoCode.code} на чекауте — работает на весь каталог, без минимальной суммы.`,
-            cta: 'В каталог',
+            eyebrow: t('Промокод'),
+            title: t('Скидка {discount} на первый заказ', { discount }),
+            text: t(
+                'Введи код {code} на чекауте — работает на весь каталог, без минимальной суммы.',
+                { code: promoCode.code },
+            ),
+            cta: t('В каталог'),
             href: '/products',
-            visual: <BigStat value={`-${discount}`} label="на первый заказ" />,
+            visual: (
+                <BigStat
+                    value={`-${discount}`}
+                    label={t('на первый заказ')}
+                />
+            ),
         });
     }
 
@@ -108,10 +146,12 @@ function buildSlides({ promoCode, newArrivals, activeLotsCount }) {
         const latest = newArrivals[0];
         slides.push({
             key: 'new',
-            eyebrow: 'Новинки',
+            eyebrow: t('Новинка'),
             title: `${latest.brand.name} — ${latest.name}`,
-            text: 'Последнее поступление в каталог — уже можно взять на пробу от 2 мл.',
-            cta: 'Смотреть новинки',
+            text: t(
+                'Последнее поступление в каталог — уже можно взять на пробу от 2 мл.',
+            ),
+            cta: t('Смотреть новинки'),
             href: '/products',
             visual: (
                 <div className="flex h-[180px] w-[180px] items-center justify-center overflow-hidden rounded-[1.25rem] bg-white/10">
@@ -131,15 +171,20 @@ function buildSlides({ promoCode, newArrivals, activeLotsCount }) {
 
     slides.push({
         key: 'lots',
-        eyebrow: 'Розпив',
-        title: `${activeLotsCount} ${pluralizeLots(activeLotsCount)} в наличии`,
-        text: 'Флаконы от других покупателей — раскуплены не полностью, можно взять несколько мл на пробу.',
-        cta: 'Смотреть розпив',
+        eyebrow: t('Розпив'),
+        title: t('{count} {word} в наличии', {
+            count: activeLotsCount,
+            word: t(pluralizeLots(activeLotsCount)),
+        }),
+        text: t(
+            'Флаконы от других покупателей — раскуплены не полностью, можно взять несколько мл на пробу.',
+        ),
+        cta: t('Смотреть розпив'),
         href: '/lots',
         visual: (
             <BigStat
                 value={activeLotsCount}
-                label={pluralizeLots(activeLotsCount)}
+                label={t(pluralizeLots(activeLotsCount))}
             />
         ),
     });
@@ -148,6 +193,7 @@ function buildSlides({ promoCode, newArrivals, activeLotsCount }) {
 }
 
 function PromoSlider({ slides }) {
+    const t = useTranslations();
     const [index, setIndex] = useState(0);
     const [paused, setPaused] = useState(false);
 
@@ -175,11 +221,11 @@ function PromoSlider({ slides }) {
                         className="flex w-full shrink-0 items-center gap-6 px-8 py-10 sm:px-12 sm:py-14"
                         style={{
                             background:
-                                'linear-gradient(135deg, #2a1c0f 0%, #6b4420 55%, #bf8438 100%)',
+                                'linear-gradient(135deg, #2a1c0f 0%, #6b4420 55%, #c79a5f 100%)',
                         }}
                     >
                         <div className="flex flex-1 flex-col items-start gap-3">
-                            <span className="text-xs font-bold tracking-[0.2em] text-[#f6cf9a] uppercase">
+                            <span className="inline-flex items-center rounded-full bg-black/20 px-3 py-1 text-xs font-semibold text-[#f6cf9a]">
                                 {slide.eyebrow}
                             </span>
                             <h2 className="font-display text-2xl leading-tight font-semibold text-white italic sm:text-3xl">
@@ -190,7 +236,7 @@ function PromoSlider({ slides }) {
                             </p>
                             <Link
                                 href={slide.href}
-                                className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#f6ecdd] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                                className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#f6ecdd] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                             >
                                 {slide.cta}
                             </Link>
@@ -208,7 +254,7 @@ function PromoSlider({ slides }) {
                         <button
                             key={slide.key}
                             type="button"
-                            aria-label={`Слайд ${i + 1}`}
+                            aria-label={t('Слайд {n}', { n: i + 1 })}
                             onClick={() => setIndex(i)}
                             className={
                                 'h-2 rounded-full transition-all ' +
@@ -225,7 +271,13 @@ function PromoSlider({ slides }) {
 }
 
 function Hero({ promoCode, newArrivals, activeLotsCount }) {
-    const slides = buildSlides({ promoCode, newArrivals, activeLotsCount });
+    const t = useTranslations();
+    const slides = buildSlides({
+        promoCode,
+        newArrivals,
+        activeLotsCount,
+        t,
+    });
     return (
         <div className="relative overflow-hidden bg-[#f6efe3] dark:bg-[#0d0b09]">
             <div className="hero-bg absolute inset-0" />
@@ -236,40 +288,34 @@ function Hero({ promoCode, newArrivals, activeLotsCount }) {
 
             <div className="relative mx-auto flex max-w-[1600px] items-center justify-between gap-10 px-6 py-12 md:px-12">
                 <div className="flex max-w-2xl flex-col gap-3">
-                    <span
-                        className="hero-fade-up text-[13px] font-bold tracking-[0.3em] text-[#bf8438]"
-                        style={{ animationDelay: '0.05s' }}
-                    >
-                        FLACONY
-                    </span>
-
                     <h1
                         className="hero-fade-up text-3xl leading-[1.1] font-bold text-[#241a10] md:text-4xl dark:text-[#f6ecdd]"
-                        style={{ animationDelay: '0.18s' }}
+                        style={{ animationDelay: '0.05s' }}
                     >
-                        Пробуй ароматы, не переплачивая{' '}
-                        <span className="font-display font-semibold text-[#bf8438] italic">
-                            за флакон
+                        {t('Пробуй ароматы, не переплачивая')}{' '}
+                        <span className="font-display font-semibold text-[#c79a5f] italic">
+                            {t('за флакон')}
                         </span>
                     </h1>
 
                     <p
-                        className="hero-fade-up max-w-[440px] text-sm leading-relaxed text-[#8a7860] dark:text-[#b7a58f]"
-                        style={{ animationDelay: '0.32s' }}
+                        className="hero-fade-up max-w-[440px] text-sm leading-relaxed text-[#7d6952] dark:text-[#b7a58f]"
+                        style={{ animationDelay: '0.18s' }}
                     >
-                        Официальный каталог и распив нишевой парфюмерии — от 5
-                        мл на попробовать до полного флакона.
+                        {t(
+                            'Официальный каталог и распив нишевой парфюмерии — от 5 мл на попробовать до полного флакона.',
+                        )}
                     </p>
 
                     <div
                         className="hero-fade-up mt-1"
-                        style={{ animationDelay: '0.46s' }}
+                        style={{ animationDelay: '0.32s' }}
                     >
                         <Link
                             href="/products"
-                            className="hero-cta-sheen relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-[#bf8438] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                            className="hero-cta-sheen relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-[#c79a5f] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                         >
-                            Смотреть каталог
+                            {t('Смотреть каталог')}
                             <svg
                                 width="16"
                                 height="16"
@@ -303,10 +349,11 @@ export default function Home({
     activeLotsCount,
 }) {
     const { auth } = usePage().props;
+    const t = useTranslations();
 
     return (
         <>
-            <Head title="Flacony — парфюмерия на распив и в розницу" />
+            <Head title={t('Flacony — парфюмерия на распив и в розницу')} />
             <SiteHeader />
             <Hero
                 promoCode={promoCode}
@@ -315,34 +362,34 @@ export default function Home({
             />
 
             {brands.length > 0 && (
-                <Reveal className="border-b border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
+                <div className="border-b border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
                     <div className="mx-auto max-w-[1600px] px-6 py-10">
                         <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
                             {brands.map((brand) => (
                                 <span
                                     key={brand.id}
-                                    className="text-sm font-semibold tracking-[0.12em] text-[#8a7860] uppercase dark:text-[#b7a58f]"
+                                    className="text-sm font-semibold tracking-[0.12em] text-[#7d6952] uppercase dark:text-[#b7a58f]"
                                 >
                                     {brand.name}
                                 </span>
                             ))}
                         </div>
                     </div>
-                </Reveal>
+                </div>
             )}
 
             {featuredProducts.length > 0 && (
-                <Reveal className="bg-[#f6efe3] dark:bg-[#0d0b09]">
+                <div className="bg-[#f6efe3] dark:bg-[#0d0b09]">
                     <div className="mx-auto max-w-[1600px] px-6 py-16">
                         <div className="mb-6 flex items-center justify-between">
                             <h2 className="text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                                Популярное
+                                {t('Популярное')}
                             </h2>
                             <Link
                                 href="/products"
-                                className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                                className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                             >
-                                Весь каталог →
+                                {t('Весь каталог →')}
                             </Link>
                         </div>
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
@@ -354,14 +401,15 @@ export default function Home({
                             ))}
                         </div>
                     </div>
-                </Reveal>
+                </div>
             )}
 
             {newArrivals.length > 0 && (
-                <Reveal className="border-t border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
-                    <div className="mx-auto max-w-[1600px] px-6 py-16">
+                <div className="relative overflow-hidden border-t border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
+                    <div className="section-glow pointer-events-none absolute inset-0" />
+                    <div className="relative mx-auto max-w-[1600px] px-6 py-16">
                         <h2 className="mb-6 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                            Новинки
+                            {t('Новинки')}
                         </h2>
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
                             {newArrivals.map((product) => (
@@ -372,26 +420,27 @@ export default function Home({
                             ))}
                         </div>
                     </div>
-                </Reveal>
+                </div>
             )}
 
-            <Reveal className="border-t border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
+            <div className="border-t border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
                 <div className="mx-auto max-w-[1600px] px-6 py-16">
                     <div className="mb-6 flex items-center justify-between">
                         <div className="flex flex-col gap-1">
                             <h2 className="text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                                Розпив від покупців
+                                {t('Розпив від покупців')}
                             </h2>
-                            <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
-                                Остатки чужих флаконов от нескольких мл — и твой
-                                можно продать так же
+                            <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
+                                {t(
+                                    'Остатки чужих флаконов от нескольких мл — и твой можно продать так же',
+                                )}
                             </p>
                         </div>
                         <Link
                             href="/lots"
-                            className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                            className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                         >
-                            Весь розпив →
+                            {t('Весь розпив →')}
                         </Link>
                     </div>
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
@@ -400,28 +449,30 @@ export default function Home({
                         ))}
                         <Link
                             href="/sellers/lots/create"
-                            className="flex h-full flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-[#e6d7bb] p-6 text-center transition-colors hover:border-[#bf8438] dark:border-[#ffffff29]"
+                            className="flex h-full flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-[#e6d7bb] p-6 text-center transition-colors hover:border-[#c79a5f] dark:border-[#ffffff29]"
                         >
                             <BottleIcon size={48} />
                             <span className="font-display text-xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
-                                Есть что продать?
+                                {t('Есть что продать?')}
                             </span>
-                            <span className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
-                                Выставь остаток флакона и получи деньги за то,
-                                что не допробуешь
+                            <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
+                                {t(
+                                    'Выставь остаток флакона и получи деньги за то, что не допробуешь',
+                                )}
                             </span>
-                            <span className="mt-2 rounded-full bg-[#bf8438] px-6 py-2.5 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase">
-                                Выставить лот
+                            <span className="mt-2 rounded-full bg-[#c79a5f] px-6 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase">
+                                {t('Выставить лот')}
                             </span>
                         </Link>
                     </div>
                 </div>
-            </Reveal>
+            </div>
 
-            <Reveal className="border-t border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
-                <div className="mx-auto max-w-[1600px] px-6 py-16">
+            <div className="relative overflow-hidden border-t border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
+                <div className="section-glow-alt pointer-events-none absolute inset-0" />
+                <div className="relative mx-auto max-w-[1600px] px-6 py-16">
                     <h2 className="mb-10 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                        Как это работает
+                        {t('Как это работает')}
                     </h2>
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
                         {STEPS.map((step, i) => (
@@ -429,52 +480,87 @@ export default function Home({
                                 key={step.title}
                                 className="flex flex-col gap-2"
                             >
-                                <span className="font-display text-3xl font-semibold text-[#bf8438] italic">
+                                <span className="font-display text-3xl font-semibold text-[#c79a5f] italic">
                                     {i + 1}
                                 </span>
                                 <span className="text-base font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                                    {step.title}
+                                    {t(step.title)}
                                 </span>
-                                <span className="text-sm leading-relaxed text-[#8a7860] dark:text-[#b7a58f]">
-                                    {step.text}
+                                <span className="text-sm leading-relaxed text-[#7d6952] dark:text-[#b7a58f]">
+                                    {t(step.text)}
                                 </span>
                             </div>
                         ))}
                     </div>
                 </div>
-            </Reveal>
+            </div>
+
+            <div className="border-t border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
+                <div className="mx-auto max-w-[1600px] px-6 py-16">
+                    <h2 className="mb-10 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                        {t('Что говорят покупатели')}
+                    </h2>
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                        {MOCK_TESTIMONIALS.map((testimonial) => (
+                            <div
+                                key={testimonial.name}
+                                className="flex flex-col gap-3 rounded-3xl bg-[#1e160c08] p-6 dark:bg-[#ffffff08]"
+                            >
+                                <StarRating value={testimonial.rating} />
+                                <p className="flex-1 text-sm leading-relaxed text-[#241a10] dark:text-[#f6ecdd]">
+                                    {t(testimonial.text)}
+                                </p>
+                                <div className="mt-1 flex items-center justify-between text-xs text-[#7d6952] dark:text-[#b7a58f]">
+                                    <span className="font-semibold">
+                                        {testimonial.name}
+                                    </span>
+                                    <span className="font-display italic">
+                                        {t(testimonial.product)}
+                                    </span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
 
             {!auth.user && (
-                <Reveal className="hero-bg relative overflow-hidden border-t border-[#1e160c14] dark:border-[#ffffff14]">
-                    <div className="relative mx-auto grid max-w-[1600px] grid-cols-1 items-center gap-8 px-6 py-16 md:grid-cols-[1fr_auto] md:py-20">
-                        <div className="flex flex-col items-center gap-4 text-center md:items-start md:text-left">
-                            <h2 className="text-3xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                                Создай аккаунт
-                            </h2>
-                            <p className="max-w-md text-sm leading-relaxed text-[#8a7860] dark:text-[#b7a58f]">
-                                Оформляй заказы быстрее и следи за историей
-                                покупок.
-                            </p>
-                            <Link
-                                href="/register"
-                                className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#bf8438] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
-                            >
-                                Зарегистрироваться
-                            </Link>
+                <div className="relative overflow-hidden border-t border-[#1e160c14] bg-[#f6efe3] dark:border-[#ffffff14] dark:bg-[#0d0b09]">
+                    <div className="section-glow pointer-events-none absolute inset-0" />
+                    <div className="relative mx-auto flex max-w-[1600px] flex-col items-center gap-4 px-6 py-16 text-center md:py-20">
+                        <h2 className="text-3xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                            {t('Создай аккаунт')}
+                        </h2>
+                        <p className="max-w-md text-sm leading-relaxed text-[#7d6952] dark:text-[#b7a58f]">
+                            {t(
+                                'Оформляй заказы быстрее и следи за историей покупок.',
+                            )}
+                        </p>
+
+                        <div className="mt-2 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+                            {ACCOUNT_BENEFITS.map((benefit) => (
+                                <div
+                                    key={benefit.text}
+                                    className="flex items-center gap-2 text-sm text-[#7d6952] dark:text-[#b7a58f]"
+                                >
+                                    <benefit.icon
+                                        size={16}
+                                        strokeWidth={1.75}
+                                        className="text-[#c79a5f]"
+                                    />
+                                    {t(benefit.text)}
+                                </div>
+                            ))}
                         </div>
 
-                        <div className="relative flex h-[180px] w-[180px] items-center justify-center justify-self-center">
-                            <div
-                                className="absolute h-[180px] w-[180px] rounded-full blur-[16px]"
-                                style={{
-                                    background:
-                                        'radial-gradient(circle, #bf843870 0%, transparent 70%)',
-                                }}
-                            />
-                            <BottleIcon size={110} />
-                        </div>
+                        <Link
+                            href="/register"
+                            className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#c79a5f] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
+                        >
+                            {t('Зарегистрироваться')}
+                        </Link>
                     </div>
-                </Reveal>
+                </div>
             )}
 
             <SiteFooter />
