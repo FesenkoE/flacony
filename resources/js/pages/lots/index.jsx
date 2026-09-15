@@ -22,7 +22,7 @@ export default function LotsIndex({ lots, brands, filters }) {
                     <h1 className="mb-2 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                         Розпив
                     </h1>
-                    <p className="mb-6 text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                    <p className="mb-6 text-sm text-[#7d6952] dark:text-[#b7a58f]">
                         Флаконы от других покупателей — от нескольких мл на
                         попробовать
                     </p>
@@ -34,8 +34,8 @@ export default function LotsIndex({ lots, brands, filters }) {
                                 className={
                                     'rounded-full border px-4 py-1.5 text-sm font-medium ' +
                                     (!filters.brand
-                                        ? 'border-[#bf8438] bg-[#bf843829] text-[#241a10] dark:text-[#f6ecdd]'
-                                        : 'border-[#e6d7bb] text-[#8a7860] dark:border-[#ffffff29] dark:text-[#b7a58f]')
+                                        ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
+                                        : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
                                 }
                             >
                                 Все бренды
@@ -47,8 +47,8 @@ export default function LotsIndex({ lots, brands, filters }) {
                                     className={
                                         'rounded-full border px-4 py-1.5 text-sm font-medium ' +
                                         (filters.brand === brand
-                                            ? 'border-[#bf8438] bg-[#bf843829] text-[#241a10] dark:text-[#f6ecdd]'
-                                            : 'border-[#e6d7bb] text-[#8a7860] dark:border-[#ffffff29] dark:text-[#b7a58f]')
+                                            ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
+                                            : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
                                     }
                                 >
                                     {brand}
@@ -58,11 +58,11 @@ export default function LotsIndex({ lots, brands, filters }) {
                     )}
 
                     {lots.data.length === 0 ? (
-                        <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                        <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                             Пока никто не выставил распив на продажу.
                         </p>
                     ) : (
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
                             {lots.data.map((lot) => (
                                 <LotCard key={lot.id} lot={lot} />
                             ))}
@@ -79,8 +79,8 @@ export default function LotsIndex({ lots, brands, filters }) {
                                     className={
                                         'rounded-full border px-3.5 py-1.5 text-sm ' +
                                         (link.active
-                                            ? 'border-[#bf8438] bg-[#bf843829] text-[#241a10] dark:text-[#f6ecdd]'
-                                            : 'border-[#e6d7bb] text-[#8a7860] dark:border-[#ffffff29] dark:text-[#b7a58f]') +
+                                            ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
+                                            : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]') +
                                         (!link.url
                                             ? ' pointer-events-none opacity-40'
                                             : '')

@@ -29,7 +29,7 @@ export default function SearchIndex({ query, products, lots, brands }) {
                     <h1 className="mb-1 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                         Поиск
                     </h1>
-                    <p className="mb-6 text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                    <p className="mb-6 text-sm text-[#7d6952] dark:text-[#b7a58f]">
                         Ищем сразу по официальному каталогу и лотам распива.
                     </p>
 
@@ -44,7 +44,7 @@ export default function SearchIndex({ query, products, lots, brands }) {
                         />
                         <button
                             type="submit"
-                            className="rounded-full bg-[#bf8438] px-5 py-2.5 text-sm font-bold text-[#241a10] uppercase dark:text-[#1c1408]"
+                            className="rounded-full bg-[#c79a5f] px-5 py-2.5 text-sm font-bold text-[#241a10] uppercase dark:text-[#3d2712]"
                         >
                             Найти
                         </button>
@@ -52,7 +52,7 @@ export default function SearchIndex({ query, products, lots, brands }) {
 
                     {query === '' ? (
                         <div className="flex flex-col gap-3">
-                            <span className="text-[11px] font-semibold tracking-[0.1em] text-[#8a7860] uppercase dark:text-[#b7a58f]">
+                            <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                                 Или ищите по бренду
                             </span>
                             <div className="flex flex-wrap gap-2">
@@ -61,7 +61,7 @@ export default function SearchIndex({ query, products, lots, brands }) {
                                         key={brand}
                                         type="button"
                                         onClick={() => searchFor(brand)}
-                                        className="rounded-full border border-[#e6d7bb] px-4 py-1.5 text-sm font-medium text-[#8a7860] dark:border-[#ffffff29] dark:text-[#b7a58f]"
+                                        className="rounded-full border border-[#e6d7bb] px-4 py-1.5 text-sm font-medium text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]"
                                     >
                                         {brand}
                                     </button>
@@ -69,7 +69,7 @@ export default function SearchIndex({ query, products, lots, brands }) {
                             </div>
                         </div>
                     ) : !hasResults ? (
-                        <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                        <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                             По запросу «{query}» ничего не нашлось.
                         </p>
                     ) : (
@@ -79,7 +79,7 @@ export default function SearchIndex({ query, products, lots, brands }) {
                                     <h2 className="text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                                         Каталог
                                     </h2>
-                                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
                                         {products.map((product) => (
                                             <ProductCard
                                                 key={product.id}
@@ -95,7 +95,7 @@ export default function SearchIndex({ query, products, lots, brands }) {
                                     <h2 className="text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                                         Распив
                                     </h2>
-                                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
                                         {lots.map((lot) => (
                                             <LotCard key={lot.id} lot={lot} />
                                         ))}

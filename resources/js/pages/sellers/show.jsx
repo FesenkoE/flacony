@@ -15,7 +15,7 @@ export default function SellerShow({ seller, lots }) {
                 <div className="mx-auto max-w-[1600px] p-6">
                     <Link
                         href="/sellers"
-                        className="text-sm text-[#8a7860] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                        className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
                         ← Продавцы
                     </Link>
@@ -27,7 +27,7 @@ export default function SellerShow({ seller, lots }) {
                         {isOwnStorefront && (
                             <Link
                                 href="/sellers/lots/create"
-                                className="rounded-full bg-[#bf8438] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                                className="rounded-full bg-[#c79a5f] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                             >
                                 + Добавить лот
                             </Link>
@@ -35,13 +35,13 @@ export default function SellerShow({ seller, lots }) {
                     </div>
 
                     {lots.length === 0 ? (
-                        <p className="text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                        <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                             {isOwnStorefront
                                 ? 'У тебя пока нет активных лотов.'
                                 : 'У продавца сейчас нет активных лотов.'}
                         </p>
                     ) : (
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
                             {lots.map((lot) => (
                                 <LotCard
                                     key={lot.id}

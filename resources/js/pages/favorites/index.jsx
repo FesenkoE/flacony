@@ -24,13 +24,13 @@ export default function FavoritesIndex({ products }) {
                             <h2 className="font-display text-2xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                                 Пока пусто
                             </h2>
-                            <p className="max-w-sm text-sm text-[#8a7860] dark:text-[#b7a58f]">
+                            <p className="max-w-sm text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                 Добавляй ароматы сердечком в каталоге — здесь
                                 будет твой список желаний
                             </p>
                             <Link
                                 href="/products"
-                                className="mt-2 rounded-full bg-[#bf8438] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#1c1408] uppercase"
+                                className="mt-2 rounded-full bg-[#c79a5f] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                             >
                                 Смотреть каталог
                             </Link>
@@ -38,7 +38,7 @@ export default function FavoritesIndex({ products }) {
                     ) : (
                         <div
                             ref={listRef}
-                            className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                            className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5"
                         >
                             {products.map((product) => (
                                 <ProductCard
