@@ -24,7 +24,7 @@ class ReviewController extends Controller
 
         Inertia::flash('toast', [
             'type' => 'success',
-            'message' => 'Спасибо за отзыв!',
+            'message' => __('Спасибо за отзыв!'),
         ]);
 
         return back();

@@ -371,7 +371,7 @@ export default function SiteHeader() {
                                 <DropdownMenuTrigger asChild>
                                     <button
                                         type="button"
-                                        className="group flex cursor-pointer items-center gap-1.5 rounded-full outline-none transition-transform duration-150 hover:scale-105 active:scale-95"
+                                        className="group flex cursor-pointer items-center gap-1.5 rounded-full transition-transform duration-150 outline-none hover:scale-105 active:scale-95"
                                     >
                                         <span className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#c79a5f] text-xs font-bold text-[#3d2712] ring-2 ring-transparent transition-all duration-150 group-hover:ring-[#c79a5f66]">
                                             {auth.user.name

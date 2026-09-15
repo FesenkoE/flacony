@@ -2,21 +2,24 @@ import { Head, Link } from '@inertiajs/react';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { formatDate } from '@/lib/format-date';
+import { useTranslations } from '@/hooks/use-translations';
 
 export default function BlogIndex({ posts }) {
+    const t = useTranslations();
+
     return (
         <>
-            <Head title="Блог" />
+            <Head title={t('Блог')} />
             <SiteHeader />
             <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
                 <div className="mx-auto max-w-3xl p-6">
                     <h1 className="mb-8 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                        Блог
+                        {t('Блог')}
                     </h1>
 
                     {posts.length === 0 ? (
                         <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                            Пока нет статей.
+                            {t('Пока нет статей.')}
                         </p>
                     ) : (
                         <div className="flex flex-col gap-4">

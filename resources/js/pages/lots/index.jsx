@@ -2,6 +2,7 @@ import { Head, Link } from '@inertiajs/react';
 import LotCard from '@/components/lot-card';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
+import { useTranslations } from '@/hooks/use-translations';
 
 function buildUrl(filters, overrides) {
     const params = new URLSearchParams();
@@ -13,18 +14,21 @@ function buildUrl(filters, overrides) {
 }
 
 export default function LotsIndex({ lots, brands, filters }) {
+    const t = useTranslations();
+
     return (
         <>
-            <Head title="Розпив" />
+            <Head title={t('Розпив')} />
             <SiteHeader />
             <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
                 <div className="mx-auto max-w-[1600px] p-6">
                     <h1 className="mb-2 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                        Розпив
+                        {t('Розпив')}
                     </h1>
                     <p className="mb-6 text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                        Флаконы от других покупателей — от нескольких мл на
-                        попробовать
+                        {t(
+                            'Флаконы от других покупателей — от нескольких мл на попробовать',
+                        )}
                     </p>
 
                     {brands.length > 0 && (
@@ -38,7 +42,7 @@ export default function LotsIndex({ lots, brands, filters }) {
                                         : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
                                 }
                             >
-                                Все бренды
+                                {t('Все бренды')}
                             </Link>
                             {brands.map((brand) => (
                                 <Link
@@ -59,7 +63,7 @@ export default function LotsIndex({ lots, brands, filters }) {
 
                     {lots.data.length === 0 ? (
                         <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                            Пока никто не выставил распив на продажу.
+                            {t('Пока никто не выставил распив на продажу.')}
                         </p>
                     ) : (
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">

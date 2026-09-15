@@ -2,8 +2,11 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { formatDate } from '@/lib/format-date';
+import { useTranslations } from '@/hooks/use-translations';
+import { pluralizeRu } from '@/lib/pluralize';
 
 export default function ForumCategory({ category, topics }) {
+    const t = useTranslations();
     const { auth } = usePage().props;
 
     return (
@@ -16,7 +19,7 @@ export default function ForumCategory({ category, topics }) {
                         href="/forum"
                         className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
-                        ← Форум
+                        ← {t('Форум')}
                     </Link>
 
                     <div className="mt-4 mb-8 flex items-center justify-between">
@@ -28,21 +31,21 @@ export default function ForumCategory({ category, topics }) {
                                 href={`/forum/${category.slug}/create`}
                                 className="rounded-full bg-[#c79a5f] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                             >
-                                + Новая тема
+                                + {t('Новая тема')}
                             </Link>
                         ) : (
                             <Link
                                 href="/login"
                                 className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                             >
-                                Войти, чтобы создать тему
+                                {t('Войти, чтобы создать тему')}
                             </Link>
                         )}
                     </div>
 
                     {topics.length === 0 ? (
                         <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                            В этом разделе пока нет тем.
+                            {t('В этом разделе пока нет тем.')}
                         </p>
                     ) : (
                         <div className="flex flex-col gap-3">
@@ -62,7 +65,14 @@ export default function ForumCategory({ category, topics }) {
                                         </span>
                                     </div>
                                     <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                                        {topic.replies_count} ответов
+                                        {topic.replies_count}{' '}
+                                        {t(
+                                            pluralizeRu(topic.replies_count, [
+                                                'ответ',
+                                                'ответа',
+                                                'ответов',
+                                            ]),
+                                        )}
                                     </span>
                                 </Link>
                             ))}

@@ -2,21 +2,25 @@ import { Head, Link } from '@inertiajs/react';
 import { MessageCircle } from 'lucide-react';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
+import { useTranslations } from '@/hooks/use-translations';
+import { pluralizeRu } from '@/lib/pluralize';
 
 export default function ForumIndex({ categories }) {
+    const t = useTranslations();
+
     return (
         <>
-            <Head title="Форум" />
+            <Head title={t('Форум')} />
             <SiteHeader />
             <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
                 <div className="mx-auto max-w-3xl p-6">
                     <h1 className="mb-8 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                        Форум
+                        {t('Форум')}
                     </h1>
 
                     {categories.length === 0 ? (
                         <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                            Разделов пока нет.
+                            {t('Разделов пока нет.')}
                         </p>
                     ) : (
                         <div className="flex flex-col gap-3">
@@ -43,7 +47,14 @@ export default function ForumIndex({ categories }) {
                                         )}
                                     </div>
                                     <span className="shrink-0 text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                                        {category.topics_count} тем
+                                        {category.topics_count}{' '}
+                                        {t(
+                                            pluralizeRu(category.topics_count, [
+                                                'тема',
+                                                'темы',
+                                                'тем',
+                                            ]),
+                                        )}
                                     </span>
                                 </Link>
                             ))}

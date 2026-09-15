@@ -62,7 +62,7 @@ class LotController extends Controller
 
         Inertia::flash('toast', [
             'type' => 'success',
-            'message' => 'Лот выставлен на витрину',
+            'message' => __('Лот выставлен на витрину'),
         ]);
 
         return to_route('sellers.show', $request->user());
@@ -90,7 +90,7 @@ class LotController extends Controller
 
         Inertia::flash('toast', [
             'type' => 'success',
-            'message' => 'Лот обновлён',
+            'message' => __('Лот обновлён'),
         ]);
 
         return to_route('dashboard');

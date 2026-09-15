@@ -2,8 +2,10 @@ import { Head, Link } from '@inertiajs/react';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { formatDate } from '@/lib/format-date';
+import { useTranslations } from '@/hooks/use-translations';
 
 export default function BlogShow({ post }) {
+    const t = useTranslations();
     const paragraphs = post.body.split(/\n{2,}/);
 
     return (
@@ -16,7 +18,7 @@ export default function BlogShow({ post }) {
                         href="/blog"
                         className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
-                        ← Блог
+                        ← {t('Блог')}
                     </Link>
 
                     <div className="mt-6 mb-8 flex flex-col gap-2">

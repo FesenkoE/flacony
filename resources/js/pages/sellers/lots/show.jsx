@@ -4,6 +4,8 @@ import BottleIcon, { tintForId } from '@/components/bottle-icon';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { useAddLotToCart } from '@/hooks/use-add-lot-to-cart';
+import { useTranslations } from '@/hooks/use-translations';
+import { pluralizeRu } from '@/lib/pluralize';
 
 // ponytail: просмотры/покупатели — прототип с выдуманными числами, реальный
 // трекинг появится вместе с заказами/аналитикой. Заменить на честные данные,
@@ -16,6 +18,7 @@ function fakeStatsForLot(lotId) {
 }
 
 export default function LotShow({ lot, isOwn, sellerLotsCount }) {
+    const t = useTranslations();
     const stats = fakeStatsForLot(lot.id);
     const remaining = Number(lot.remaining_volume_ml);
     const total = Number(lot.total_volume_ml);
@@ -48,7 +51,7 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                         href={`/sellers/${lot.seller.id}`}
                         className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
-                        ← Витрина {lot.seller.name}
+                        ← {t('Витрина {name}', { name: lot.seller.name })}
                     </Link>
 
                     <div className="mt-6 grid gap-8 md:grid-cols-2">
@@ -59,7 +62,7 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                         <div className="flex flex-col gap-5">
                             <div className="flex flex-col gap-2">
                                 <span className="text-xs font-bold tracking-[0.18em] text-[#c79a5f] uppercase">
-                                    {lot.brand_name} · распив
+                                    {lot.brand_name} · {t('Розпив')}
                                 </span>
                                 <h1 className="font-display text-5xl leading-none font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                                     {lot.product_name}
@@ -81,7 +84,14 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                         <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z" />
                                         <circle cx="12" cy="12" r="3" />
                                     </svg>
-                                    {stats.views} просмотров
+                                    {stats.views}{' '}
+                                    {t(
+                                        pluralizeRu(stats.views, [
+                                            'просмотр',
+                                            'просмотра',
+                                            'просмотров',
+                                        ]),
+                                    )}
                                 </span>
                                 <span className="flex items-center gap-1.5">
                                     <svg
@@ -99,7 +109,14 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                         <circle cx="9" cy="20" r="1" />
                                         <circle cx="18" cy="20" r="1" />
                                     </svg>
-                                    {stats.buyers} покупателей
+                                    {stats.buyers}{' '}
+                                    {t(
+                                        pluralizeRu(stats.buyers, [
+                                            'покупатель',
+                                            'покупателя',
+                                            'покупателей',
+                                        ]),
+                                    )}
                                 </span>
                             </div>
 
@@ -115,30 +132,44 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                             />
                                         </div>
                                         <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                                            Продано {sold} из {total} мл (
-                                            {soldPercent}%) ·{' '}
-                                            {pricePerMl.toFixed(2)} ₴/мл
+                                            {t(
+                                                'Продано {sold} из {total} мл ({percent}%) · {price} ₴/мл',
+                                                {
+                                                    sold,
+                                                    total,
+                                                    percent: soldPercent,
+                                                    price: pricePerMl.toFixed(
+                                                        2,
+                                                    ),
+                                                },
+                                            )}
                                             {bulkThreshold !== null &&
-                                                bulkPrice !== null && (
-                                                    <>
-                                                        {' '}
-                                                        · от {bulkThreshold} мл
-                                                        — {bulkPrice.toFixed(2)}{' '}
-                                                        ₴/мл
-                                                    </>
-                                                )}
+                                                bulkPrice !== null &&
+                                                ' ' +
+                                                    t(
+                                                        '· от {threshold} мл — {price} ₴/мл',
+                                                        {
+                                                            threshold:
+                                                                bulkThreshold,
+                                                            price: bulkPrice.toFixed(
+                                                                2,
+                                                            ),
+                                                        },
+                                                    )}
                                         </span>
                                     </div>
 
                                     <div className="mt-2 flex items-center gap-3">
                                         <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                                            Остаток {remaining} мл
+                                            {t('Остаток {remaining} мл', {
+                                                remaining,
+                                            })}
                                         </span>
                                         <Link
                                             href={`/sellers/lots/${lot.id}/edit`}
                                             className="rounded-full bg-[#c79a5f] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                                         >
-                                            Редактировать
+                                            {t('Редактировать')}
                                         </Link>
                                     </div>
                                 </>
@@ -154,25 +185,37 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                             />
                                         </div>
                                         <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                                            Останется {projectedRemaining} из{' '}
-                                            {total} мл · {pricePerMl.toFixed(2)}{' '}
-                                            ₴/мл
+                                            {t(
+                                                'Останется {remaining} из {total} мл · {price} ₴/мл',
+                                                {
+                                                    remaining:
+                                                        projectedRemaining,
+                                                    total,
+                                                    price: pricePerMl.toFixed(
+                                                        2,
+                                                    ),
+                                                },
+                                            )}
                                             {bulkThreshold !== null &&
-                                                bulkPrice !== null && (
-                                                    <>
-                                                        {' '}
-                                                        · от {bulkThreshold} мл
-                                                        — {bulkPrice.toFixed(2)}{' '}
-                                                        ₴/мл
-                                                    </>
-                                                )}
+                                                bulkPrice !== null &&
+                                                ' ' +
+                                                    t(
+                                                        '· от {threshold} мл — {price} ₴/мл',
+                                                        {
+                                                            threshold:
+                                                                bulkThreshold,
+                                                            price: bulkPrice.toFixed(
+                                                                2,
+                                                            ),
+                                                        },
+                                                    )}
                                         </span>
                                     </div>
 
                                     <div className="flex flex-col gap-2">
                                         <div className="flex items-center justify-between">
                                             <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
-                                                Сколько мл
+                                                {t('Сколько мл')}
                                             </span>
                                             <span className="text-sm font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                                                 {volume} мл
@@ -205,7 +248,9 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                             }
                                             className="rounded-full bg-[#c79a5f] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                                         >
-                                            {added ? 'Добавлено' : 'В корзину'}
+                                            {added
+                                                ? t('Добавлено')
+                                                : t('В корзину')}
                                         </button>
                                     </div>
                                 </>
@@ -216,7 +261,7 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                     <div className="mt-12 flex items-center justify-between rounded-2xl border border-[#1e160c14] bg-[#fffaf1] p-5 dark:border-[#ffffff14] dark:bg-[#ffffff0a]">
                         <div className="flex flex-col gap-1">
                             <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
-                                Продавец
+                                {t('Продавец')}
                             </span>
                             <span className="font-display text-xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                                 {lot.seller.name}
@@ -226,7 +271,9 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                             href={`/sellers/${lot.seller.id}`}
                             className="rounded-full border border-[#e6d7bb] px-5 py-2.5 text-sm font-semibold text-[#241a10] dark:border-[#ffffff29] dark:text-[#f6ecdd]"
                         >
-                            Все лоты продавца ({sellerLotsCount})
+                            {t('Все лоты продавца ({count})', {
+                                count: sellerLotsCount,
+                            })}
                         </Link>
                     </div>
                 </div>

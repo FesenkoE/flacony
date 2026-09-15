@@ -8,6 +8,7 @@ import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import StarRating from '@/components/star-rating';
 import { useTranslations } from '@/hooks/use-translations';
+import { pluralizeRu } from '@/lib/pluralize';
 
 const STEPS = [
     {
@@ -47,12 +48,7 @@ const MOCK_TESTIMONIALS = [
 ];
 
 function pluralizeLots(n) {
-    const mod10 = n % 10;
-    const mod100 = n % 100;
-    if (mod10 === 1 && mod100 !== 11) return 'лот';
-    if ([2, 3, 4].includes(mod10) && ![12, 13, 14].includes(mod100))
-        return 'лота';
-    return 'лотов';
+    return pluralizeRu(n, ['лот', 'лота', 'лотов']);
 }
 
 const TRUST_BADGES = [
@@ -134,10 +130,7 @@ function buildSlides({ promoCode, newArrivals, activeLotsCount, t }) {
             cta: t('В каталог'),
             href: '/products',
             visual: (
-                <BigStat
-                    value={`-${discount}`}
-                    label={t('на первый заказ')}
-                />
+                <BigStat value={`-${discount}`} label={t('на первый заказ')} />
             ),
         });
     }

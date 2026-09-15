@@ -3,6 +3,7 @@ import InputError from '@/components/input-error';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { formatDateTime as formatDate } from '@/lib/format-date';
+import { useTranslations } from '@/hooks/use-translations';
 
 function ReplyCard({ reply }) {
     return (
@@ -23,6 +24,7 @@ function ReplyCard({ reply }) {
 }
 
 export default function ForumTopic({ topic, replies }) {
+    const t = useTranslations();
     const { auth } = usePage().props;
 
     return (
@@ -61,7 +63,7 @@ export default function ForumTopic({ topic, replies }) {
                                         <textarea
                                             name="body"
                                             rows={4}
-                                            placeholder="Написать ответ…"
+                                            placeholder={t('Написать ответ…')}
                                             className="w-full rounded-xl border border-[#e6d7bb] bg-[#fbf5ea] px-4 py-3 text-sm text-[#241a10] outline-none focus:border-[#c79a5f] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#f6ecdd]"
                                         />
                                         <InputError message={errors.body} />
@@ -70,7 +72,7 @@ export default function ForumTopic({ topic, replies }) {
                                             disabled={processing}
                                             className="self-start rounded-full bg-[#c79a5f] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60"
                                         >
-                                            Ответить
+                                            {t('Ответить')}
                                         </button>
                                     </>
                                 )}
@@ -81,9 +83,9 @@ export default function ForumTopic({ topic, replies }) {
                                     href="/login"
                                     className="text-[#c79a5f] hover:text-[#a8702e]"
                                 >
-                                    Войди
+                                    {t('Войди')}
                                 </Link>
-                                , чтобы ответить в теме.
+                                {t(', чтобы ответить в теме.')}
                             </p>
                         )}
                     </div>

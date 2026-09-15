@@ -16,17 +16,29 @@ use Inertia\Response;
 
 class CheckoutController extends Controller
 {
-    public const DELIVERY_METHODS = [
-        'np_branch' => 'Нова Пошта — відділення',
-        'np_courier' => 'Нова Пошта — кур\'єр',
-        'courier' => 'Кур\'єр по місту',
-        'pickup' => 'Самовивіз',
-    ];
+    /**
+     * @return array<string, string>
+     */
+    public static function deliveryMethods(): array
+    {
+        return [
+            'np_branch' => __('Новая Почта — отделение'),
+            'np_courier' => __('Новая Почта — курьер'),
+            'courier' => __('Курьер по городу'),
+            'pickup' => __('Самовывоз'),
+        ];
+    }
 
-    public const PAYMENT_METHODS = [
-        'cod' => 'Оплата при отриманні',
-        'card' => 'Банківською картою (скоро)',
-    ];
+    /**
+     * @return array<string, string>
+     */
+    public static function paymentMethods(): array
+    {
+        return [
+            'cod' => __('Оплата при получении'),
+            'card' => __('Банковской картой (скоро)'),
+        ];
+    }
 
     public function index(Request $request): Response|RedirectResponse
     {
@@ -39,8 +51,8 @@ class CheckoutController extends Controller
         return Inertia::render('checkout/index', [
             'items' => $items,
             'total' => $items->sum('subtotal'),
-            'deliveryMethods' => self::DELIVERY_METHODS,
-            'paymentMethods' => self::PAYMENT_METHODS,
+            'deliveryMethods' => self::deliveryMethods(),
+            'paymentMethods' => self::paymentMethods(),
         ]);
     }
 
@@ -59,8 +71,8 @@ class CheckoutController extends Controller
             'phone' => ['required', 'string', 'max:32'],
             'city' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string', 'max:500'],
-            'delivery_method' => ['required', Rule::in(array_keys(self::DELIVERY_METHODS))],
-            'payment_method' => ['required', Rule::in(array_keys(self::PAYMENT_METHODS))],
+            'delivery_method' => ['required', Rule::in(array_keys(self::deliveryMethods()))],
+            'payment_method' => ['required', Rule::in(array_keys(self::paymentMethods()))],
             'promo_code' => ['nullable', 'string', 'max:64'],
             'comment' => ['nullable', 'string', 'max:1000'],
         ]);
@@ -79,7 +91,9 @@ class CheckoutController extends Controller
 
                 if (! $lot || $lot->remaining_volume_ml < $item['volume_ml']) {
                     throw ValidationException::withMessages([
-                        'items' => "«{$item['product_name']}» — в лоте больше нет столько мл. Обнови корзину.",
+                        'items' => __('«:name» — в лоте больше нет столько мл. Обнови корзину.', [
+                            'name' => $item['product_name'],
+                        ]),
                     ]);
                 }
             }
@@ -91,7 +105,7 @@ class CheckoutController extends Controller
                 $promo = PromoCode::findByCode($orderData['promo_code'], lock: true);
 
                 if (! $promo) {
-                    throw ValidationException::withMessages(['promo_code' => 'Промокод не найден.']);
+                    throw ValidationException::withMessages(['promo_code' => __('Промокод не найден.')]);
                 }
 
                 $promo->assertUsableFor($subtotal);

@@ -1,5 +1,6 @@
 import { Form, Link } from '@inertiajs/react';
 import InputError from '@/components/input-error';
+import { useTranslations } from '@/hooks/use-translations';
 
 const fieldClass =
     'w-full rounded-xl border border-[#e6d7bb] bg-[#fbf5ea] px-4 py-2.5 text-sm text-[#241a10] outline-none focus:border-[#c79a5f] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#f6ecdd]';
@@ -12,16 +13,18 @@ export default function LotForm({
     submitLabel,
     heading,
     backHref = '/sellers',
-    backLabel = '← Продавцы',
+    backLabel,
     defaults = {},
 }) {
+    const t = useTranslations();
+
     return (
         <div className="mx-auto max-w-xl p-6">
             <Link
                 href={backHref}
                 className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
             >
-                {backLabel}
+                {backLabel ?? `← ${t('Продавцы')}`}
             </Link>
 
             <h1 className="mt-4 mb-6 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
@@ -41,7 +44,7 @@ export default function LotForm({
                                     className={labelClass}
                                     htmlFor="brand_name"
                                 >
-                                    Бренд
+                                    {t('Бренд')}
                                 </label>
                                 <input
                                     id="brand_name"
@@ -57,7 +60,7 @@ export default function LotForm({
                                     className={labelClass}
                                     htmlFor="product_name"
                                 >
-                                    Название
+                                    {t('Название')}
                                 </label>
                                 <input
                                     id="product_name"
@@ -75,7 +78,7 @@ export default function LotForm({
                                 className={labelClass}
                                 htmlFor="total_volume_ml"
                             >
-                                Объём флакона, мл
+                                {t('Объём флакона, мл')}
                             </label>
                             <input
                                 id="total_volume_ml"
@@ -95,7 +98,7 @@ export default function LotForm({
                                 className={labelClass}
                                 htmlFor="price_per_ml"
                             >
-                                Цена за мл, ₴
+                                {t('Цена за мл, ₴')}
                             </label>
                             <input
                                 id="price_per_ml"
@@ -113,8 +116,9 @@ export default function LotForm({
                         <div className="h-px bg-[#1e160c14] dark:bg-[#ffffff1a]" />
 
                         <p className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
-                            Необязательно: скидка при покупке от определённого
-                            объёма.
+                            {t(
+                                'Необязательно: скидка при покупке от определённого объёма.',
+                            )}
                         </p>
 
                         <div className="grid grid-cols-2 gap-4">
@@ -123,7 +127,7 @@ export default function LotForm({
                                     className={labelClass}
                                     htmlFor="bulk_threshold_ml"
                                 >
-                                    От скольки мл
+                                    {t('От скольки мл')}
                                 </label>
                                 <input
                                     id="bulk_threshold_ml"
@@ -144,7 +148,7 @@ export default function LotForm({
                                     className={labelClass}
                                     htmlFor="bulk_price_per_ml"
                                 >
-                                    Цена за мл при скидке, ₴
+                                    {t('Цена за мл при скидке, ₴')}
                                 </label>
                                 <input
                                     id="bulk_price_per_ml"

@@ -17,7 +17,7 @@ class PromoCodeController extends Controller
         $promo = PromoCode::findByCode($data['code']);
 
         if (! $promo) {
-            return response()->json(['message' => 'Промокод не найден.'], 422);
+            return response()->json(['message' => __('Промокод не найден.')], 422);
         }
 
         $subtotal = Cart::items()->sum('subtotal');

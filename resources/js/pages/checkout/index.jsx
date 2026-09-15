@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import InputError from '@/components/input-error';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
+import { useTranslations } from '@/hooks/use-translations';
 
 const fieldClass =
     'w-full rounded-xl border border-[#e6d7bb] bg-[#fbf5ea] px-4 py-2.5 text-sm text-[#241a10] outline-none focus:border-[#c79a5f] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#f6ecdd]';
@@ -17,6 +18,7 @@ function readXsrfToken() {
 }
 
 function CityField({ city, onSelectCity, error }) {
+    const t = useTranslations();
     const [query, setQuery] = useState(city?.name ?? '');
     const [results, setResults] = useState([]);
     const [open, setOpen] = useState(false);
@@ -44,12 +46,12 @@ function CityField({ city, onSelectCity, error }) {
     return (
         <div className="relative flex flex-col gap-1.5">
             <label className={labelClass} htmlFor="city_query">
-                Город
+                {t('Город')}
             </label>
             <input
                 id="city_query"
                 autoComplete="off"
-                placeholder="Начните вводить город..."
+                placeholder={t('Начните вводить город...')}
                 value={query}
                 onChange={(e) => {
                     setQuery(e.target.value);
@@ -87,6 +89,7 @@ function CityField({ city, onSelectCity, error }) {
 }
 
 function WarehouseField({ cityRef, error }) {
+    const t = useTranslations();
     const [warehouses, setWarehouses] = useState([]);
     const [query, setQuery] = useState('');
     const [selected, setSelected] = useState('');
@@ -111,9 +114,9 @@ function WarehouseField({ cityRef, error }) {
     if (!cityRef) {
         return (
             <div className="flex flex-col gap-1.5">
-                <label className={labelClass}>Отделение</label>
+                <label className={labelClass}>{t('Отделение')}</label>
                 <p className="rounded-xl border border-dashed border-[#e6d7bb] px-4 py-2.5 text-sm text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]">
-                    Сначала выберите город
+                    {t('Сначала выберите город')}
                 </p>
             </div>
         );
@@ -128,15 +131,15 @@ function WarehouseField({ cityRef, error }) {
     return (
         <div className="relative flex flex-col gap-1.5">
             <label className={labelClass} htmlFor="address_query">
-                Отделение
+                {t('Отделение')}
             </label>
             <input
                 id="address_query"
                 autoComplete="off"
                 placeholder={
                     warehouses.length === 0
-                        ? 'Загрузка отделений...'
-                        : 'Начните вводить номер или улицу...'
+                        ? t('Загрузка отделений...')
+                        : t('Начните вводить номер или улицу...')
                 }
                 disabled={warehouses.length === 0}
                 value={query}
@@ -174,6 +177,8 @@ function WarehouseField({ cityRef, error }) {
 }
 
 function CheckoutItemRow({ item }) {
+    const t = useTranslations();
+
     function setQuantity(quantity) {
         router.patch(
             `/cart/${item.product_variant_id}`,
@@ -230,7 +235,7 @@ function CheckoutItemRow({ item }) {
             <button
                 type="button"
                 onClick={remove}
-                aria-label="Убрать"
+                aria-label={t('Убрать')}
                 className="shrink-0 text-[#7d6952] hover:text-[#c0645a] dark:text-[#b7a58f]"
             >
                 ×
@@ -240,6 +245,7 @@ function CheckoutItemRow({ item }) {
 }
 
 function PromoCodeField({ onDiscountChange }) {
+    const t = useTranslations();
     const [code, setCode] = useState('');
     const [status, setStatus] = useState('idle');
     const [message, setMessage] = useState('');
@@ -272,18 +278,22 @@ function PromoCodeField({ onDiscountChange }) {
 
                 if (!r.ok) {
                     setStatus('invalid');
-                    setMessage(data.message ?? 'Промокод не найден.');
+                    setMessage(data.message ?? t('Промокод не найден.'));
                     onDiscountChange(0);
                     return;
                 }
 
                 setStatus('valid');
-                setMessage(`Скидка ${Number(data.discount).toFixed(2)} ₴`);
+                setMessage(
+                    t('Скидка {discount} ₴', {
+                        discount: Number(data.discount).toFixed(2),
+                    }),
+                );
                 onDiscountChange(data.discount);
             })
             .catch(() => {
                 setStatus('invalid');
-                setMessage('Не получилось проверить код, попробуй ещё раз.');
+                setMessage(t('Не получилось проверить код, попробуй ещё раз.'));
                 onDiscountChange(0);
             });
     }
@@ -291,7 +301,7 @@ function PromoCodeField({ onDiscountChange }) {
     return (
         <div className="flex flex-col gap-1.5">
             <label className={labelClass} htmlFor="promo_code">
-                Промокод (необязательно)
+                {t('Промокод (необязательно)')}
             </label>
             <div className="flex gap-2">
                 <input
@@ -311,7 +321,7 @@ function PromoCodeField({ onDiscountChange }) {
                     disabled={status === 'checking'}
                     className="shrink-0 rounded-xl border border-[#e6d7bb] px-4 text-sm font-semibold text-[#7d6952] hover:border-[#c79a5f] hover:text-[#c79a5f] disabled:opacity-60 dark:border-[#ffffff29] dark:text-[#b7a58f]"
                 >
-                    Применить
+                    {t('Применить')}
                 </button>
             </div>
             {message && (
@@ -335,6 +345,7 @@ export default function CheckoutIndex({
     deliveryMethods,
     paymentMethods,
 }) {
+    const t = useTranslations();
     const { auth } = usePage().props;
     const [firstName, ...lastNameParts] = auth.user.name.split(' ');
     const lastName = lastNameParts.join(' ');
@@ -345,7 +356,7 @@ export default function CheckoutIndex({
 
     return (
         <>
-            <Head title="Оформление заказа" />
+            <Head title={t('Оформление заказа')} />
             <SiteHeader />
             <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
                 <div className="mx-auto max-w-2xl p-6">
@@ -353,11 +364,11 @@ export default function CheckoutIndex({
                         href="/cart"
                         className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
-                        ← Корзина
+                        ← {t('Корзина')}
                     </Link>
 
                     <h1 className="mt-4 mb-6 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                        Оформление заказа
+                        {t('Оформление заказа')}
                     </h1>
 
                     <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-[#1e160c14] bg-[#fffaf1] p-4 dark:border-[#ffffff14] dark:bg-[#ffffff0a]">
@@ -370,7 +381,7 @@ export default function CheckoutIndex({
                         {discount > 0 && (
                             <div className="flex items-baseline justify-between text-sm">
                                 <span className="text-[#7d6952] dark:text-[#b7a58f]">
-                                    Скидка по промокоду
+                                    {t('Скидка по промокоду')}
                                 </span>
                                 <span className="font-semibold text-[#c79a5f]">
                                     −{Number(discount).toFixed(2)} ₴
@@ -379,7 +390,7 @@ export default function CheckoutIndex({
                         )}
                         <div className="mt-1 flex items-baseline justify-between border-t border-[#1e160c14] pt-2 dark:border-[#ffffff1a]">
                             <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                                Итого
+                                {t('Итого')}
                             </span>
                             <span className="font-display text-xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                                 {Number(total - discount).toFixed(2)} ₴
@@ -400,7 +411,7 @@ export default function CheckoutIndex({
                                             className={labelClass}
                                             htmlFor="first_name"
                                         >
-                                            Имя
+                                            {t('Имя')}
                                         </label>
                                         <input
                                             id="first_name"
@@ -417,7 +428,7 @@ export default function CheckoutIndex({
                                             className={labelClass}
                                             htmlFor="last_name"
                                         >
-                                            Фамилия
+                                            {t('Фамилия')}
                                         </label>
                                         <input
                                             id="last_name"
@@ -453,7 +464,7 @@ export default function CheckoutIndex({
                                             className={labelClass}
                                             htmlFor="phone"
                                         >
-                                            Телефон
+                                            {t('Телефон')}
                                         </label>
                                         <input
                                             id="phone"
@@ -470,7 +481,7 @@ export default function CheckoutIndex({
                                         className={labelClass}
                                         htmlFor="delivery_method"
                                     >
-                                        Способ доставки
+                                        {t('Способ доставки')}
                                     </label>
                                     <select
                                         id="delivery_method"
@@ -483,7 +494,7 @@ export default function CheckoutIndex({
                                         className={fieldClass}
                                     >
                                         <option value="" disabled>
-                                            Выберите способ доставки
+                                            {t('Выберите способ доставки')}
                                         </option>
                                         {Object.entries(deliveryMethods).map(
                                             ([value, label]) => (
@@ -519,7 +530,7 @@ export default function CheckoutIndex({
                                                     className={labelClass}
                                                     htmlFor="address"
                                                 >
-                                                    Улица, дом, квартира
+                                                    {t('Улица, дом, квартира')}
                                                 </label>
                                                 <input
                                                     id="address"
@@ -539,7 +550,7 @@ export default function CheckoutIndex({
                                                 className={labelClass}
                                                 htmlFor="city"
                                             >
-                                                Город
+                                                {t('Город')}
                                             </label>
                                             <input
                                                 id="city"
@@ -553,7 +564,7 @@ export default function CheckoutIndex({
                                                 className={labelClass}
                                                 htmlFor="address"
                                             >
-                                                Адрес
+                                                {t('Адрес')}
                                             </label>
                                             <input
                                                 id="address"
@@ -572,7 +583,7 @@ export default function CheckoutIndex({
                                         className={labelClass}
                                         htmlFor="payment_method"
                                     >
-                                        Способ оплаты
+                                        {t('Способ оплаты')}
                                     </label>
                                     <select
                                         id="payment_method"
@@ -581,7 +592,7 @@ export default function CheckoutIndex({
                                         className={fieldClass}
                                     >
                                         <option value="" disabled>
-                                            Выберите способ оплаты
+                                            {t('Выберите способ оплаты')}
                                         </option>
                                         {Object.entries(paymentMethods).map(
                                             ([value, label]) => (
@@ -598,9 +609,9 @@ export default function CheckoutIndex({
                                         message={errors.payment_method}
                                     />
                                     <p className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
-                                        Онлайн-оплату картой пока не подключили
-                                        — если выберешь её, мы свяжемся, чтобы
-                                        уточнить оплату.
+                                        {t(
+                                            'Онлайн-оплату картой пока не подключили — если выберешь её, мы свяжемся, чтобы уточнить оплату.',
+                                        )}
                                     </p>
                                 </div>
 
@@ -614,7 +625,9 @@ export default function CheckoutIndex({
                                         className={labelClass}
                                         htmlFor="comment"
                                     >
-                                        Комментарий к заказу (необязательно)
+                                        {t(
+                                            'Комментарий к заказу (необязательно)',
+                                        )}
                                     </label>
                                     <textarea
                                         id="comment"
@@ -632,7 +645,7 @@ export default function CheckoutIndex({
                                     disabled={processing}
                                     className="mt-1 rounded-full bg-[#c79a5f] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60"
                                 >
-                                    Подтвердить заказ
+                                    {t('Подтвердить заказ')}
                                 </button>
                             </>
                         )}

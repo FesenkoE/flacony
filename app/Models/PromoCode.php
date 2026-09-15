@@ -38,20 +38,22 @@ class PromoCode extends Model
     public function assertUsableFor(float $subtotal): void
     {
         if (! $this->active) {
-            throw ValidationException::withMessages(['promo_code' => 'Промокод не найден.']);
+            throw ValidationException::withMessages(['promo_code' => __('Промокод не найден.')]);
         }
 
         if ($this->expires_at && $this->expires_at->isPast()) {
-            throw ValidationException::withMessages(['promo_code' => 'Срок действия промокода истёк.']);
+            throw ValidationException::withMessages(['promo_code' => __('Срок действия промокода истёк.')]);
         }
 
         if ($this->max_uses !== null && $this->used_count >= $this->max_uses) {
-            throw ValidationException::withMessages(['promo_code' => 'Промокод больше не действует.']);
+            throw ValidationException::withMessages(['promo_code' => __('Промокод больше не действует.')]);
         }
 
         if ($this->min_order_amount && $subtotal < $this->min_order_amount) {
             throw ValidationException::withMessages([
-                'promo_code' => "Минимальная сумма заказа для этого кода — {$this->min_order_amount} ₴.",
+                'promo_code' => __('Минимальная сумма заказа для этого кода — :amount ₴.', [
+                    'amount' => $this->min_order_amount,
+                ]),
             ]);
         }
     }

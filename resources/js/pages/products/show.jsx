@@ -6,6 +6,8 @@ import { formatDate } from '@/lib/format-date';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { useAddToCart } from '@/hooks/use-add-to-cart';
+import { useTranslations } from '@/hooks/use-translations';
+import { pluralizeRu } from '@/lib/pluralize';
 
 const LONGEVITY_LABELS = {
     weak: ['Слабая', 1],
@@ -40,6 +42,7 @@ function LevelBar({ level }) {
 }
 
 export default function ProductShow({ product, myReview }) {
+    const t = useTranslations();
     const [variantIndex, setVariantIndex] = useState(0);
     const { added, addToCart } = useAddToCart();
     const { auth } = usePage().props;
@@ -70,7 +73,7 @@ export default function ProductShow({ product, myReview }) {
                         href="/products"
                         className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
-                        ← Каталог
+                        ← {t('Каталог')}
                     </Link>
 
                     <div className="mt-6 grid gap-8 md:grid-cols-2">
@@ -108,9 +111,16 @@ export default function ProductShow({ product, myReview }) {
                                                 product.reviews_avg_rating,
                                             ).toFixed(1)}{' '}
                                             · {product.reviews.length}{' '}
-                                            {product.reviews.length === 1
-                                                ? 'отзыв'
-                                                : 'отзывов'}
+                                            {t(
+                                                pluralizeRu(
+                                                    product.reviews.length,
+                                                    [
+                                                        'отзыв',
+                                                        'отзыва',
+                                                        'отзывов',
+                                                    ],
+                                                ),
+                                            )}
                                         </span>
                                     </div>
                                 )}
@@ -126,7 +136,7 @@ export default function ProductShow({ product, myReview }) {
 
                             <div className="flex flex-col gap-2">
                                 <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
-                                    Объём
+                                    {t('Объём')}
                                 </span>
                                 <div className="flex gap-2.5">
                                     {product.variants.map((v, i) => {
@@ -197,7 +207,9 @@ export default function ProductShow({ product, myReview }) {
                                         </svg>
                                     )}
                                     <span>
-                                        {added ? 'Добавлено' : 'В корзину'}
+                                        {added
+                                            ? t('Добавлено')
+                                            : t('В корзину')}
                                     </span>
                                 </button>
                             </div>
@@ -213,7 +225,7 @@ export default function ProductShow({ product, myReview }) {
                         product.sillage) && (
                         <div className="mt-12 flex flex-col gap-6">
                             <h2 className="text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                                Профиль аромата
+                                {t('Профиль аромата')}
                             </h2>
 
                             {(product.perfumer ||
@@ -223,7 +235,7 @@ export default function ProductShow({ product, myReview }) {
                                     {product.perfumer && (
                                         <div>
                                             <span className="block text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
-                                                Парфюмер
+                                                {t('Парфюмер')}
                                             </span>
                                             <span className="text-[#241a10] dark:text-[#f6ecdd]">
                                                 {product.perfumer}
@@ -233,7 +245,7 @@ export default function ProductShow({ product, myReview }) {
                                     {product.release_year && (
                                         <div>
                                             <span className="block text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
-                                                Год
+                                                {t('Год')}
                                             </span>
                                             <span className="text-[#241a10] dark:text-[#f6ecdd]">
                                                 {product.release_year}
@@ -243,7 +255,7 @@ export default function ProductShow({ product, myReview }) {
                                     {product.concentration && (
                                         <div>
                                             <span className="block text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
-                                                Концентрация
+                                                {t('Концентрация')}
                                             </span>
                                             <span className="text-[#241a10] dark:text-[#f6ecdd]">
                                                 {product.concentration}
@@ -259,7 +271,7 @@ export default function ProductShow({ product, myReview }) {
                                         LONGEVITY_LABELS[product.longevity] && (
                                             <div className="flex flex-col gap-1.5">
                                                 <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
-                                                    Стойкость
+                                                    {t('Стойкость')}
                                                 </span>
                                                 <div className="flex items-center gap-2">
                                                     <LevelBar
@@ -271,12 +283,12 @@ export default function ProductShow({ product, myReview }) {
                                                         }
                                                     />
                                                     <span className="text-sm text-[#241a10] dark:text-[#f6ecdd]">
-                                                        {
+                                                        {t(
                                                             LONGEVITY_LABELS[
                                                                 product
                                                                     .longevity
-                                                            ][0]
-                                                        }
+                                                            ][0],
+                                                        )}
                                                     </span>
                                                 </div>
                                             </div>
@@ -285,7 +297,7 @@ export default function ProductShow({ product, myReview }) {
                                         SILLAGE_LABELS[product.sillage] && (
                                             <div className="flex flex-col gap-1.5">
                                                 <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
-                                                    Шлейф
+                                                    {t('Шлейф')}
                                                 </span>
                                                 <div className="flex items-center gap-2">
                                                     <LevelBar
@@ -296,11 +308,11 @@ export default function ProductShow({ product, myReview }) {
                                                         }
                                                     />
                                                     <span className="text-sm text-[#241a10] dark:text-[#f6ecdd]">
-                                                        {
+                                                        {t(
                                                             SILLAGE_LABELS[
                                                                 product.sillage
-                                                            ][0]
-                                                        }
+                                                            ][0],
+                                                        )}
                                                     </span>
                                                 </div>
                                             </div>
@@ -311,7 +323,7 @@ export default function ProductShow({ product, myReview }) {
                             {product.accords && product.accords.length > 0 && (
                                 <div className="flex flex-col gap-2.5">
                                     <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
-                                        Аккорды
+                                        {t('Аккорды')}
                                     </span>
                                     <div className="flex flex-col gap-2">
                                         {product.accords.map((accord) => (
@@ -353,7 +365,7 @@ export default function ProductShow({ product, myReview }) {
                                                     className="flex flex-col gap-2"
                                                 >
                                                     <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
-                                                        {label}
+                                                        {t(label)}
                                                     </span>
                                                     <div className="flex flex-wrap gap-1.5">
                                                         {notes.map((note) => (
@@ -375,7 +387,7 @@ export default function ProductShow({ product, myReview }) {
 
                     <div className="mt-12 flex flex-col gap-6">
                         <h2 className="text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                            Отзывы
+                            {t('Отзывы')}
                         </h2>
 
                         {auth.user ? (
@@ -389,7 +401,7 @@ export default function ProductShow({ product, myReview }) {
                                             key={n}
                                             type="button"
                                             onClick={() => setRating(n)}
-                                            aria-label={`${n} из 5`}
+                                            aria-label={t('{n} из 5', { n })}
                                             className="p-0.5"
                                         >
                                             <svg
@@ -414,7 +426,9 @@ export default function ProductShow({ product, myReview }) {
                                 <textarea
                                     value={body}
                                     onChange={(e) => setBody(e.target.value)}
-                                    placeholder="Поделитесь впечатлением от аромата"
+                                    placeholder={t(
+                                        'Поделитесь впечатлением от аромата',
+                                    )}
                                     minLength={10}
                                     maxLength={2000}
                                     required
@@ -427,8 +441,8 @@ export default function ProductShow({ product, myReview }) {
                                         className="rounded-full bg-[#c79a5f] px-5 py-2 text-sm font-bold text-[#241a10] uppercase dark:text-[#3d2712]"
                                     >
                                         {myReview
-                                            ? 'Обновить отзыв'
-                                            : 'Оставить отзыв'}
+                                            ? t('Обновить отзыв')
+                                            : t('Оставить отзыв')}
                                     </button>
                                     {myReview && (
                                         <button
@@ -436,7 +450,7 @@ export default function ProductShow({ product, myReview }) {
                                             onClick={deleteReview}
                                             className="text-sm text-[#7d6952] underline dark:text-[#b7a58f]"
                                         >
-                                            Удалить
+                                            {t('Удалить')}
                                         </button>
                                     )}
                                 </div>
@@ -444,15 +458,15 @@ export default function ProductShow({ product, myReview }) {
                         ) : (
                             <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                 <Link href="/login" className="underline">
-                                    Войдите
+                                    {t('Войдите')}
                                 </Link>
-                                , чтобы оставить отзыв.
+                                {t(', чтобы оставить отзыв.')}
                             </p>
                         )}
 
                         {product.reviews.length === 0 ? (
                             <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                                Пока нет отзывов — будьте первым.
+                                {t('Пока нет отзывов — будьте первым.')}
                             </p>
                         ) : (
                             <div className="flex flex-col gap-4">

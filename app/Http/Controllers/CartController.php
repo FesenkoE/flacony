@@ -36,7 +36,11 @@ class CartController extends Controller
 
         Inertia::flash('toast', [
             'type' => 'success',
-            'message' => "{$variant->product->brand->name} — {$variant->product->name}, {$variant->volume_ml} мл добавлен в корзину",
+            'message' => __(':brand — :name, :volume мл добавлен в корзину', [
+                'brand' => $variant->product->brand->name,
+                'name' => $variant->product->name,
+                'volume' => $variant->volume_ml,
+            ]),
         ]);
 
         return back();
@@ -86,7 +90,11 @@ class CartController extends Controller
 
         Inertia::flash('toast', [
             'type' => 'success',
-            'message' => "{$lot->brand_name} — {$lot->product_name}, {$volumeMl} мл добавлен в корзину",
+            'message' => __(':brand — :name, :volume мл добавлен в корзину', [
+                'brand' => $lot->brand_name,
+                'name' => $lot->product_name,
+                'volume' => $volumeMl,
+            ]),
         ]);
 
         return back();

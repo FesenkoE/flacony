@@ -4,6 +4,7 @@ import BottleIcon, { tintForId } from '@/components/bottle-icon';
 import DissolveCard from '@/components/dissolve-card';
 import StarRating from '@/components/star-rating';
 import { useAddToCart } from '@/hooks/use-add-to-cart';
+import { useTranslations } from '@/hooks/use-translations';
 
 // ponytail: matches DissolveCard's own fade transition (duration-700), not
 // the particle burst's full 0.9-1.2s — trades a barely-visible particle cut
@@ -15,6 +16,7 @@ export default function ProductCard({
     dissolveOnUnfavorite = false,
     flipKey,
 }) {
+    const t = useTranslations();
     const [variantIndex, setVariantIndex] = useState(0);
     const [pop, setPop] = useState(false);
     const [removing, setRemoving] = useState(false);
@@ -62,7 +64,7 @@ export default function ProductCard({
                 type="button"
                 onClick={toggleFavorite}
                 aria-label={
-                    isFavorited ? 'Убрать из избранного' : 'В избранное'
+                    isFavorited ? t('Убрать из избранного') : t('В избранное')
                 }
                 className="absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-[#ffffffcc] text-[#241a10] shadow-sm dark:bg-[#00000066] dark:text-[#f6ecdd]"
             >
@@ -121,7 +123,7 @@ export default function ProductCard({
 
                 <div className="flex flex-col gap-2">
                     <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
-                        Объём
+                        {t('Объём')}
                     </span>
                     <div className="flex gap-2.5">
                         {product.variants.map((v, i) => {
@@ -189,7 +191,7 @@ export default function ProductCard({
                                 <circle cx="18" cy="20" r="1" />
                             </svg>
                         )}
-                        <span>{added ? 'Добавлено' : 'В корзину'}</span>
+                        <span>{added ? t('Добавлено') : t('В корзину')}</span>
                     </button>
                 </div>
             </div>

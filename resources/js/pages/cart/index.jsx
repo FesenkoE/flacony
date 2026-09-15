@@ -5,8 +5,9 @@ import ConfirmButton from '@/components/confirm-button';
 import DissolveCard from '@/components/dissolve-card';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
+import { useTranslations } from '@/hooks/use-translations';
 
-function CartRow({ item }) {
+function CartRow({ item, t }) {
     const href =
         item.type === 'lot' ? `/cart/lots/${item.key}` : `/cart/${item.key}`;
     const { removing, remove } = useConfirmDelete(href);
@@ -20,7 +21,7 @@ function CartRow({ item }) {
             <div className="flex flex-col gap-1">
                 <span className="text-xs font-bold tracking-[0.1em] text-[#c79a5f] uppercase">
                     {item.brand_name}
-                    {item.type === 'lot' && ' · распив'}
+                    {item.type === 'lot' && ` · ${t('Розпив')}`}
                 </span>
                 <span className="font-display text-xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                     {item.product_name}
@@ -34,7 +35,9 @@ function CartRow({ item }) {
                     {Number(item.subtotal).toFixed(2)} ₴
                 </span>
                 <ConfirmButton
-                    title={`Убрать «${item.product_name}» из корзины?`}
+                    title={t('Убрать «{name}» из корзины?', {
+                        name: item.product_name,
+                    })}
                     onConfirm={remove}
                 />
             </div>
@@ -43,12 +46,13 @@ function CartRow({ item }) {
 }
 
 export default function CartIndex({ items, total }) {
+    const t = useTranslations();
     const listRef = useFlipList([items.length]);
     const { auth } = usePage().props;
 
     return (
         <>
-            <Head title="Корзина" />
+            <Head title={t('Корзина')} />
             <SiteHeader />
             <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
                 <div className="mx-auto max-w-2xl p-6">
@@ -56,16 +60,16 @@ export default function CartIndex({ items, total }) {
                         href="/products"
                         className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
-                        ← Каталог
+                        ← {t('Каталог')}
                     </Link>
 
                     <h1 className="mt-4 mb-6 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                        Корзина
+                        {t('Корзина')}
                     </h1>
 
                     {items.length === 0 ? (
                         <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                            Корзина пуста.
+                            {t('Корзина пуста.')}
                         </p>
                     ) : (
                         <div ref={listRef} className="flex flex-col gap-4">
@@ -73,12 +77,13 @@ export default function CartIndex({ items, total }) {
                                 <CartRow
                                     key={`${item.type}-${item.key}`}
                                     item={item}
+                                    t={t}
                                 />
                             ))}
 
                             <div className="mt-2 flex items-baseline justify-between border-t border-[#1e160c14] pt-4 dark:border-[#ffffff1a]">
                                 <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                                    Итого
+                                    {t('Итого')}
                                 </span>
                                 <span className="font-display text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                                     {Number(total).toFixed(2)} ₴
@@ -90,8 +95,8 @@ export default function CartIndex({ items, total }) {
                                 className="mt-2 rounded-full bg-[#c79a5f] px-7 py-3.5 text-center text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                             >
                                 {auth.user
-                                    ? 'Оформить заказ'
-                                    : 'Войти, чтобы оформить заказ'}
+                                    ? t('Оформить заказ')
+                                    : t('Войти, чтобы оформить заказ')}
                             </Link>
                         </div>
                     )}

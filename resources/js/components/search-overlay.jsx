@@ -1,10 +1,12 @@
 import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import BottleIcon, { tintForId } from '@/components/bottle-icon';
+import { useTranslations } from '@/hooks/use-translations';
 
 const CLOSE_ANIMATION_MS = 200;
 
 export default function SearchOverlay({ open, onOpenChange }) {
+    const t = useTranslations();
     const [query, setQuery] = useState('');
     const [results, setResults] = useState({ products: [], lots: [] });
     const [loading, setLoading] = useState(false);
@@ -112,14 +114,14 @@ export default function SearchOverlay({ open, onOpenChange }) {
                             type="text"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            placeholder="Аромат, бренд, нота..."
+                            placeholder={t('Аромат, бренд, нота...')}
                             autoFocus
                             className="w-full bg-transparent text-sm text-[#241a10] outline-none placeholder:text-[#7d6952] dark:text-[#f6ecdd] dark:placeholder:text-[#b7a58f]"
                         />
                         <button
                             type="button"
                             onClick={() => onOpenChange(false)}
-                            aria-label="Закрыть"
+                            aria-label={t('Закрыть')}
                             className="shrink-0 text-[#7d6952] dark:text-[#b7a58f]"
                         >
                             <svg
@@ -142,13 +144,16 @@ export default function SearchOverlay({ open, onOpenChange }) {
                         <div className="max-h-[60vh] overflow-y-auto py-3">
                             {loading && !hasResults && (
                                 <p className="px-1 py-4 text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                                    Ищем...
+                                    {t('Ищем...')}
                                 </p>
                             )}
 
                             {!loading && !hasResults && (
                                 <p className="px-1 py-4 text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                                    По запросу «{query}» ничего не нашлось.
+                                    {t(
+                                        'По запросу «{query}» ничего не нашлось.',
+                                        { query },
+                                    )}
                                 </p>
                             )}
 
@@ -156,7 +161,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                 {results.products.length > 0 && (
                                     <div className="flex flex-col gap-1 sm:border-r sm:border-[#1e160c14]/60 sm:pr-10 dark:sm:border-[#ffffff1a]">
                                         <span className="px-2 pb-1 text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
-                                            Каталог
+                                            {t('Каталог')}
                                         </span>
                                         {results.products.map((product) => (
                                             <a
@@ -187,11 +192,11 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                                     </span>
                                                 </div>
                                                 <span className="shrink-0 text-xs text-[#7d6952] dark:text-[#b7a58f]">
-                                                    от{' '}
-                                                    {Number(
-                                                        product.price,
-                                                    ).toFixed(0)}{' '}
-                                                    ₴
+                                                    {t('от {price} ₴', {
+                                                        price: Number(
+                                                            product.price,
+                                                        ).toFixed(0),
+                                                    })}
                                                 </span>
                                             </a>
                                         ))}
@@ -201,7 +206,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                 {results.lots.length > 0 && (
                                     <div className="flex flex-col gap-1">
                                         <span className="px-2 pb-1 text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
-                                            Распив
+                                            {t('Розпив')}
                                         </span>
                                         {results.lots.map((lot) => (
                                             <a
@@ -233,7 +238,9 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                     onClick={goToFullResults}
                                     className="mt-3 w-full rounded-xl border-t border-[#1e160c14]/60 px-2 pt-4 pb-2 text-left text-sm font-semibold text-[#c79a5f] hover:bg-[#f6efe3] dark:border-[#ffffff1a] dark:hover:bg-[#ffffff0a]"
                                 >
-                                    Все результаты по «{query}» →
+                                    {t('Все результаты по «{query}» →', {
+                                        query,
+                                    })}
                                 </button>
                             )}
                         </div>

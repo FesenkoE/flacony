@@ -6,6 +6,7 @@ import DissolveCard from '@/components/dissolve-card';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { formatDate } from '@/lib/format-date';
+import { useTranslations } from '@/hooks/use-translations';
 
 const actionButtonBase =
     'flex h-9 w-9 items-center justify-center rounded-full border transition-all duration-200 ease-out hover:scale-110 active:scale-95';
@@ -60,7 +61,7 @@ function TrashIcon() {
     );
 }
 
-function LotRow({ lot }) {
+function LotRow({ lot, t }) {
     const { removing, remove } = useConfirmDelete(`/sellers/lots/${lot.id}`);
 
     return (
@@ -77,31 +78,36 @@ function LotRow({ lot }) {
                     {lot.product_name}
                 </span>
                 <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
-                    Остаток {lot.remaining_volume_ml} из {lot.total_volume_ml}{' '}
-                    мл · {Number(lot.price_per_ml).toFixed(2)} ₴/мл
+                    {t('Остаток {remaining} из {total} мл · {price} ₴/мл', {
+                        remaining: lot.remaining_volume_ml,
+                        total: lot.total_volume_ml,
+                        price: Number(lot.price_per_ml).toFixed(2),
+                    })}
                 </span>
             </div>
             <div className="flex items-center gap-2">
                 <Link
                     href={`/sellers/lots/${lot.id}`}
-                    title="Посмотреть"
-                    aria-label="Посмотреть"
+                    title={t('Посмотреть')}
+                    aria-label={t('Посмотреть')}
                     className={viewButtonClass}
                 >
                     <EyeIcon />
                 </Link>
                 <Link
                     href={`/sellers/lots/${lot.id}/edit`}
-                    title="Редактировать"
-                    aria-label="Редактировать"
+                    title={t('Редактировать')}
+                    aria-label={t('Редактировать')}
                     className={editButtonClass}
                 >
                     <PencilIcon />
                 </Link>
                 <ConfirmButton
-                    label="Удалить"
+                    label={t('Удалить')}
                     icon={<TrashIcon />}
-                    title={`Удалить лот «${lot.product_name}»?`}
+                    title={t('Удалить лот «{name}»?', {
+                        name: lot.product_name,
+                    })}
                     onConfirm={remove}
                     className={deleteButtonClass}
                 />
@@ -111,17 +117,18 @@ function LotRow({ lot }) {
 }
 
 export default function AccountIndex({ lots, orders }) {
+    const t = useTranslations();
     const { auth } = usePage().props;
     const listRef = useFlipList([lots.length]);
 
     return (
         <>
-            <Head title="Личный кабинет" />
+            <Head title={t('Личный кабинет')} />
             <SiteHeader />
             <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
                 <div className="mx-auto max-w-4xl p-6">
                     <h1 className="text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                        Личный кабинет
+                        {t('Личный кабинет')}
                     </h1>
                     <p className="mt-1 text-sm text-[#7d6952] dark:text-[#b7a58f]">
                         {auth.user.name} · {auth.user.email}
@@ -132,31 +139,31 @@ export default function AccountIndex({ lots, orders }) {
                             href="/settings/profile"
                             className="rounded-full border border-[#e6d7bb] px-5 py-2.5 text-sm font-semibold text-[#241a10] dark:border-[#ffffff29] dark:text-[#f6ecdd]"
                         >
-                            Настройки профиля
+                            {t('Настройки профиля')}
                         </Link>
                         <Link
                             href={`/sellers/${auth.user.id}`}
                             className="rounded-full border border-[#e6d7bb] px-5 py-2.5 text-sm font-semibold text-[#241a10] dark:border-[#ffffff29] dark:text-[#f6ecdd]"
                         >
-                            Моя витрина
+                            {t('Моя витрина')}
                         </Link>
                         <Link
                             href="/cart"
                             className="rounded-full border border-[#e6d7bb] px-5 py-2.5 text-sm font-semibold text-[#241a10] dark:border-[#ffffff29] dark:text-[#f6ecdd]"
                         >
-                            Корзина
+                            {t('Корзина')}
                         </Link>
                     </div>
 
                     <div className="mt-10 flex items-center justify-between">
                         <h2 className="text-xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                            Мои заказы
+                            {t('Мои заказы')}
                         </h2>
                     </div>
 
                     {orders.length === 0 ? (
                         <p className="mt-4 text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                            Ты ещё не оформлял заказы.
+                            {t('Ты ещё не оформлял заказы.')}
                         </p>
                     ) : (
                         <div className="mt-4 flex flex-col gap-3">
@@ -168,7 +175,9 @@ export default function AccountIndex({ lots, orders }) {
                                 >
                                     <div className="flex flex-col gap-1">
                                         <span className="font-display text-lg font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
-                                            Заказ №{order.id}
+                                            {t('Заказ №{id}', {
+                                                id: order.id,
+                                            })}
                                         </span>
                                         <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                                             {formatDate(order.created_at)}
@@ -184,24 +193,24 @@ export default function AccountIndex({ lots, orders }) {
 
                     <div className="mt-10 flex items-center justify-between">
                         <h2 className="text-xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                            Мои лоты
+                            {t('Мои лоты')}
                         </h2>
                         <Link
                             href="/sellers/lots/create"
                             className="rounded-full bg-[#c79a5f] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                         >
-                            + Добавить лот
+                            + {t('Добавить лот')}
                         </Link>
                     </div>
 
                     {lots.length === 0 ? (
                         <p className="mt-4 text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                            Ты ещё не выставлял лоты на распив.
+                            {t('Ты ещё не выставлял лоты на распив.')}
                         </p>
                     ) : (
                         <div ref={listRef} className="mt-4 flex flex-col gap-3">
                             {lots.map((lot) => (
-                                <LotRow key={lot.id} lot={lot} />
+                                <LotRow key={lot.id} lot={lot} t={t} />
                             ))}
                         </div>
                     )}

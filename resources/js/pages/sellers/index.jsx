@@ -2,23 +2,26 @@ import { Head, Link } from '@inertiajs/react';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { useInitials } from '@/hooks/use-initials';
+import { useTranslations } from '@/hooks/use-translations';
+import { pluralizeRu } from '@/lib/pluralize';
 
 export default function SellersIndex({ sellers }) {
+    const t = useTranslations();
     const getInitials = useInitials();
 
     return (
         <>
-            <Head title="Продавцы" />
+            <Head title={t('Продавцы')} />
             <SiteHeader />
             <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
                 <div className="mx-auto max-w-[1600px] p-6">
                     <h1 className="mb-6 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                        Продавцы
+                        {t('Продавцы')}
                     </h1>
 
                     {sellers.length === 0 ? (
                         <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                            Пока никто не выставил распив на продажу.
+                            {t('Пока никто не выставил распив на продажу.')}
                         </p>
                     ) : (
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -36,7 +39,19 @@ export default function SellersIndex({ sellers }) {
                                             {seller.name}
                                         </span>
                                         <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                                            {seller.lots_count} лотов в продаже
+                                            {t('{count} {word} в продаже', {
+                                                count: seller.lots_count,
+                                                word: t(
+                                                    pluralizeRu(
+                                                        seller.lots_count,
+                                                        [
+                                                            'лот',
+                                                            'лота',
+                                                            'лотов',
+                                                        ],
+                                                    ),
+                                                ),
+                                            })}
                                         </span>
                                     </div>
                                 </Link>
