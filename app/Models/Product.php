@@ -19,6 +19,7 @@ class Product extends Model
         'description',
         'is_active',
         'image_path',
+        'image_path_light',
         'perfumer',
         'release_year',
         'concentration',

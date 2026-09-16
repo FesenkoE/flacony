@@ -1,12 +1,14 @@
 import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import BottleIcon, { tintForId } from '@/components/bottle-icon';
+import BottleIcon from '@/components/bottle-icon';
+import { pickThemeImage, useIsDarkTheme } from '@/hooks/use-theme-image';
 import { useTranslations } from '@/hooks/use-translations';
 
 const CLOSE_ANIMATION_MS = 200;
 
 export default function SearchOverlay({ open, onOpenChange }) {
     const t = useTranslations();
+    const isDarkTheme = useIsDarkTheme();
     const [query, setQuery] = useState('');
     const [results, setResults] = useState({ products: [], lots: [] });
     const [loading, setLoading] = useState(false);
@@ -172,16 +174,17 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                                 <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#f6efe3] dark:bg-[#ffffff0a]">
                                                     {product.image_path ? (
                                                         <img
-                                                            src={`/storage/${product.image_path}`}
+                                                            src={`/storage/${pickThemeImage(
+                                                                isDarkTheme,
+                                                                product.image_path,
+                                                                product.image_path_light,
+                                                            )}`}
                                                             alt=""
                                                             className="h-full w-full object-cover"
                                                         />
                                                     ) : (
                                                         <BottleIcon
-                                                            size={24}
-                                                            tint={tintForId(
-                                                                product.id,
-                                                            )}
+                                                            size={25}
                                                         />
                                                     )}
                                                 </div>

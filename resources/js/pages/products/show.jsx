@@ -1,11 +1,12 @@
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
-import BottleIcon, { tintForId } from '@/components/bottle-icon';
+import BottleIcon from '@/components/bottle-icon';
 import StarRating from '@/components/star-rating';
 import { formatDate } from '@/lib/format-date';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { useAddToCart } from '@/hooks/use-add-to-cart';
+import { useThemeImagePath } from '@/hooks/use-theme-image';
 import { useTranslations } from '@/hooks/use-translations';
 import { pluralizeRu } from '@/lib/pluralize';
 
@@ -47,6 +48,10 @@ export default function ProductShow({ product, myReview }) {
     const { added, addToCart } = useAddToCart();
     const { auth } = usePage().props;
     const variant = product.variants[variantIndex];
+    const imagePath = useThemeImagePath(
+        product.image_path,
+        product.image_path_light,
+    );
     const [rating, setRating] = useState(myReview?.rating ?? 5);
     const [body, setBody] = useState(myReview?.body ?? '');
 
@@ -78,17 +83,14 @@ export default function ProductShow({ product, myReview }) {
 
                     <div className="mt-6 grid gap-8 md:grid-cols-2">
                         <div className="scent-card-photo flex aspect-square items-center justify-center overflow-hidden rounded-3xl">
-                            {product.image_path ? (
+                            {imagePath ? (
                                 <img
-                                    src={`/storage/${product.image_path}`}
+                                    src={`/storage/${imagePath}`}
                                     alt={`${product.brand.name} ${product.name}`}
                                     className="h-full w-full object-cover"
                                 />
                             ) : (
-                                <BottleIcon
-                                    size={160}
-                                    tint={tintForId(product.id)}
-                                />
+                                <BottleIcon size={164} />
                             )}
                         </div>
 

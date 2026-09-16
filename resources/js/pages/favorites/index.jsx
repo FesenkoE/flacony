@@ -22,7 +22,7 @@ export default function FavoritesIndex({ products }) {
 
                     {products.length === 0 ? (
                         <div className="flex flex-col items-center gap-4 rounded-3xl border border-[#1e160c14] bg-[#fffaf1] px-6 py-20 text-center dark:border-[#ffffff14] dark:bg-[#ffffff0a]">
-                            <BottleIcon size={88} />
+                            <BottleIcon size={102} />
                             <h2 className="font-display text-2xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                                 {t('Пока пусто')}
                             </h2>
@@ -41,7 +41,7 @@ export default function FavoritesIndex({ products }) {
                     ) : (
                         <div
                             ref={listRef}
-                            className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5"
+                            className="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-6"
                         >
                             {products.map((product) => (
                                 <ProductCard

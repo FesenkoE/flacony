@@ -1,55 +1,54 @@
 import { useId } from 'react';
 
-const TINTS = ['#c79a5f', '#a8702e', '#c48a56', '#9c6b4f'];
+const TINT = '#a9835a';
+const GOLD = '#b8944a';
 
-export function tintForId(id) {
-    return TINTS[id % TINTS.length];
-}
-
-export default function BottleIcon({ size = 104, tint = '#c79a5f' }) {
-    const height = Math.round((size / 104) * 152);
+export default function BottleIcon({ size = 120, tint = TINT }) {
+    const height = Math.round((size / 80) * 90);
     const gradientId = `bottleGrad-${useId()}`;
 
     return (
         <svg
             width={size}
             height={height}
-            viewBox="0 0 104 152"
+            viewBox="0 0 80 90"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
         >
             <defs>
                 <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor={tint} stopOpacity="0.32" />
-                    <stop offset="100%" stopColor={tint} stopOpacity="0.05" />
+                    <stop offset="0%" stopColor={tint} stopOpacity="0.28" />
+                    <stop offset="100%" stopColor={tint} stopOpacity="0.08" />
                 </linearGradient>
             </defs>
-            <path
-                d="M28 50c0-6 3-9 8-11V16h32v23c5 2 8 5 8 11v72a10 10 0 0 1-10 10H38a10 10 0 0 1-10-10z"
+            {/* Two-tier cap: wide smooth drum + a short plain neck, stepped not tapered. Square flacon with a flat base */}
+            <rect
+                x="25"
+                y="4"
+                width="30"
+                height="12"
+                rx="3"
+                fill={GOLD}
+                fillOpacity="0.85"
+            />
+            <rect
+                x="29"
+                y="15"
+                width="22"
+                height="7"
+                rx="2"
+                fill={GOLD}
+                fillOpacity="0.85"
+            />
+            <rect
+                x="13"
+                y="21"
+                width="54"
+                height="58"
+                rx="7"
                 fill={`url(#${gradientId})`}
                 stroke={tint}
-                strokeOpacity="0.5"
-            />
-            <rect x="32" y="4" width="40" height="15" rx="6" fill={tint} />
-            <line
-                x1="35"
-                y1="60"
-                x2="35"
-                y2="130"
-                stroke={tint}
-                strokeOpacity="0.25"
-                strokeWidth="7"
-                strokeLinecap="round"
-            />
-            <line
-                x1="69"
-                y1="66"
-                x2="69"
-                y2="118"
-                stroke="#ffffff"
-                strokeOpacity="0.18"
-                strokeWidth="3"
-                strokeLinecap="round"
+                strokeOpacity="0.4"
             />
         </svg>
     );

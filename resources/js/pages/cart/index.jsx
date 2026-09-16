@@ -1,6 +1,7 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import { useConfirmDelete } from '@/hooks/use-confirm-delete';
 import { useFlipList } from '@/hooks/use-flip-list';
+import BottleIcon from '@/components/bottle-icon';
 import ConfirmButton from '@/components/confirm-button';
 import DissolveCard from '@/components/dissolve-card';
 import SiteFooter from '@/components/site-footer';
@@ -53,9 +54,9 @@ export default function CartIndex({ items, total }) {
     return (
         <>
             <Head title={t('Корзина')} />
-            <SiteHeader />
-            <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
-                <div className="mx-auto max-w-2xl p-6">
+            <div className="flex min-h-screen flex-col bg-[#f6efe3] dark:bg-[#0d0b09]">
+                <SiteHeader />
+                <div className="mx-auto w-full max-w-2xl flex-1 p-6">
                     <Link
                         href="/products"
                         className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
@@ -68,9 +69,31 @@ export default function CartIndex({ items, total }) {
                     </h1>
 
                     {items.length === 0 ? (
-                        <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                            {t('Корзина пуста.')}
-                        </p>
+                        <div className="flex flex-col items-center gap-4 rounded-3xl border border-[#1e160c14] bg-[#fffaf1] px-6 py-20 text-center dark:border-[#ffffff14] dark:bg-[#ffffff0a]">
+                            <BottleIcon size={102} />
+                            <h2 className="font-display text-2xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
+                                {t('Корзина пуста')}
+                            </h2>
+                            <p className="max-w-sm text-sm text-[#7d6952] dark:text-[#b7a58f]">
+                                {t(
+                                    'Выбери аромат из каталога или возьми на пробу пару мл распива — здесь появится сводка заказа',
+                                )}
+                            </p>
+                            <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
+                                <Link
+                                    href="/products"
+                                    className="rounded-full bg-[#c79a5f] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
+                                >
+                                    {t('Смотреть каталог')}
+                                </Link>
+                                <Link
+                                    href="/lots"
+                                    className="rounded-full border border-[#e6d7bb] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#241a10] uppercase dark:border-[#ffffff29] dark:text-[#f6ecdd]"
+                                >
+                                    {t('Розпив')}
+                                </Link>
+                            </div>
+                        </div>
                     ) : (
                         <div ref={listRef} className="flex flex-col gap-4">
                             {items.map((item) => (
@@ -101,8 +124,8 @@ export default function CartIndex({ items, total }) {
                         </div>
                     )}
                 </div>
+                <SiteFooter />
             </div>
-            <SiteFooter />
         </>
     );
 }

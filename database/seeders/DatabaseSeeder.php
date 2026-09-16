@@ -90,23 +90,30 @@ class DatabaseSeeder extends Seeder
             'creed-green-irish-tweed' => ['perfumer' => 'Pierre Bourdon', 'release_year' => 1985, 'concentration' => 'EDP', 'top_notes' => ['Вербена', 'Ирис'], 'heart_notes' => ['Листья фиалки', 'Сандал'], 'base_notes' => ['Амбра'], 'accords' => [['name' => 'Зелёный', 'percent' => 100], ['name' => 'Древесный', 'percent' => 55], ['name' => 'Свежий', 'percent' => 45]], 'longevity' => 'long_lasting', 'sillage' => 'moderate'],
         ];
 
-        // ponytail: only one real photo exists so far (see product-card.jsx /
+        // ponytail: only one real photo pair exists so far (see product-card.jsx /
         // products/show.jsx fallback to the SVG bottle icon) — add more slugs here
-        // as real product photos come in (upload via /admin, or drop the file in
-        // public/images/products and register it here like the line below).
+        // as real product photos come in (upload via /admin, or drop the files in
+        // public/images/products and register them here like the line below).
+        // Each product needs a dark-theme and a light-theme photo — see
+        // project_design_taste memory for the Gemini prompt used to generate them.
         $imagePaths = [
-            'dior-sauvage' => 'products/dior-sauvage.jpg',
+            'dior-sauvage' => [
+                'dark' => 'products/dior-sauvage.jpg',
+                'light' => 'products/dior-sauvage-light.jpg',
+            ],
         ];
 
         // Demo photos live in public/images (tracked in git) but are served from
         // the same "public" disk as admin uploads (storage/app/public) — copy
         // them over once so both sources render through the same /storage/... URL.
-        foreach ($imagePaths as $source) {
-            $seedFile = public_path("images/{$source}");
-            $storagePath = storage_path("app/public/{$source}");
-            if (file_exists($seedFile) && ! file_exists($storagePath)) {
-                @mkdir(dirname($storagePath), 0755, true);
-                copy($seedFile, $storagePath);
+        foreach ($imagePaths as $paths) {
+            foreach ($paths as $source) {
+                $seedFile = public_path("images/{$source}");
+                $storagePath = storage_path("app/public/{$source}");
+                if (file_exists($seedFile) && ! file_exists($storagePath)) {
+                    @mkdir(dirname($storagePath), 0755, true);
+                    copy($seedFile, $storagePath);
+                }
             }
         }
 
@@ -125,7 +132,8 @@ class DatabaseSeeder extends Seeder
                     'category_id' => $categories[$entry['category']]->id,
                     'name' => $entry['name'],
                     'description' => $entry['description'],
-                    'image_path' => $imagePaths[(string) $slug] ?? null,
+                    'image_path' => $imagePaths[(string) $slug]['dark'] ?? null,
+                    'image_path_light' => $imagePaths[(string) $slug]['light'] ?? null,
                     ...$fragranceDetails[(string) $slug],
                 ],
             );
@@ -171,7 +179,7 @@ class DatabaseSeeder extends Seeder
 
             Lot::firstOrCreate(
                 ['user_id' => $sellerId, 'product_name' => $lot['product_name']],
-                [...$lot, 'user_id' => $sellerId],
+                [...$lot, 'user_id' => $sellerId, 'status' => Lot::STATUS_APPROVED],
             );
         }
 

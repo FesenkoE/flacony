@@ -34,6 +34,7 @@ class SearchController extends Controller
                 'name' => $product->name,
                 'brand' => $product->brand->name,
                 'image_path' => $product->image_path,
+                'image_path_light' => $product->image_path_light,
                 'price' => $product->variants->min('price'),
             ]);
 

@@ -1,12 +1,13 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Banknote, Droplet, Heart, History, Store, Truck } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import BottleIcon, { tintForId } from '@/components/bottle-icon';
+import BottleIcon from '@/components/bottle-icon';
 import LotCard from '@/components/lot-card';
 import ProductCard from '@/components/product-card';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import StarRating from '@/components/star-rating';
+import { useThemeImagePath } from '@/hooks/use-theme-image';
 import { useTranslations } from '@/hooks/use-translations';
 import { pluralizeRu } from '@/lib/pluralize';
 
@@ -111,7 +112,13 @@ function BigStat({ value, label }) {
     );
 }
 
-function buildSlides({ promoCode, newArrivals, activeLotsCount, t }) {
+function buildSlides({
+    promoCode,
+    newArrivals,
+    activeLotsCount,
+    t,
+    latestImagePath,
+}) {
     const slides = [];
 
     if (promoCode) {
@@ -148,14 +155,14 @@ function buildSlides({ promoCode, newArrivals, activeLotsCount, t }) {
             href: '/products',
             visual: (
                 <div className="flex h-[180px] w-[180px] items-center justify-center overflow-hidden rounded-[1.25rem] bg-white/10">
-                    {latest.image_path ? (
+                    {latestImagePath ? (
                         <img
-                            src={`/storage/${latest.image_path}`}
+                            src={`/storage/${latestImagePath}`}
                             alt={`${latest.brand.name} ${latest.name}`}
                             className="h-full w-full object-cover"
                         />
                     ) : (
-                        <BottleIcon tint={tintForId(latest.id)} size={96} />
+                        <BottleIcon size={76} />
                     )}
                 </div>
             ),
@@ -265,11 +272,17 @@ function PromoSlider({ slides }) {
 
 function Hero({ promoCode, newArrivals, activeLotsCount }) {
     const t = useTranslations();
+    const latest = newArrivals?.[0];
+    const latestImagePath = useThemeImagePath(
+        latest?.image_path,
+        latest?.image_path_light,
+    );
     const slides = buildSlides({
         promoCode,
         newArrivals,
         activeLotsCount,
         t,
+        latestImagePath,
     });
     return (
         <div className="relative overflow-hidden bg-[#f6efe3] dark:bg-[#0d0b09]">
@@ -385,7 +398,7 @@ export default function Home({
                                 {t('Весь каталог →')}
                             </Link>
                         </div>
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+                        <div className="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-6">
                             {featuredProducts.map((product) => (
                                 <ProductCard
                                     key={product.id}
@@ -404,7 +417,7 @@ export default function Home({
                         <h2 className="mb-6 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                             {t('Новинки')}
                         </h2>
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+                        <div className="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-6">
                             {newArrivals.map((product) => (
                                 <ProductCard
                                     key={product.id}
@@ -436,7 +449,7 @@ export default function Home({
                             {t('Весь розпив →')}
                         </Link>
                     </div>
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+                    <div className="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-6">
                         {lots.map((lot) => (
                             <LotCard key={lot.id} lot={lot} />
                         ))}

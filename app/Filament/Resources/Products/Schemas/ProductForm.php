@@ -40,9 +40,18 @@ class ProductForm
                             ->default(true)
                             ->required(),
                         FileUpload::make('image_path')
+                            ->label('Фото (тёмная тема)')
                             ->image()
                             ->disk('public')
                             ->directory('products')
+                            ->required()
+                            ->columnSpanFull(),
+                        FileUpload::make('image_path_light')
+                            ->label('Фото (светлая тема)')
+                            ->image()
+                            ->disk('public')
+                            ->directory('products')
+                            ->required()
                             ->columnSpanFull(),
                         Textarea::make('description')
                             ->columnSpanFull(),

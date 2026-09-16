@@ -1,9 +1,10 @@
 import { Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
-import BottleIcon, { tintForId } from '@/components/bottle-icon';
+import BottleIcon from '@/components/bottle-icon';
 import DissolveCard from '@/components/dissolve-card';
 import StarRating from '@/components/star-rating';
 import { useAddToCart } from '@/hooks/use-add-to-cart';
+import { useThemeImagePath } from '@/hooks/use-theme-image';
 import { useTranslations } from '@/hooks/use-translations';
 
 // ponytail: matches DissolveCard's own fade transition (duration-700), not
@@ -24,6 +25,10 @@ export default function ProductCard({
     const { auth, favoriteProductIds } = usePage().props;
     const variant = product.variants[variantIndex];
     const isFavorited = favoriteProductIds.includes(product.id);
+    const imagePath = useThemeImagePath(
+        product.image_path,
+        product.image_path_light,
+    );
 
     function toggleFavorite(e) {
         e.preventDefault();
@@ -85,14 +90,14 @@ export default function ProductCard({
             </button>
             <Link href={`/products/${product.slug}`} className="block">
                 <div className="scent-card-photo flex aspect-square items-center justify-center overflow-hidden">
-                    {product.image_path ? (
+                    {imagePath ? (
                         <img
-                            src={`/storage/${product.image_path}`}
+                            src={`/storage/${imagePath}`}
                             alt={`${product.brand.name} ${product.name}`}
                             className="h-full w-full object-cover"
                         />
                     ) : (
-                        <BottleIcon tint={tintForId(product.id)} />
+                        <BottleIcon />
                     )}
                 </div>
 
@@ -125,7 +130,7 @@ export default function ProductCard({
                     <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                         {t('Объём')}
                     </span>
-                    <div className="flex gap-2.5">
+                    <div className="flex flex-wrap gap-2.5">
                         {product.variants.map((v, i) => {
                             const selected = i === variantIndex;
                             return (
