@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
@@ -20,6 +21,11 @@ use App\Http\Controllers\SellerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::middleware('guest')->group(function () {
+    Route::get('auth/google/redirect', [GoogleController::class, 'redirect'])->name('auth.google.redirect');
+    Route::get('auth/google/callback', [GoogleController::class, 'callback'])->name('auth.google.callback');
+});
 
 Route::post('locale/{locale}', function (string $locale) {
     $locale = in_array($locale, \App\Http\Middleware\HandleLocale::SUPPORTED, true) ? $locale : 'uk';
