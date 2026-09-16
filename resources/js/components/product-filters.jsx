@@ -127,7 +127,7 @@ export default function ProductFilters({
                     <input
                         type="number"
                         min="0"
-                        placeholder="до"
+                        placeholder={t('до')}
                         value={maxPrice}
                         onChange={(e) => setMaxPrice(e.target.value)}
                         className="w-20 rounded-full border border-[#e6d7bb] bg-transparent px-3 py-1.5 text-sm text-[#241a10] dark:border-[#ffffff29] dark:text-[#f6ecdd]"

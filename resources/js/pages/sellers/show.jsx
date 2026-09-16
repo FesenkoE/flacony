@@ -43,7 +43,7 @@ export default function SellerShow({ seller, lots }) {
                                 : t('У продавца сейчас нет активных лотов.')}
                         </p>
                     ) : (
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+                        <div className="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-6">
                             {lots.map((lot) => (
                                 <LotCard
                                     key={lot.id}

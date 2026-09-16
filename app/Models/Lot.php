@@ -10,15 +10,26 @@ class Lot extends Model
 {
     use Searchable;
 
+    public const STATUS_PENDING = 'pending';
+
+    public const STATUS_APPROVED = 'approved';
+
+    public const STATUS_REJECTED = 'rejected';
+
     protected $fillable = [
         'user_id',
         'brand_name',
         'product_name',
+        'photo_sprayer_path',
+        'photo_batch_code_path',
+        'description',
         'total_volume_ml',
         'remaining_volume_ml',
         'price_per_ml',
         'bulk_threshold_ml',
         'bulk_price_per_ml',
+        'status',
+        'rejection_reason',
     ];
 
     public function seller(): BelongsTo
@@ -45,6 +56,6 @@ class Lot extends Model
 
     public function shouldBeSearchable(): bool
     {
-        return $this->remaining_volume_ml > 0;
+        return $this->remaining_volume_ml > 0 && $this->status === self::STATUS_APPROVED;
     }
 }

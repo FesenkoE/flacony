@@ -85,7 +85,7 @@ export default function SearchIndex({ query, products, lots, brands }) {
                                     <h2 className="text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                                         {t('Каталог')}
                                     </h2>
-                                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+                                    <div className="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-6">
                                         {products.map((product) => (
                                             <ProductCard
                                                 key={product.id}
@@ -101,7 +101,7 @@ export default function SearchIndex({ query, products, lots, brands }) {
                                     <h2 className="text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                                         {t('Розпив')}
                                     </h2>
-                                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+                                    <div className="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-6">
                                         {lots.map((lot) => (
                                             <LotCard key={lot.id} lot={lot} />
                                         ))}

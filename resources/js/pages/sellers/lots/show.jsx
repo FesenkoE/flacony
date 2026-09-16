@@ -1,6 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
-import BottleIcon, { tintForId } from '@/components/bottle-icon';
+import BottleIcon from '@/components/bottle-icon';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { useAddLotToCart } from '@/hooks/use-add-lot-to-cart';
@@ -55,8 +55,30 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                     </Link>
 
                     <div className="mt-6 grid gap-8 md:grid-cols-2">
-                        <div className="scent-card-photo flex aspect-square items-center justify-center rounded-3xl">
-                            <BottleIcon size={160} tint={tintForId(lot.id)} />
+                        <div className="scent-card-photo relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl">
+                            {lot.photo_sprayer_path ? (
+                                <img
+                                    src={`/storage/${lot.photo_sprayer_path}`}
+                                    alt={`${lot.brand_name} ${lot.product_name}`}
+                                    className="h-full w-full object-cover"
+                                />
+                            ) : (
+                                <BottleIcon size={164} />
+                            )}
+                            {isOwn && lot.status !== 'approved' && (
+                                <span
+                                    className={
+                                        'absolute top-4 left-4 rounded-full px-3 py-1 text-xs font-semibold tracking-[0.04em] uppercase ' +
+                                        (lot.status === 'rejected'
+                                            ? 'bg-[#c0645a] text-[#fdf3f1]'
+                                            : 'bg-[#c79a5f] text-[#3d2712]')
+                                    }
+                                >
+                                    {lot.status === 'rejected'
+                                        ? t('Отклонён')
+                                        : t('На модерации')}
+                                </span>
+                            )}
                         </div>
 
                         <div className="flex flex-col gap-5">
@@ -68,6 +90,12 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                     {lot.product_name}
                                 </h1>
                             </div>
+
+                            {lot.description && (
+                                <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
+                                    {lot.description}
+                                </p>
+                            )}
 
                             <div className="flex items-center gap-5 text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                 <span className="flex items-center gap-1.5">
@@ -122,6 +150,12 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
 
                             {isOwn ? (
                                 <>
+                                    {lot.status === 'rejected' &&
+                                        lot.rejection_reason && (
+                                            <p className="rounded-xl bg-[#c0645a14] px-4 py-3 text-sm text-[#c0645a]">
+                                                {t('Причина отклонения: {reason}', { reason: lot.rejection_reason })}
+                                            </p>
+                                        )}
                                     <div className="flex flex-col gap-1.5">
                                         <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#e6d7bb] dark:bg-[#ffffff1a]">
                                             <div

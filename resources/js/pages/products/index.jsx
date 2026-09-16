@@ -5,6 +5,13 @@ import ProductFilters from '@/components/product-filters';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import {
     Sheet,
     SheetContent,
     SheetTitle,
@@ -122,7 +129,7 @@ export default function ProductsIndex({
 
                     <div className="flex gap-8">
                         <aside className="hidden w-64 shrink-0 lg:block">
-                            <div className="sticky top-6 max-h-[calc(100vh-3rem)] overflow-y-auto pr-2">
+                            <div className="sticky top-[5.5rem] max-h-[calc(100vh-7rem)] overflow-y-auto pr-2">
                                 <ProductFilters {...filterProps} />
                             </div>
                         </aside>
@@ -162,22 +169,26 @@ export default function ProductsIndex({
                                     </span>
                                 </div>
 
-                                <select
+                                <Select
                                     value={filters.sort ?? 'newest'}
-                                    onChange={(e) =>
-                                        updateFilters({ sort: e.target.value })
+                                    onValueChange={(value) =>
+                                        updateFilters({ sort: value })
                                     }
-                                    className="rounded-full border border-[#e6d7bb] bg-transparent px-3.5 py-1.5 text-sm text-[#241a10] dark:border-[#ffffff29] dark:bg-[#0d0b09] dark:text-[#f6ecdd]"
                                 >
-                                    {SORT_OPTIONS.map((option) => (
-                                        <option
-                                            key={option.value}
-                                            value={option.value}
-                                        >
-                                            {t(option.label)}
-                                        </option>
-                                    ))}
-                                </select>
+                                    <SelectTrigger className="rounded-full border-[#e6d7bb] bg-transparent px-3.5 py-1.5 text-sm text-[#241a10] dark:border-[#ffffff29] dark:bg-[#0d0b09] dark:text-[#f6ecdd]">
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {SORT_OPTIONS.map((option) => (
+                                            <SelectItem
+                                                key={option.value}
+                                                value={option.value}
+                                            >
+                                                {t(option.label)}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                             </div>
 
                             {activeChips.length > 0 && (
@@ -202,7 +213,7 @@ export default function ProductsIndex({
                                 </div>
                             )}
 
-                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                            <div className="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-6">
                                 {products.data.map((product) => (
                                     <ProductCard
                                         key={product.id}

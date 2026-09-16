@@ -1,7 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { ShoppingCart } from 'lucide-react';
 import { useState } from 'react';
-import BottleIcon, { tintForId } from '@/components/bottle-icon';
+import BottleIcon from '@/components/bottle-icon';
 import { useAddLotToCart } from '@/hooks/use-add-lot-to-cart';
 import { useTranslations } from '@/hooks/use-translations';
 
@@ -30,8 +30,30 @@ export default function LotCard({ lot, isOwn = false }) {
 
     return (
         <div className="flex h-full flex-col overflow-hidden rounded-3xl border border-[#1e160c14] bg-[#fffaf1] dark:border-[#ffffff14] dark:bg-[#ffffff0a] dark:backdrop-blur-lg">
-            <div className="scent-card-photo flex aspect-square items-center justify-center overflow-hidden">
-                <BottleIcon tint={tintForId(lot.id)} />
+            <div className="scent-card-photo relative flex aspect-square items-center justify-center overflow-hidden">
+                {lot.photo_sprayer_path ? (
+                    <img
+                        src={`/storage/${lot.photo_sprayer_path}`}
+                        alt={`${lot.brand_name} ${lot.product_name}`}
+                        className="h-full w-full object-cover"
+                    />
+                ) : (
+                    <BottleIcon />
+                )}
+                {isOwn && lot.status !== 'approved' && (
+                    <span
+                        className={
+                            'absolute top-4 left-4 rounded-full px-2.5 py-1 text-[11px] font-semibold tracking-[0.04em] uppercase ' +
+                            (lot.status === 'rejected'
+                                ? 'bg-[#c0645a] text-[#fdf3f1]'
+                                : 'bg-[#c79a5f] text-[#3d2712]')
+                        }
+                    >
+                        {lot.status === 'rejected'
+                            ? t('Отклонён')
+                            : t('На модерации')}
+                    </span>
+                )}
             </div>
 
             <div className="flex flex-1 flex-col p-6">

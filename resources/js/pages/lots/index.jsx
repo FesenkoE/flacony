@@ -1,20 +1,23 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import LotCard from '@/components/lot-card';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { useTranslations } from '@/hooks/use-translations';
 
-function buildUrl(filters, overrides) {
-    const params = new URLSearchParams();
-    Object.entries({ ...filters, ...overrides }).forEach(([key, value]) => {
-        if (value) params.set(key, value);
-    });
-    const query = params.toString();
-    return query ? `/lots?${query}` : '/lots';
-}
-
 export default function LotsIndex({ lots, brands, filters }) {
     const t = useTranslations();
+    const selectedBrands = filters.brand ?? [];
+
+    function toggleBrand(brand) {
+        const next = selectedBrands.includes(brand)
+            ? selectedBrands.filter((b) => b !== brand)
+            : [...selectedBrands, brand];
+        router.get(
+            '/lots',
+            { brand: next },
+            { preserveState: true, preserveScroll: true },
+        );
+    }
 
     return (
         <>
@@ -34,10 +37,10 @@ export default function LotsIndex({ lots, brands, filters }) {
                     {brands.length > 0 && (
                         <div className="mb-8 flex flex-wrap gap-2">
                             <Link
-                                href={buildUrl(filters, { brand: undefined })}
+                                href="/lots"
                                 className={
                                     'rounded-full border px-4 py-1.5 text-sm font-medium ' +
-                                    (!filters.brand
+                                    (selectedBrands.length === 0
                                         ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
                                         : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
                                 }
@@ -45,18 +48,19 @@ export default function LotsIndex({ lots, brands, filters }) {
                                 {t('Все бренды')}
                             </Link>
                             {brands.map((brand) => (
-                                <Link
+                                <button
                                     key={brand}
-                                    href={buildUrl(filters, { brand })}
+                                    type="button"
+                                    onClick={() => toggleBrand(brand)}
                                     className={
                                         'rounded-full border px-4 py-1.5 text-sm font-medium ' +
-                                        (filters.brand === brand
+                                        (selectedBrands.includes(brand)
                                             ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
                                             : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
                                     }
                                 >
                                     {brand}
-                                </Link>
+                                </button>
                             ))}
                         </div>
                     )}
@@ -66,7 +70,7 @@ export default function LotsIndex({ lots, brands, filters }) {
                             {t('Пока никто не выставил распив на продажу.')}
                         </p>
                     ) : (
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+                        <div className="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-6">
                             {lots.data.map((lot) => (
                                 <LotCard key={lot.id} lot={lot} />
                             ))}

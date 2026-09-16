@@ -61,6 +61,29 @@ function TrashIcon() {
     );
 }
 
+function LotStatusBadge({ lot, t }) {
+    if (lot.status === 'pending') {
+        return (
+            <span className="w-fit rounded-full bg-[#c79a5f29] px-2.5 py-0.5 text-[11px] font-semibold tracking-[0.04em] text-[#8a6a3a] uppercase dark:text-[#e0bd85]">
+                {t('На модерации')}
+            </span>
+        );
+    }
+
+    if (lot.status === 'rejected') {
+        return (
+            <span
+                className="w-fit rounded-full bg-[#c0645a29] px-2.5 py-0.5 text-[11px] font-semibold tracking-[0.04em] text-[#c0645a] uppercase"
+                title={lot.rejection_reason ?? undefined}
+            >
+                {t('Отклонён')}
+            </span>
+        );
+    }
+
+    return null;
+}
+
 function LotRow({ lot, t }) {
     const { removing, remove } = useConfirmDelete(`/sellers/lots/${lot.id}`);
 
@@ -77,6 +100,12 @@ function LotRow({ lot, t }) {
                 <span className="font-display text-lg font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                     {lot.product_name}
                 </span>
+                <LotStatusBadge lot={lot} t={t} />
+                {lot.status === 'rejected' && lot.rejection_reason && (
+                    <span className="text-xs text-[#c0645a]">
+                        {lot.rejection_reason}
+                    </span>
+                )}
                 <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                     {t('Остаток {remaining} из {total} мл · {price} ₴/мл', {
                         remaining: lot.remaining_volume_ml,
