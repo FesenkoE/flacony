@@ -1,7 +1,9 @@
 import { Head, Link, router, usePage } from '@inertiajs/react';
+import { ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
 import { useState } from 'react';
 import BottleIcon from '@/components/bottle-icon';
 import StarRating from '@/components/star-rating';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { formatDate } from '@/lib/format-date';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
@@ -57,11 +59,20 @@ export default function ProductShow({ product, myReview }) {
         ...product.images,
     ];
     const [photoIndex, setPhotoIndex] = useState(0);
+    const [lightboxOpen, setLightboxOpen] = useState(false);
     const imagePath = pickThemeImage(
         isDark,
         photos[photoIndex].image_path,
         photos[photoIndex].image_path_light,
     );
+
+    function prevPhoto() {
+        setPhotoIndex((i) => (i - 1 + photos.length) % photos.length);
+    }
+
+    function nextPhoto() {
+        setPhotoIndex((i) => (i + 1) % photos.length);
+    }
     const [rating, setRating] = useState(myReview?.rating ?? 5);
     const [body, setBody] = useState(myReview?.body ?? '');
 
@@ -93,15 +104,47 @@ export default function ProductShow({ product, myReview }) {
 
                     <div className="mt-6 grid gap-8 md:grid-cols-2">
                         <div className="min-w-0">
-                            <div className="scent-card-photo flex aspect-square items-center justify-center overflow-hidden rounded-3xl">
+                            <div className="scent-card-photo group relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl">
                                 {imagePath ? (
-                                    <img
-                                        src={`/storage/${imagePath}`}
-                                        alt={`${product.brand.name} ${product.name}`}
-                                        className="h-full w-full object-cover"
-                                    />
+                                    <>
+                                        <button
+                                            type="button"
+                                            onClick={() => setLightboxOpen(true)}
+                                            aria-label={t('Увеличить фото')}
+                                            className="h-full w-full"
+                                        >
+                                            <img
+                                                src={`/storage/${imagePath}`}
+                                                alt={`${product.brand.name} ${product.name}`}
+                                                className="h-full w-full object-cover"
+                                            />
+                                        </button>
+                                        <div className="pointer-events-none absolute right-4 bottom-4 flex h-9 w-9 items-center justify-center rounded-full bg-[#00000066] text-white opacity-0 transition-opacity group-hover:opacity-100">
+                                            <ZoomIn size={18} />
+                                        </div>
+                                    </>
                                 ) : (
                                     <BottleIcon size={164} />
+                                )}
+                                {photos.length > 1 && (
+                                    <>
+                                        <button
+                                            type="button"
+                                            onClick={prevPhoto}
+                                            aria-label={t('Предыдущее фото')}
+                                            className="absolute top-1/2 left-3 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-[#00000066] text-white"
+                                        >
+                                            <ChevronLeft size={20} />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={nextPhoto}
+                                            aria-label={t('Следующее фото')}
+                                            className="absolute top-1/2 right-3 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-[#00000066] text-white"
+                                        >
+                                            <ChevronRight size={20} />
+                                        </button>
+                                    </>
                                 )}
                             </div>
                             {photos.length > 1 && (
@@ -140,6 +183,43 @@ export default function ProductShow({ product, myReview }) {
                                 </div>
                             )}
                         </div>
+
+                        <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
+                            <DialogContent className="w-auto max-w-[92vw] rounded-none border-0 bg-transparent p-0 shadow-none">
+                                <DialogTitle className="sr-only">
+                                    {`${product.brand.name} — ${product.name}`}
+                                </DialogTitle>
+                                <div className="relative">
+                                    {imagePath && (
+                                        <img
+                                            src={`/storage/${imagePath}`}
+                                            alt={`${product.brand.name} ${product.name}`}
+                                            className="max-h-[88vh] max-w-[92vw] rounded-2xl object-contain"
+                                        />
+                                    )}
+                                    {photos.length > 1 && (
+                                        <>
+                                            <button
+                                                type="button"
+                                                onClick={prevPhoto}
+                                                aria-label={t('Предыдущее фото')}
+                                                className="absolute top-1/2 left-3 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-[#00000066] text-white"
+                                            >
+                                                <ChevronLeft size={20} />
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={nextPhoto}
+                                                aria-label={t('Следующее фото')}
+                                                className="absolute top-1/2 right-3 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-[#00000066] text-white"
+                                            >
+                                                <ChevronRight size={20} />
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                            </DialogContent>
+                        </Dialog>
 
                         <div className="flex flex-col gap-5">
                             <div className="flex flex-col gap-2">
