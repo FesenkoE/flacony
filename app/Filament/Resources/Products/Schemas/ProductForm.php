@@ -48,10 +48,10 @@ class ProductForm
                             ->columnSpanFull(),
                         FileUpload::make('image_path_light')
                             ->label('Фото (светлая тема)')
+                            ->helperText('Можно добавить позже — до тех пор сайт покажет тёмную версию.')
                             ->image()
                             ->disk('public')
                             ->directory('products')
-                            ->required()
                             ->columnSpanFull(),
                         Textarea::make('description')
                             ->columnSpanFull(),

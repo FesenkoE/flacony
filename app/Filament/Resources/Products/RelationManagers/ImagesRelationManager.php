@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Products\RelationManagers;
 
-use Filament\Actions\CreateAction;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\FileUpload;
@@ -32,10 +32,10 @@ class ImagesRelationManager extends RelationManager
                     ->required(),
                 FileUpload::make('image_path_light')
                     ->label('Фото (светлая тема)')
+                    ->helperText('Можно добавить позже.')
                     ->image()
                     ->disk('public')
-                    ->directory('products/gallery')
-                    ->required(),
+                    ->directory('products/gallery'),
             ]);
     }
 
@@ -56,7 +56,28 @@ class ImagesRelationManager extends RelationManager
             ->defaultSort('sort_order')
             ->reorderable('sort_order')
             ->headerActions([
-                CreateAction::make(),
+                Action::make('bulkUpload')
+                    ->label('Загрузить фото (тёмная тема)')
+                    ->form([
+                        FileUpload::make('images')
+                            ->label('Фото')
+                            ->helperText('Можно выбрать сразу несколько. Светлую версию для каждого добавите позже через редактирование строки.')
+                            ->image()
+                            ->multiple()
+                            ->required()
+                            ->disk('public')
+                            ->directory('products/gallery'),
+                    ])
+                    ->action(function (array $data): void {
+                        $nextOrder = $this->getOwnerRecord()->images()->max('sort_order') + 1;
+
+                        foreach ($data['images'] as $i => $path) {
+                            $this->getOwnerRecord()->images()->create([
+                                'image_path' => $path,
+                                'sort_order' => $nextOrder + $i,
+                            ]);
+                        }
+                    }),
             ])
             ->recordActions([
                 EditAction::make(),
