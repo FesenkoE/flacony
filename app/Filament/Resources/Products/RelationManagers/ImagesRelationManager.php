@@ -6,6 +6,7 @@ use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\FileUpload;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\ImageColumn;
@@ -56,12 +57,12 @@ class ImagesRelationManager extends RelationManager
             ->defaultSort('sort_order')
             ->reorderable('sort_order')
             ->headerActions([
-                Action::make('bulkUpload')
+                Action::make('bulkUploadDark')
                     ->label('Загрузить фото (тёмная тема)')
                     ->form([
                         FileUpload::make('images')
                             ->label('Фото')
-                            ->helperText('Можно выбрать сразу несколько. Светлую версию для каждого добавите позже через редактирование строки.')
+                            ->helperText('Можно выбрать сразу несколько — каждое создаст свою строку. Светлую версию добавите отдельной загрузкой позже.')
                             ->image()
                             ->multiple()
                             ->required()
@@ -76,6 +77,43 @@ class ImagesRelationManager extends RelationManager
                                 'image_path' => $path,
                                 'sort_order' => $nextOrder + $i,
                             ]);
+                        }
+                    }),
+                Action::make('bulkUploadLight')
+                    ->label('Загрузить фото (светлая тема)')
+                    ->color('gray')
+                    ->form([
+                        FileUpload::make('images')
+                            ->label('Фото')
+                            ->helperText('Файлы применятся по порядку к уже существующим строкам без светлой версии (сверху вниз, по текущей сортировке).')
+                            ->image()
+                            ->multiple()
+                            ->required()
+                            ->disk('public')
+                            ->directory('products/gallery'),
+                    ])
+                    ->action(function (array $data): void {
+                        $rows = $this->getOwnerRecord()->images()
+                            ->whereNull('image_path_light')
+                            ->orderBy('sort_order')
+                            ->get();
+
+                        $paths = array_values($data['images']);
+
+                        foreach ($paths as $i => $path) {
+                            if (! isset($rows[$i])) {
+                                break;
+                            }
+
+                            $rows[$i]->update(['image_path_light' => $path]);
+                        }
+
+                        if (count($paths) !== $rows->count()) {
+                            Notification::make()
+                                ->warning()
+                                ->title('Количество файлов не совпало со строками без светлой версии')
+                                ->body("Строк без светлой версии: {$rows->count()}, загружено файлов: " . count($paths) . '. Заполнены по порядку, лишнее не применено.')
+                                ->send();
                         }
                     }),
             ])
