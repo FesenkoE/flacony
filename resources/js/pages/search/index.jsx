@@ -48,7 +48,7 @@ export default function SearchIndex({ query, products, lots, brands }) {
                         />
                         <button
                             type="submit"
-                            className="rounded-full bg-[#b3864d] dark:bg-[#c79a5f] px-5 py-2.5 text-sm font-bold text-[#3d2712] uppercase"
+                            className="rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-5 py-2.5 text-sm font-bold text-[#3d2712] uppercase"
                         >
                             {t('Найти')}
                         </button>

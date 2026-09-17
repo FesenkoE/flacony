@@ -70,7 +70,7 @@ export default function ForumTopic({ topic, replies }) {
                                         <button
                                             type="submit"
                                             disabled={processing}
-                                            className="self-start rounded-full bg-[#b3864d] dark:bg-[#c79a5f] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60"
+                                            className="self-start rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60"
                                         >
                                             {t('Ответить')}
                                         </button>

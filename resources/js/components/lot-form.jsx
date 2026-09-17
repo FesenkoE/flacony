@@ -344,7 +344,7 @@ export default function LotForm({
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="rounded-full bg-[#b3864d] dark:bg-[#c79a5f] px-7 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60"
+                                className="rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-7 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60"
                             >
                                 {submitLabel}
                             </button>

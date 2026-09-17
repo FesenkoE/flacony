@@ -643,7 +643,7 @@ export default function CheckoutIndex({
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="mt-1 rounded-full bg-[#b3864d] dark:bg-[#c79a5f] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60"
+                                    className="mt-1 rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60"
                                 >
                                     {t('Подтвердить заказ')}
                                 </button>

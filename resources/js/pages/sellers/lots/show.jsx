@@ -201,7 +201,7 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                         </span>
                                         <Link
                                             href={`/sellers/lots/${lot.id}/edit`}
-                                            className="rounded-full bg-[#b3864d] dark:bg-[#c79a5f] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
+                                            className="rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                                         >
                                             {t('Редактировать')}
                                         </Link>
@@ -280,7 +280,7 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                             onClick={() =>
                                                 addLotToCart(lot.id, volume)
                                             }
-                                            className="rounded-full bg-[#b3864d] dark:bg-[#c79a5f] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
+                                            className="rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                                         >
                                             {added
                                                 ? t('Добавлено')
