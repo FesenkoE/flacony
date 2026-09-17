@@ -1,6 +1,6 @@
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BottleIcon from '@/components/bottle-icon';
 import StarRating from '@/components/star-rating';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
@@ -73,6 +73,25 @@ export default function ProductShow({ product, myReview }) {
     function nextPhoto() {
         setPhotoIndex((i) => (i + 1) % photos.length);
     }
+
+    useEffect(() => {
+        if (!lightboxOpen || photos.length < 2) {
+            return;
+        }
+
+        function onKeyDown(e) {
+            if (e.key === 'ArrowLeft') {
+                prevPhoto();
+            } else if (e.key === 'ArrowRight') {
+                nextPhoto();
+            }
+        }
+
+        window.addEventListener('keydown', onKeyDown);
+
+        return () => window.removeEventListener('keydown', onKeyDown);
+    }, [lightboxOpen, photos.length]);
+
     const [rating, setRating] = useState(myReview?.rating ?? 5);
     const [body, setBody] = useState(myReview?.body ?? '');
 
