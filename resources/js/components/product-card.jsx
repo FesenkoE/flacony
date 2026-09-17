@@ -164,7 +164,7 @@ export default function ProductCard({
                     <button
                         type="button"
                         onClick={() => addToCart(variant.id)}
-                        className="flex w-full items-center justify-center gap-2 rounded-full bg-[#c79a5f] px-5 py-3.5 text-sm font-bold tracking-[0.04em] text-[#241a10] uppercase dark:text-[#3d2712]"
+                        className="flex w-full items-center justify-center gap-2 rounded-full bg-[#b3864d] dark:bg-[#c79a5f] px-5 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                     >
                         {added ? (
                             <svg

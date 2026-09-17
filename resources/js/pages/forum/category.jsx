@@ -29,7 +29,7 @@ export default function ForumCategory({ category, topics }) {
                         {auth.user ? (
                             <Link
                                 href={`/forum/${category.slug}/create`}
-                                className="rounded-full bg-[#c79a5f] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
+                                className="rounded-full bg-[#b3864d] dark:bg-[#c79a5f] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                             >
                                 + {t('Новая тема')}
                             </Link>

@@ -180,7 +180,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                         type="submit"
                                         disabled={processing}
                                         data-test="login-button"
-                                        className="mt-2 rounded-full bg-[#c79a5f] px-7 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60"
+                                        className="mt-2 rounded-full bg-[#b3864d] dark:bg-[#c79a5f] px-7 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60"
                                     >
                                         {t('Войти')}
                                     </button>

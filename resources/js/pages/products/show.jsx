@@ -176,7 +176,7 @@ export default function ProductShow({ product, myReview }) {
                                 <button
                                     type="button"
                                     onClick={() => addToCart(variant.id)}
-                                    className="flex w-full items-center justify-center gap-2 rounded-full bg-[#c79a5f] px-5 py-3.5 text-sm font-bold tracking-[0.04em] text-[#241a10] uppercase dark:text-[#3d2712]"
+                                    className="flex w-full items-center justify-center gap-2 rounded-full bg-[#b3864d] dark:bg-[#c79a5f] px-5 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                                 >
                                     {added ? (
                                         <svg
@@ -440,7 +440,7 @@ export default function ProductShow({ product, myReview }) {
                                 <div className="flex items-center gap-3">
                                     <button
                                         type="submit"
-                                        className="rounded-full bg-[#c79a5f] px-5 py-2 text-sm font-bold text-[#241a10] uppercase dark:text-[#3d2712]"
+                                        className="rounded-full bg-[#b3864d] dark:bg-[#c79a5f] px-5 py-2 text-sm font-bold text-[#3d2712] uppercase"
                                     >
                                         {myReview
                                             ? t('Обновить отзыв')
