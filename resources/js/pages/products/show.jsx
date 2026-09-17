@@ -6,7 +6,10 @@ import { formatDate } from '@/lib/format-date';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { useAddToCart } from '@/hooks/use-add-to-cart';
-import { useThemeImagePath } from '@/hooks/use-theme-image';
+import {
+    pickThemeImage,
+    useIsDarkTheme,
+} from '@/hooks/use-theme-image';
 import { useTranslations } from '@/hooks/use-translations';
 import { pluralizeRu } from '@/lib/pluralize';
 
@@ -48,9 +51,16 @@ export default function ProductShow({ product, myReview }) {
     const { added, addToCart } = useAddToCart();
     const { auth } = usePage().props;
     const variant = product.variants[variantIndex];
-    const imagePath = useThemeImagePath(
-        product.image_path,
-        product.image_path_light,
+    const isDark = useIsDarkTheme();
+    const photos = [
+        { image_path: product.image_path, image_path_light: product.image_path_light },
+        ...product.images,
+    ];
+    const [photoIndex, setPhotoIndex] = useState(0);
+    const imagePath = pickThemeImage(
+        isDark,
+        photos[photoIndex].image_path,
+        photos[photoIndex].image_path_light,
     );
     const [rating, setRating] = useState(myReview?.rating ?? 5);
     const [body, setBody] = useState(myReview?.body ?? '');
@@ -82,15 +92,52 @@ export default function ProductShow({ product, myReview }) {
                     </Link>
 
                     <div className="mt-6 grid gap-8 md:grid-cols-2">
-                        <div className="scent-card-photo flex aspect-square items-center justify-center overflow-hidden rounded-3xl">
-                            {imagePath ? (
-                                <img
-                                    src={`/storage/${imagePath}`}
-                                    alt={`${product.brand.name} ${product.name}`}
-                                    className="h-full w-full object-cover"
-                                />
-                            ) : (
-                                <BottleIcon size={164} />
+                        <div>
+                            <div className="scent-card-photo flex aspect-square items-center justify-center overflow-hidden rounded-3xl">
+                                {imagePath ? (
+                                    <img
+                                        src={`/storage/${imagePath}`}
+                                        alt={`${product.brand.name} ${product.name}`}
+                                        className="h-full w-full object-cover"
+                                    />
+                                ) : (
+                                    <BottleIcon size={164} />
+                                )}
+                            </div>
+                            {photos.length > 1 && (
+                                <div className="mt-3 flex gap-3">
+                                    {photos.map((photo, i) => {
+                                        const thumbPath = pickThemeImage(
+                                            isDark,
+                                            photo.image_path,
+                                            photo.image_path_light,
+                                        );
+                                        return (
+                                            <button
+                                                key={i}
+                                                type="button"
+                                                onClick={() => setPhotoIndex(i)}
+                                                aria-label={t('Фото {n}', { n: i + 1 })}
+                                                className={
+                                                    'scent-card-photo aspect-square w-16 shrink-0 overflow-hidden rounded-xl border-2 ' +
+                                                    (i === photoIndex
+                                                        ? 'border-[#c79a5f]'
+                                                        : 'border-transparent')
+                                                }
+                                            >
+                                                {thumbPath ? (
+                                                    <img
+                                                        src={`/storage/${thumbPath}`}
+                                                        alt=""
+                                                        className="h-full w-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <BottleIcon size={40} />
+                                                )}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
                             )}
                         </div>
 

@@ -56,6 +56,11 @@ class Product extends Model
         return $this->hasMany(ProductVariant::class)->orderBy('volume_ml');
     }
 
+    public function images(): HasMany
+    {
+        return $this->hasMany(ProductImage::class)->orderBy('sort_order');
+    }
+
     public function favorites(): HasMany
     {
         return $this->hasMany(Favorite::class);

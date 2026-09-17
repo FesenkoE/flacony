@@ -95,7 +95,7 @@ class ProductController extends Controller
 
     public function show(Request $request, Product $product): Response
     {
-        $product->load(['brand', 'category', 'variants']);
+        $product->load(['brand', 'category', 'variants', 'images']);
         $product->loadAvg('reviews', 'rating');
         $product->load(['reviews' => fn ($q) => $q->with('user')->latest()]);
 
