@@ -30,15 +30,15 @@ function PostCard({ post }) {
                     />
                 )}
             </div>
-            <div className="flex flex-col gap-3 p-6">
+            <div className="flex flex-1 flex-col gap-3 p-6">
                 <span className="w-fit rounded-full bg-[#c79a5f1a] px-3 py-1 text-[11px] font-semibold tracking-[0.08em] text-[#c79a5f] uppercase">
                     {formatDate(post.published_at)}
                 </span>
-                <h2 className="font-display text-3xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
+                <h2 className="font-display line-clamp-2 text-2xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                     {post.title}
                 </h2>
                 {post.excerpt && (
-                    <p className="text-sm leading-relaxed text-[#7d6952] dark:text-[#b7a58f]">
+                    <p className="line-clamp-3 text-sm leading-relaxed text-[#7d6952] dark:text-[#b7a58f]">
                         {post.excerpt}
                     </p>
                 )}
@@ -55,7 +55,7 @@ export default function BlogIndex({ posts }) {
             <Head title={t('Блог')} />
             <SiteHeader />
             <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
-                <div className="mx-auto max-w-3xl p-6">
+                <div className="mx-auto max-w-[1600px] p-6">
                     <h1 className="mb-8 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                         {t('Блог')}
                     </h1>
@@ -65,7 +65,7 @@ export default function BlogIndex({ posts }) {
                             {t('Пока нет статей.')}
                         </p>
                     ) : (
-                        <div className="flex flex-col gap-4">
+                        <div className="grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-6">
                             {posts.map((post) => (
                                 <PostCard key={post.id} post={post} />
                             ))}
