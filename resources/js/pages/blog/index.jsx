@@ -53,27 +53,29 @@ export default function BlogIndex({ posts }) {
     return (
         <>
             <Head title={t('Блог')} />
-            <SiteHeader />
-            <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
-                <div className="mx-auto max-w-[1600px] p-6">
-                    <h1 className="mb-8 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                        {t('Блог')}
-                    </h1>
+            <div className="flex min-h-screen flex-col">
+                <SiteHeader />
+                <div className="flex-1 bg-[#f6efe3] dark:bg-[#0d0b09]">
+                    <div className="mx-auto max-w-[1600px] p-6">
+                        <h1 className="mb-8 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                            {t('Блог')}
+                        </h1>
 
-                    {posts.length === 0 ? (
-                        <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                            {t('Пока нет статей.')}
-                        </p>
-                    ) : (
-                        <div className="grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-6">
-                            {posts.map((post) => (
-                                <PostCard key={post.id} post={post} />
-                            ))}
-                        </div>
-                    )}
+                        {posts.length === 0 ? (
+                            <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
+                                {t('Пока нет статей.')}
+                            </p>
+                        ) : (
+                            <div className="grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-6">
+                                {posts.map((post) => (
+                                    <PostCard key={post.id} post={post} />
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
+                <SiteFooter />
             </div>
-            <SiteFooter />
         </>
     );
 }

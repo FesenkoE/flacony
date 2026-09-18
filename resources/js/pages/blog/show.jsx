@@ -14,55 +14,57 @@ export default function BlogShow({ post }) {
     return (
         <>
             <Head title={post.title} />
-            <SiteHeader />
-            <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
-                <div className="mx-auto max-w-2xl p-6">
-                    <Link
-                        href="/blog"
-                        className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
-                    >
-                        ← {t('Блог')}
-                    </Link>
+            <div className="flex min-h-screen flex-col">
+                <SiteHeader />
+                <div className="flex-1 bg-[#f6efe3] dark:bg-[#0d0b09]">
+                    <div className="mx-auto max-w-2xl p-6">
+                        <Link
+                            href="/blog"
+                            className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                        >
+                            ← {t('Блог')}
+                        </Link>
 
-                    <div className="scent-card-photo mt-6 flex aspect-[21/9] items-center justify-center overflow-hidden rounded-3xl">
-                        {coverPath ? (
-                            <img
-                                src={`/storage/${coverPath}`}
-                                alt=""
-                                className="h-full w-full object-cover"
-                            />
-                        ) : (
-                            <Newspaper
-                                size={48}
-                                strokeWidth={1.5}
-                                className="text-[#a9835a]"
-                            />
-                        )}
-                    </div>
+                        <div className="scent-card-photo mt-6 flex aspect-[21/9] items-center justify-center overflow-hidden rounded-3xl">
+                            {coverPath ? (
+                                <img
+                                    src={`/storage/${coverPath}`}
+                                    alt=""
+                                    className="h-full w-full object-cover"
+                                />
+                            ) : (
+                                <Newspaper
+                                    size={48}
+                                    strokeWidth={1.5}
+                                    className="text-[#a9835a]"
+                                />
+                            )}
+                        </div>
 
-                    <div className="mt-6 mb-8 flex flex-col gap-2">
-                        <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
-                            {formatDate(post.published_at)}
-                            {post.author && <> · {post.author.name}</>}
-                        </span>
-                        <h1 className="font-display text-4xl leading-tight font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
-                            {post.title}
-                        </h1>
-                    </div>
+                        <div className="mt-6 mb-8 flex flex-col gap-2">
+                            <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
+                                {formatDate(post.published_at)}
+                                {post.author && <> · {post.author.name}</>}
+                            </span>
+                            <h1 className="font-display text-4xl leading-tight font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
+                                {post.title}
+                            </h1>
+                        </div>
 
-                    <div className="flex flex-col gap-4">
-                        {paragraphs.map((paragraph, i) => (
-                            <p
-                                key={i}
-                                className="text-base leading-relaxed text-[#241a10] dark:text-[#f6ecdd]"
-                            >
-                                {paragraph}
-                            </p>
-                        ))}
+                        <div className="flex flex-col gap-4">
+                            {paragraphs.map((paragraph, i) => (
+                                <p
+                                    key={i}
+                                    className="text-base leading-relaxed text-[#241a10] dark:text-[#f6ecdd]"
+                                >
+                                    {paragraph}
+                                </p>
+                            ))}
+                        </div>
                     </div>
                 </div>
+                <SiteFooter />
             </div>
-            <SiteFooter />
         </>
     );
 }
