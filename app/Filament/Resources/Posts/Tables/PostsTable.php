@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Posts\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -14,6 +15,10 @@ class PostsTable
     {
         return $table
             ->columns([
+                ImageColumn::make('cover_path')
+                    ->label('Обложка')
+                    ->disk('public')
+                    ->square(),
                 TextColumn::make('author.name')
                     ->searchable(),
                 TextColumn::make('title')

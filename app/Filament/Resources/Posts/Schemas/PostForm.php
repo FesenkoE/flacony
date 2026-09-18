@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Posts\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -25,6 +26,17 @@ class PostForm
                 Textarea::make('body')
                     ->required()
                     ->columnSpanFull(),
+                FileUpload::make('cover_path')
+                    ->label('Обложка (тёмная тема)')
+                    ->image()
+                    ->disk('public')
+                    ->directory('posts'),
+                FileUpload::make('cover_path_light')
+                    ->label('Обложка (светлая тема)')
+                    ->helperText('Можно добавить позже.')
+                    ->image()
+                    ->disk('public')
+                    ->directory('posts'),
                 DateTimePicker::make('published_at'),
             ]);
     }

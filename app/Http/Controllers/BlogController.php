@@ -13,7 +13,7 @@ class BlogController extends Controller
         return Inertia::render('blog/index', [
             'posts' => Post::published()
                 ->latest('published_at')
-                ->get(['id', 'title', 'slug', 'excerpt', 'published_at']),
+                ->get(['id', 'title', 'slug', 'excerpt', 'cover_path', 'cover_path_light', 'published_at']),
         ]);
     }
 

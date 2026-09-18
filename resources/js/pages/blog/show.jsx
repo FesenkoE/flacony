@@ -1,12 +1,15 @@
 import { Head, Link } from '@inertiajs/react';
+import { Newspaper } from 'lucide-react';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { formatDate } from '@/lib/format-date';
+import { useThemeImagePath } from '@/hooks/use-theme-image';
 import { useTranslations } from '@/hooks/use-translations';
 
 export default function BlogShow({ post }) {
     const t = useTranslations();
     const paragraphs = post.body.split(/\n{2,}/);
+    const coverPath = useThemeImagePath(post.cover_path, post.cover_path_light);
 
     return (
         <>
@@ -20,6 +23,22 @@ export default function BlogShow({ post }) {
                     >
                         ← {t('Блог')}
                     </Link>
+
+                    <div className="scent-card-photo mt-6 flex aspect-[21/9] items-center justify-center overflow-hidden rounded-3xl">
+                        {coverPath ? (
+                            <img
+                                src={`/storage/${coverPath}`}
+                                alt=""
+                                className="h-full w-full object-cover"
+                            />
+                        ) : (
+                            <Newspaper
+                                size={48}
+                                strokeWidth={1.5}
+                                className="text-[#a9835a]"
+                            />
+                        )}
+                    </div>
 
                     <div className="mt-6 mb-8 flex flex-col gap-2">
                         <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">

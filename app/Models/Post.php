@@ -8,7 +8,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Post extends Model
 {
-    protected $fillable = ['author_id', 'title', 'slug', 'excerpt', 'body', 'published_at'];
+    protected $fillable = [
+        'author_id',
+        'title',
+        'slug',
+        'excerpt',
+        'body',
+        'cover_path',
+        'cover_path_light',
+        'published_at',
+    ];
 
     protected function casts(): array
     {
