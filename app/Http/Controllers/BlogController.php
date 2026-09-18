@@ -25,6 +25,11 @@ class BlogController extends Controller
 
         return Inertia::render('blog/show', [
             'post' => $post,
+            'relatedPosts' => Post::published()
+                ->where('id', '!=', $post->id)
+                ->latest('published_at')
+                ->limit(3)
+                ->get(['id', 'title', 'slug', 'excerpt', 'cover_path', 'cover_path_light', 'published_at']),
         ]);
     }
 }
