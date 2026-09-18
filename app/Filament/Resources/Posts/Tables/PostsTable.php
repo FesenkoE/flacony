@@ -21,6 +21,9 @@ class PostsTable
                     ->square(),
                 TextColumn::make('author.name')
                     ->searchable(),
+                TextColumn::make('category.name')
+                    ->label('Категория')
+                    ->searchable(),
                 TextColumn::make('title')
                     ->searchable(),
                 TextColumn::make('slug')

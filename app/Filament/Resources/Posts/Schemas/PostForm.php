@@ -17,6 +17,11 @@ class PostForm
             ->components([
                 Select::make('author_id')
                     ->relationship('author', 'name'),
+                Select::make('category_id')
+                    ->label('Категория')
+                    ->relationship('category', 'name')
+                    ->searchable()
+                    ->preload(),
                 TextInput::make('title')
                     ->required(),
                 TextInput::make('slug')

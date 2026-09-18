@@ -48,6 +48,11 @@ export default function BlogShow({ post, relatedPosts }) {
                         </div>
 
                         <div className="mt-6 mb-8 flex flex-col gap-2">
+                            {post.category && (
+                                <span className="text-xs font-bold tracking-[0.18em] text-[#c79a5f] uppercase">
+                                    {post.category.name}
+                                </span>
+                            )}
                             <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                                 {formatDate(post.published_at)}
                                 {post.author && <> · {post.author.name}</>}

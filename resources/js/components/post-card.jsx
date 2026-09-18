@@ -27,9 +27,16 @@ export default function PostCard({ post }) {
                 )}
             </div>
             <div className="flex flex-1 flex-col gap-3 p-6">
-                <span className="w-fit rounded-full bg-[#c79a5f1a] px-3 py-1 text-[11px] font-semibold tracking-[0.08em] text-[#c79a5f] uppercase">
-                    {formatDate(post.published_at)}
-                </span>
+                <div className="flex items-center gap-2">
+                    {post.category && (
+                        <span className="w-fit rounded-full bg-[#c79a5f1a] px-3 py-1 text-[11px] font-semibold tracking-[0.08em] text-[#c79a5f] uppercase">
+                            {post.category.name}
+                        </span>
+                    )}
+                    <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
+                        {formatDate(post.published_at)}
+                    </span>
+                </div>
                 <h2 className="font-display line-clamp-2 text-2xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                     {post.title}
                 </h2>
