@@ -10,12 +10,21 @@ import { pluralizeRu } from '@/lib/pluralize';
 
 const WORDS_PER_MINUTE = 200;
 
+// ponytail: only "гайды" posts are actually about decanting/распив so far —
+// everything else stays pointed at the catalog. Extend this map if future
+// categories deserve their own destination.
+const CATEGORY_CTA = {
+    gaidy: { href: '/lots', label: 'Смотреть розпив' },
+};
+const DEFAULT_CTA = { href: '/products', label: 'Смотреть каталог' };
+
 export default function BlogShow({ post, relatedPosts }) {
     const t = useTranslations();
     const paragraphs = post.body.split(/\n{2,}/);
     const coverPath = useThemeImagePath(post.cover_path, post.cover_path_light);
     const wordCount = post.body.trim().split(/\s+/).length;
     const readingMinutes = Math.max(1, Math.round(wordCount / WORDS_PER_MINUTE));
+    const cta = CATEGORY_CTA[post.category?.slug] ?? DEFAULT_CTA;
 
     return (
         <>
@@ -85,10 +94,10 @@ export default function BlogShow({ post, relatedPosts }) {
 
                         <div className="mt-10 border-t border-[#1e160c14] pt-8 dark:border-[#ffffff14]">
                             <Link
-                                href="/products"
+                                href={cta.href}
                                 className="inline-flex items-center gap-2 rounded-full bg-[#c5aa86] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase dark:bg-[#c79a5f]"
                             >
-                                {t('Смотреть каталог')} →
+                                {t(cta.label)} →
                             </Link>
                         </div>
                     </div>
