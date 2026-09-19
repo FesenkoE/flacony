@@ -32,7 +32,7 @@ export default function BlogShow({ post, relatedPosts }) {
             <div className="flex min-h-screen flex-col">
                 <SiteHeader />
                 <div className="flex-1 bg-[#f6efe3] dark:bg-[#0d0b09]">
-                    <div className="mx-auto max-w-2xl p-6">
+                    <div className="mx-auto max-w-4xl p-6">
                         <Link
                             href="/blog"
                             className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
@@ -76,16 +76,16 @@ export default function BlogShow({ post, relatedPosts }) {
                                 )}{' '}
                                 {t('чтения')}
                             </span>
-                            <h1 className="font-display text-4xl leading-tight font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
+                            <h1 className="font-display text-5xl leading-tight font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
                                 {post.title}
                             </h1>
                         </div>
 
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-5">
                             {paragraphs.map((paragraph, i) => (
                                 <p
                                     key={i}
-                                    className="text-base leading-relaxed text-[#241a10] dark:text-[#f6ecdd]"
+                                    className="text-lg leading-relaxed text-[#241a10] dark:text-[#f6ecdd]"
                                 >
                                     {paragraph}
                                 </p>
