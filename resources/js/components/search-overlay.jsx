@@ -1,4 +1,5 @@
 import { router } from '@inertiajs/react';
+import { Newspaper } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import BottleIcon from '@/components/bottle-icon';
 import { pickThemeImage, useIsDarkTheme } from '@/hooks/use-theme-image';
@@ -10,7 +11,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
     const t = useTranslations();
     const isDarkTheme = useIsDarkTheme();
     const [query, setQuery] = useState('');
-    const [results, setResults] = useState({ products: [], lots: [] });
+    const [results, setResults] = useState({ products: [], lots: [], posts: [] });
     const [loading, setLoading] = useState(false);
     const [mounted, setMounted] = useState(open);
     const [closing, setClosing] = useState(false);
@@ -29,7 +30,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
             setMounted(false);
             setClosing(false);
             setQuery('');
-            setResults({ products: [], lots: [] });
+            setResults({ products: [], lots: [], posts: [] });
         }, CLOSE_ANIMATION_MS);
 
         return () => clearTimeout(timeout);
@@ -47,7 +48,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
 
     useEffect(() => {
         if (query.trim() === '') {
-            setResults({ products: [], lots: [] });
+            setResults({ products: [], lots: [], posts: [] });
             return;
         }
 
@@ -56,7 +57,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
             fetch(`/search/live?q=${encodeURIComponent(query)}`)
                 .then((r) => r.json())
                 .then(setResults)
-                .catch(() => setResults({ products: [], lots: [] }))
+                .catch(() => setResults({ products: [], lots: [], posts: [] }))
                 .finally(() => setLoading(false));
         }, 250);
 
@@ -75,7 +76,10 @@ export default function SearchOverlay({ open, onOpenChange }) {
 
     if (!mounted) return null;
 
-    const hasResults = results.products.length > 0 || results.lots.length > 0;
+    const hasResults =
+        results.products.length > 0 ||
+        results.lots.length > 0 ||
+        results.posts.length > 0;
 
     return (
         <>
@@ -159,7 +163,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                 </p>
                             )}
 
-                            <div className="grid gap-x-10 gap-y-4 sm:grid-cols-2">
+                            <div className="grid gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
                                 {results.products.length > 0 && (
                                     <div className="flex flex-col gap-1 sm:border-r sm:border-[#1e160c14]/60 sm:pr-10 dark:sm:border-[#ffffff1a]">
                                         <span className="px-2 pb-1 text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
@@ -207,7 +211,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                 )}
 
                                 {results.lots.length > 0 && (
-                                    <div className="flex flex-col gap-1">
+                                    <div className="flex flex-col gap-1 lg:border-r lg:border-[#1e160c14]/60 lg:pr-10 dark:lg:border-[#ffffff1a]">
                                         <span className="px-2 pb-1 text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
                                             {t('Розпив')}
                                         </span>
@@ -229,6 +233,51 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                                     ).toFixed(0)}{' '}
                                                     ₴/мл
                                                 </span>
+                                            </a>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {results.posts.length > 0 && (
+                                    <div className="flex flex-col gap-1">
+                                        <span className="px-2 pb-1 text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
+                                            {t('Блог')}
+                                        </span>
+                                        {results.posts.map((post) => (
+                                            <a
+                                                key={post.id}
+                                                href={`/blog/${post.slug}`}
+                                                className="flex items-center gap-3 rounded-xl px-2 py-2 hover:bg-[#f6efe3] dark:hover:bg-[#ffffff0a]"
+                                            >
+                                                <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#f6efe3] dark:bg-[#ffffff0a]">
+                                                    {post.cover_path ? (
+                                                        <img
+                                                            src={`/storage/${pickThemeImage(
+                                                                isDarkTheme,
+                                                                post.cover_path,
+                                                                post.cover_path_light,
+                                                            )}`}
+                                                            alt=""
+                                                            className="h-full w-full object-cover"
+                                                        />
+                                                    ) : (
+                                                        <Newspaper
+                                                            size={18}
+                                                            strokeWidth={1.5}
+                                                            className="text-[#a9835a]"
+                                                        />
+                                                    )}
+                                                </div>
+                                                <div className="flex min-w-0 flex-1 flex-col">
+                                                    <span className="truncate text-sm font-semibold">
+                                                        {post.title}
+                                                    </span>
+                                                    {post.category && (
+                                                        <span className="truncate text-xs text-[#7d6952] dark:text-[#b7a58f]">
+                                                            {post.category}
+                                                        </span>
+                                                    )}
+                                                </div>
                                             </a>
                                         ))}
                                     </div>

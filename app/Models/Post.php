@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Laravel\Scout\Searchable;
 
 class Post extends Model
 {
+    use Searchable;
+
     protected $fillable = [
         'author_id',
         'category_id',
@@ -40,5 +43,20 @@ class Post extends Model
     public function scopePublished(Builder $query): void
     {
         $query->whereNotNull('published_at')->where('published_at', '<=', now());
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'title' => $this->title,
+            'excerpt' => $this->excerpt,
+            'body' => $this->body,
+            'category' => $this->category?->name,
+        ];
+    }
+
+    public function shouldBeSearchable(): bool
+    {
+        return $this->published_at && $this->published_at->isPast();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use App\Models\Lot;
+use App\Models\Post;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class SearchController extends Controller
         $query = $request->string('q')->toString();
 
         if ($query === '') {
-            return response()->json(['products' => [], 'lots' => []]);
+            return response()->json(['products' => [], 'lots' => [], 'posts' => []]);
         }
 
         $products = Product::search($query)
@@ -48,7 +49,20 @@ class SearchController extends Controller
                 'price_per_ml' => $lot->price_per_ml,
             ]);
 
-        return response()->json(['products' => $products, 'lots' => $lots]);
+        $posts = Post::search($query)
+            ->query(fn ($q) => $q->with('category:id,name,slug'))
+            ->take(3)
+            ->get()
+            ->map(fn (Post $post) => [
+                'id' => $post->id,
+                'slug' => $post->slug,
+                'title' => $post->title,
+                'category' => $post->category?->name,
+                'cover_path' => $post->cover_path,
+                'cover_path_light' => $post->cover_path_light,
+            ]);
+
+        return response()->json(['products' => $products, 'lots' => $lots, 'posts' => $posts]);
     }
 
     public function index(Request $request): Response
@@ -57,6 +71,7 @@ class SearchController extends Controller
 
         $products = [];
         $lots = [];
+        $posts = [];
 
         if ($query !== '') {
             $products = Product::search($query)
@@ -67,12 +82,18 @@ class SearchController extends Controller
                 ->get();
 
             $lots = Lot::search($query)->take(12)->get();
+
+            $posts = Post::search($query)
+                ->query(fn ($q) => $q->with('category:id,name,slug'))
+                ->take(12)
+                ->get();
         }
 
         return Inertia::render('search/index', [
             'query' => $query,
             'products' => $products,
             'lots' => $lots,
+            'posts' => $posts,
             'brands' => Brand::orderBy('name')->pluck('name'),
         ]);
     }

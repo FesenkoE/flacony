@@ -1,12 +1,13 @@
 import { Head, router } from '@inertiajs/react';
 import { useState } from 'react';
 import LotCard from '@/components/lot-card';
+import PostCard from '@/components/post-card';
 import ProductCard from '@/components/product-card';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { useTranslations } from '@/hooks/use-translations';
 
-export default function SearchIndex({ query, products, lots, brands }) {
+export default function SearchIndex({ query, products, lots, posts, brands }) {
     const t = useTranslations();
     const [value, setValue] = useState(query);
 
@@ -20,7 +21,8 @@ export default function SearchIndex({ query, products, lots, brands }) {
         router.get('/search', { q: term }, { preserveState: true });
     }
 
-    const hasResults = products.length > 0 || lots.length > 0;
+    const hasResults =
+        products.length > 0 || lots.length > 0 || posts.length > 0;
 
     return (
         <>
@@ -33,7 +35,7 @@ export default function SearchIndex({ query, products, lots, brands }) {
                     </h1>
                     <p className="mb-6 text-sm text-[#7d6952] dark:text-[#b7a58f]">
                         {t(
-                            'Ищем сразу по официальному каталогу и лотам распива.',
+                            'Ищем сразу по официальному каталогу, лотам распива и блогу.',
                         )}
                     </p>
 
@@ -104,6 +106,19 @@ export default function SearchIndex({ query, products, lots, brands }) {
                                     <div className="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-6">
                                         {lots.map((lot) => (
                                             <LotCard key={lot.id} lot={lot} />
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {posts.length > 0 && (
+                                <div className="flex flex-col gap-4">
+                                    <h2 className="text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                                        {t('Блог')}
+                                    </h2>
+                                    <div className="grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-6">
+                                        {posts.map((post) => (
+                                            <PostCard key={post.id} post={post} />
                                         ))}
                                     </div>
                                 </div>
