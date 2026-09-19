@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\PostCategory;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -10,13 +12,18 @@ class BlogController extends Controller
 {
     private const CARD_COLUMNS = ['id', 'category_id', 'title', 'slug', 'excerpt', 'cover_path', 'cover_path_light', 'published_at'];
 
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $categorySlug = $request->string('category')->toString() ?: null;
+
         return Inertia::render('blog/index', [
             'posts' => Post::published()
                 ->with('category:id,name,slug')
+                ->when($categorySlug, fn ($query) => $query->whereRelation('category', 'slug', $categorySlug))
                 ->latest('published_at')
                 ->get(self::CARD_COLUMNS),
+            'categories' => PostCategory::orderBy('name')->get(['id', 'name', 'slug']),
+            'activeCategory' => $categorySlug,
         ]);
     }
 

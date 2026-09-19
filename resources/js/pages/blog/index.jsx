@@ -54,7 +54,7 @@ function FeaturedPostCard({ post }) {
     );
 }
 
-export default function BlogIndex({ posts }) {
+export default function BlogIndex({ posts, categories, activeCategory }) {
     const t = useTranslations();
 
     return (
@@ -67,9 +67,39 @@ export default function BlogIndex({ posts }) {
                         <h1 className="text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                             {t('Блог')}
                         </h1>
-                        <p className="mt-1 mb-8 text-sm text-[#7d6952] dark:text-[#b7a58f]">
+                        <p className="mt-1 mb-6 text-sm text-[#7d6952] dark:text-[#b7a58f]">
                             {t('Гиды по ароматам, парфюмерной культуре и уходу за флаконом.')}
                         </p>
+
+                        {categories.length > 0 && (
+                            <div className="mb-8 flex flex-wrap gap-2">
+                                <Link
+                                    href="/blog"
+                                    className={
+                                        'rounded-full border px-4 py-1.5 text-sm font-medium ' +
+                                        (!activeCategory
+                                            ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
+                                            : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
+                                    }
+                                >
+                                    {t('Все статьи')}
+                                </Link>
+                                {categories.map((category) => (
+                                    <Link
+                                        key={category.id}
+                                        href={`/blog?category=${category.slug}`}
+                                        className={
+                                            'rounded-full border px-4 py-1.5 text-sm font-medium ' +
+                                            (activeCategory === category.slug
+                                                ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
+                                                : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
+                                        }
+                                    >
+                                        {category.name}
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
 
                         {posts.length === 0 ? (
                             <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
