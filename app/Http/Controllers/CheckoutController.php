@@ -116,6 +116,7 @@ class CheckoutController extends Controller
             $order = Order::create([
                 ...$orderData,
                 'user_id' => $request->user()->id,
+                'locale' => app()->getLocale(),
                 'total' => $subtotal - $discount,
                 'discount_amount' => $discount,
             ]);
@@ -125,6 +126,7 @@ class CheckoutController extends Controller
                     'type' => $item['type'],
                     'product_variant_id' => $item['product_variant_id'],
                     'lot_id' => $item['lot_id'],
+                    'volume_ml' => $item['type'] === 'lot' ? $item['volume_ml'] : null,
                     'brand_name' => $item['brand_name'],
                     'product_name' => $item['product_name'],
                     'detail' => $item['detail'],
@@ -140,6 +142,7 @@ class CheckoutController extends Controller
         });
 
         Cart::clear();
+        $order->notifyCustomer();
 
         return redirect()->route('orders.show', $order);
     }

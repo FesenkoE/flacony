@@ -20,6 +20,14 @@ class PromoCodeResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    protected static ?string $navigationLabel = 'Промокоды';
+
+    protected static ?string $modelLabel = 'Промокод';
+
+    protected static ?string $pluralModelLabel = 'Промокоды';
+
+    protected static bool $hasTitleCaseModelLabel = false;
+
     public static function form(Schema $schema): Schema
     {
         return PromoCodeForm::configure($schema);

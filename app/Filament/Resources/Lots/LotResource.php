@@ -19,6 +19,14 @@ class LotResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShieldCheck;
 
+    protected static ?string $navigationLabel = 'Лоты распива';
+
+    protected static ?string $modelLabel = 'Лот';
+
+    protected static ?string $pluralModelLabel = 'Лоты распива';
+
+    protected static bool $hasTitleCaseModelLabel = false;
+
     public static function form(Schema $schema): Schema
     {
         return LotForm::configure($schema);

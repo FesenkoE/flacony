@@ -20,6 +20,14 @@ class CategoryResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    protected static ?string $navigationLabel = 'Категории товаров';
+
+    protected static ?string $modelLabel = 'Категория';
+
+    protected static ?string $pluralModelLabel = 'Категории товаров';
+
+    protected static bool $hasTitleCaseModelLabel = false;
+
     public static function form(Schema $schema): Schema
     {
         return CategoryForm::configure($schema);

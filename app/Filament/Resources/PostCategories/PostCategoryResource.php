@@ -24,6 +24,8 @@ class PostCategoryResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Категории блога';
 
+    protected static bool $hasTitleCaseModelLabel = false;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
 
     public static function form(Schema $schema): Schema

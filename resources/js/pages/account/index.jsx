@@ -5,6 +5,7 @@ import ConfirmButton from '@/components/confirm-button';
 import DissolveCard from '@/components/dissolve-card';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
+import OrderStatusBadge from '@/components/order-status-badge';
 import { formatDate } from '@/lib/format-date';
 import { useTranslations } from '@/hooks/use-translations';
 
@@ -212,9 +213,14 @@ export default function AccountIndex({ lots, orders }) {
                                             {formatDate(order.created_at, t)}
                                         </span>
                                     </div>
-                                    <span className="font-display text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                                        {Number(order.total).toFixed(2)} ₴
-                                    </span>
+                                    <div className="flex items-center gap-3">
+                                        <OrderStatusBadge
+                                            status={order.status}
+                                        />
+                                        <span className="font-display text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                                            {Number(order.total).toFixed(2)} ₴
+                                        </span>
+                                    </div>
                                 </Link>
                             ))}
                         </div>

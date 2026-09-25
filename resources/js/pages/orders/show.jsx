@@ -1,4 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
+import OrderStatusBadge from '@/components/order-status-badge';
 import { formatDateTime } from '@/lib/format-date';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
@@ -10,6 +11,18 @@ export default function OrderShow({
     paymentMethodLabel,
 }) {
     const t = useTranslations();
+    const heading = {
+        new: 'Заказ №{id} принят',
+        confirmed: 'Заказ №{id} подтверждён',
+        shipped: 'Заказ №{id} отправлен',
+        delivered: 'Заказ №{id} доставлен',
+        cancelled: 'Заказ №{id} отменён',
+    }[order.status];
+    const hint = {
+        new: 'Скоро свяжемся, чтобы подтвердить заказ.',
+        confirmed: 'Собираем заказ — напишем, когда отправим.',
+        shipped: 'Заказ уже в пути.',
+    }[order.status];
 
     return (
         <>
@@ -18,21 +31,41 @@ export default function OrderShow({
             <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
                 <div className="mx-auto max-w-2xl p-6">
                     <div className="mb-6 flex flex-col items-center gap-3 rounded-2xl border border-[#1e160c14] bg-[#fffaf1] p-8 text-center dark:border-[#ffffff14] dark:bg-[#ffffff0a]">
-                        <svg
-                            width="40"
-                            height="40"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="#c79a5f"
-                            strokeWidth="1.8"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        >
-                            <path d="M20 6 9 17l-5-5" />
-                        </svg>
+                        {order.status !== 'cancelled' && (
+                            <svg
+                                width="40"
+                                height="40"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#c79a5f"
+                                strokeWidth="1.8"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <path d="M20 6 9 17l-5-5" />
+                            </svg>
+                        )}
+                        <OrderStatusBadge status={order.status} />
                         <h1 className="font-display text-2xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
-                            {t('Заказ №{id} принят', { id: order.id })}
+                            {t(heading ?? 'Заказ №{id}', { id: order.id })}
                         </h1>
+                        {hint && (
+                            <p className="text-sm text-[#241a10] dark:text-[#f6ecdd]">
+                                {t(hint)}
+                            </p>
+                        )}
+                        {order.tracking_number && (
+                            <a
+                                href={`https://tracking.novaposhta.ua/#/uk/${encodeURIComponent(order.tracking_number)}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-sm font-semibold text-[#241a10] underline decoration-[#c79a5f] underline-offset-4 dark:text-[#f6ecdd]"
+                            >
+                                {t('ТТН {ttn} — отследить на сайте Новой Почты', {
+                                    ttn: order.tracking_number,
+                                })}
+                            </a>
+                        )}
                         <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                             {formatDateTime(order.created_at, t)} ·{' '}
                             {paymentMethodLabel}

@@ -27,6 +27,8 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            // Admin UI is Russian; the storefront picks uk/ru per visitor in HandleLocale.
+            ->bootUsing(fn () => app()->setLocale('ru'))
             ->login()
             ->colors([
                 'primary' => Color::Amber,
