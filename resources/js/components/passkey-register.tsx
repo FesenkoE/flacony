@@ -1,15 +1,22 @@
 import { usePasskeyRegister } from '@laravel/passkeys/react';
 import { useState } from 'react';
 import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import {
+    fieldClass,
+    labelClass,
+    mutedTextClass,
+    panelClass,
+    secondaryButtonClass,
+    submitClass,
+} from '@/components/brand-auth';
+import { useTranslations } from '@/hooks/use-translations';
 
 type Props = {
     onSuccess: () => void;
 };
 
 export default function PasskeyRegistration({ onSuccess }: Props) {
+    const t = useTranslations();
     const [name, setName] = useState(() => {
         const ua = navigator.userAgent;
 
@@ -29,7 +36,7 @@ export default function PasskeyRegistration({ onSuccess }: Props) {
             { pattern: /Windows/, name: 'Windows' },
         ].find(({ pattern }) => pattern.test(ua))?.name;
 
-        return [browser, os].filter(Boolean).join(' on ') || '';
+        return [browser, os].filter(Boolean).join(' · ') || '';
     });
 
     const [showForm, setShowForm] = useState(false);
@@ -58,50 +65,64 @@ export default function PasskeyRegistration({ onSuccess }: Props) {
 
     if (!isSupported) {
         return (
-            <div className="text-muted-foreground text-sm">
-                Passkeys are not supported in this browser.
+            <div className={mutedTextClass}>
+                {t('Этот браузер не поддерживает пасскеи.')}
             </div>
         );
     }
 
     if (!showForm) {
         return (
-            <Button variant="outline" onClick={() => setShowForm(true)}>
-                Add passkey
-            </Button>
+            <button
+                type="button"
+                onClick={() => setShowForm(true)}
+                className={secondaryButtonClass}
+            >
+                {t('Добавить пасскей')}
+            </button>
         );
     }
 
     return (
         <form
             onSubmit={handleSubmit}
-            className="border-border bg-muted/50 space-y-4 rounded-lg border p-4"
+            className={`space-y-4 p-4 ${panelClass}`}
         >
-            <div className="grid gap-2">
-                <Label htmlFor="passkey-name">Passkey name</Label>
-                <Input
+            <div className="flex flex-col gap-1.5">
+                <label className={labelClass} htmlFor="passkey-name">
+                    {t('Название')}
+                </label>
+                <input
                     id="passkey-name"
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g., MacBook Pro, iPhone"
-                    className="border-foreground/20 mt-1 block w-full"
+                    placeholder={t('Например, MacBook или iPhone')}
+                    className={fieldClass}
                     autoFocus
                 />
-                <p className="text-muted-foreground text-xs">
-                    A name helps you identify this passkey later.
+                <p className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
+                    {t('Чтобы потом отличить этот пасскей от других.')}
                 </p>
             </div>
 
             {error && <InputError message={error} />}
 
-            <div className="flex gap-2">
-                <Button type="submit" disabled={isLoading || !name.trim()}>
-                    {isLoading ? 'Registering...' : 'Register passkey'}
-                </Button>
-                <Button type="button" variant="ghost" onClick={handleCancel}>
-                    Cancel
-                </Button>
+            <div className="flex items-center gap-2">
+                <button
+                    type="submit"
+                    disabled={isLoading || !name.trim()}
+                    className={`${submitClass} mt-0`}
+                >
+                    {isLoading ? t('Добавляем…') : t('Добавить')}
+                </button>
+                <button
+                    type="button"
+                    onClick={handleCancel}
+                    className={secondaryButtonClass}
+                >
+                    {t('Отмена')}
+                </button>
             </div>
         </form>
     );

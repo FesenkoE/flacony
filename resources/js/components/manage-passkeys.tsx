@@ -1,9 +1,11 @@
 import { router } from '@inertiajs/react';
 import { KeyRound } from 'lucide-react';
 import { destroy } from '@/actions/Laravel/Passkeys/Http/Controllers/PasskeyRegistrationController';
+import { mutedTextClass, panelClass } from '@/components/brand-auth';
 import Heading from '@/components/heading';
 import PasskeyItem from '@/components/passkey-item';
 import PasskeyRegistration from '@/components/passkey-register';
+import { useTranslations } from '@/hooks/use-translations';
 import type { Passkey } from '@/types/auth';
 
 export type Props = {
@@ -12,20 +14,23 @@ export type Props = {
 };
 
 const EmptyState = () => {
+    const t = useTranslations();
+
     return (
         <div className="p-8 text-center">
-            <div className="bg-muted mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl">
-                <KeyRound className="text-muted-foreground h-7 w-7" />
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#c79a5f29]">
+                <KeyRound className="h-7 w-7 text-[#7d6952] dark:text-[#b7a58f]" />
             </div>
-            <p className="font-medium">No passkeys yet</p>
-            <p className="text-muted-foreground mt-1 text-sm">
-                Add a passkey to sign in without a password
+            <p className="font-semibold">{t('Пасскеев пока нет')}</p>
+            <p className={`mt-1 ${mutedTextClass}`}>
+                {t('Добавьте пасскей, чтобы входить без пароля')}
             </p>
         </div>
     );
 };
 
 export default function ManagePasskeys(props: Props) {
+    const t = useTranslations();
     const passkeys = props.passkeys ?? [];
 
     const handleDelete = (id: number, onError: () => void) => {
@@ -44,14 +49,14 @@ export default function ManagePasskeys(props: Props) {
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 border-t border-[#1e160c14] pt-10 dark:border-[#ffffff1a]">
             <Heading
                 variant="small"
-                title="Passkeys"
-                description="Manage your passkeys for passwordless sign-in"
+                title={t('Пасскеи')}
+                description={t('Вход по отпечатку, Face ID или ключу — без пароля')}
             />
 
-            <div className="border-border overflow-hidden rounded-lg border">
+            <div className={`overflow-hidden ${panelClass}`}>
                 {passkeys.length > 0 ? (
                     passkeys.map((passkey) => (
                         <PasskeyItem

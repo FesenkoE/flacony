@@ -1,7 +1,12 @@
 import { Form } from '@inertiajs/react';
 import { useRef } from 'react';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
-import { PasswordField } from '@/components/brand-auth';
+import {
+    dangerButtonClass,
+    dialogClass,
+    PasswordField,
+    secondaryButtonClass,
+} from '@/components/brand-auth';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
 import {
@@ -14,9 +19,6 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { useTranslations } from '@/hooks/use-translations';
-
-const dangerButtonClass =
-    'rounded-full border border-[#b4432f] px-5 py-2.5 text-sm font-semibold text-[#b4432f] hover:bg-[#b4432f14] disabled:opacity-60 dark:border-[#e07a63] dark:text-[#e07a63] dark:hover:bg-[#e07a6314]';
 
 export default function DeleteUser() {
     const t = useTranslations();
@@ -42,7 +44,7 @@ export default function DeleteUser() {
                         {t('Удалить аккаунт')}
                     </button>
                 </DialogTrigger>
-                <DialogContent className="border-[#1e160c14] bg-[#fffaf1] text-[#241a10] dark:border-[#ffffff1a] dark:bg-[#130f0b] dark:text-[#f6ecdd]">
+                <DialogContent className={dialogClass}>
                     <DialogTitle className="font-display text-xl font-semibold italic">
                         {t('Удалить аккаунт?')}
                     </DialogTitle>
@@ -82,7 +84,7 @@ export default function DeleteUser() {
                                         <button
                                             type="button"
                                             onClick={() => resetAndClearErrors()}
-                                            className="rounded-full border border-[#e6d7bb] px-5 py-2.5 text-sm font-semibold text-[#241a10] dark:border-[#ffffff29] dark:text-[#f6ecdd]"
+                                            className={secondaryButtonClass}
                                         >
                                             {t('Отмена')}
                                         </button>

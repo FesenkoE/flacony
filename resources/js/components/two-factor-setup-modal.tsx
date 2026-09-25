@@ -4,7 +4,11 @@ import { Check, Copy, ScanLine } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import AlertError from '@/components/alert-error';
 import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
+import {
+    dialogClass,
+    secondaryButtonClass,
+    submitClass,
+} from '@/components/brand-auth';
 import {
     Dialog,
     DialogContent,
@@ -20,18 +24,19 @@ import {
 import { Spinner } from '@/components/ui/spinner';
 import { useAppearance } from '@/hooks/use-appearance';
 import { useClipboard } from '@/hooks/use-clipboard';
+import { useTranslations } from '@/hooks/use-translations';
 import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
 import { confirm } from '@/routes/two-factor';
 
 function GridScanIcon() {
     return (
-        <div className="border-border bg-card mb-3 rounded-full border p-0.5 shadow-sm">
-            <div className="border-border bg-muted relative overflow-hidden rounded-full border p-2.5">
+        <div className="mb-3 rounded-full border border-[#e6d7bb] p-0.5 dark:border-[#ffffff29]">
+            <div className="relative overflow-hidden rounded-full border border-[#e6d7bb] bg-[#c79a5f1a] p-2.5 dark:border-[#ffffff29]">
                 <div className="absolute inset-0 grid grid-cols-5 opacity-50">
                     {Array.from({ length: 5 }, (_, i) => (
                         <div
                             key={`col-${i + 1}`}
-                            className="border-border border-r last:border-r-0"
+                            className="border-r border-[#e6d7bb] last:border-r-0 dark:border-[#ffffff29]"
                         />
                     ))}
                 </div>
@@ -39,11 +44,11 @@ function GridScanIcon() {
                     {Array.from({ length: 5 }, (_, i) => (
                         <div
                             key={`row-${i + 1}`}
-                            className="border-border border-b last:border-b-0"
+                            className="border-b border-[#e6d7bb] last:border-b-0 dark:border-[#ffffff29]"
                         />
                     ))}
                 </div>
-                <ScanLine className="text-foreground relative z-20 size-6" />
+                <ScanLine className="relative z-20 size-6 text-[#241a10] dark:text-[#f6ecdd]" />
             </div>
         </div>
     );
@@ -62,6 +67,7 @@ function TwoFactorSetupStep({
     onNextStep: () => void;
     errors: string[];
 }) {
+    const t = useTranslations();
     const { resolvedAppearance } = useAppearance();
     const [copiedText, copy] = useClipboard();
     const IconComponent = copiedText === manualSetupKey ? Check : Copy;
@@ -73,7 +79,7 @@ function TwoFactorSetupStep({
             ) : (
                 <>
                     <div className="mx-auto flex max-w-md overflow-hidden">
-                        <div className="border-border mx-auto aspect-square w-64 rounded-lg border">
+                        <div className="mx-auto aspect-square w-64 rounded-2xl border border-[#e6d7bb] dark:border-[#ffffff29]">
                             <div className="z-10 flex h-full w-full items-center justify-center p-5">
                                 {qrCodeSvg ? (
                                     <div
@@ -96,22 +102,26 @@ function TwoFactorSetupStep({
                     </div>
 
                     <div className="flex w-full space-x-5">
-                        <Button className="w-full" onClick={onNextStep}>
+                        <button
+                            type="button"
+                            className={`${submitClass} mt-0 w-full`}
+                            onClick={onNextStep}
+                        >
                             {buttonText}
-                        </Button>
+                        </button>
                     </div>
 
                     <div className="relative flex w-full items-center justify-center">
-                        <div className="bg-border absolute inset-0 top-1/2 h-px w-full" />
-                        <span className="bg-card relative px-2 py-1">
-                            or, enter the code manually
+                        <div className="absolute inset-0 top-1/2 h-px w-full bg-[#1e160c14] dark:bg-[#ffffff1a]" />
+                        <span className="relative bg-[#fffaf1] px-2 py-1 text-xs text-[#7d6952] uppercase dark:bg-[#130f0b] dark:text-[#b7a58f]">
+                            {t('или введите ключ вручную')}
                         </span>
                     </div>
 
                     <div className="flex w-full space-x-2">
-                        <div className="border-border flex w-full items-stretch overflow-hidden rounded-xl border">
+                        <div className="flex w-full items-stretch overflow-hidden rounded-xl border border-[#e6d7bb] dark:border-[#ffffff29]">
                             {!manualSetupKey ? (
-                                <div className="bg-muted flex h-full w-full items-center justify-center p-3">
+                                <div className="flex h-full w-full items-center justify-center bg-[#fbf5ea] p-3 dark:bg-[#ffffff0a]">
                                     <Spinner />
                                 </div>
                             ) : (
@@ -120,11 +130,13 @@ function TwoFactorSetupStep({
                                         type="text"
                                         readOnly
                                         value={manualSetupKey}
-                                        className="bg-background text-foreground h-full w-full p-3 outline-none"
+                                        className="h-full w-full bg-[#fbf5ea] p-3 font-mono text-sm text-[#241a10] outline-none dark:bg-[#ffffff0a] dark:text-[#f6ecdd]"
                                     />
                                     <button
+                                        type="button"
                                         onClick={() => copy(manualSetupKey)}
-                                        className="border-border hover:bg-muted border-l px-3"
+                                        aria-label={t('Скопировать')}
+                                        className="border-l border-[#e6d7bb] px-3 text-[#7d6952] hover:bg-[#f6efe3] dark:border-[#ffffff29] dark:text-[#b7a58f] dark:hover:bg-[#ffffff0a]"
                                     >
                                         <IconComponent className="w-4" />
                                     </button>
@@ -145,6 +157,7 @@ function TwoFactorVerificationStep({
     onClose: () => void;
     onBack: () => void;
 }) {
+    const t = useTranslations();
     const [code, setCode] = useState<string>('');
     const pinInputContainerRef = useRef<HTMLDivElement>(null);
 
@@ -190,6 +203,7 @@ function TwoFactorVerificationStep({
                                             <InputOTPSlot
                                                 key={index}
                                                 index={index}
+                                                className="h-12 w-11 border-[#e6d7bb] bg-[#fbf5ea] text-lg text-[#241a10] shadow-none first:rounded-l-xl last:rounded-r-xl dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#f6ecdd]"
                                             />
                                         ),
                                     )}
@@ -203,24 +217,23 @@ function TwoFactorVerificationStep({
                         </div>
 
                         <div className="flex w-full space-x-5">
-                            <Button
+                            <button
                                 type="button"
-                                variant="outline"
-                                className="flex-1"
+                                className={`${secondaryButtonClass} flex-1 justify-center`}
                                 onClick={onBack}
                                 disabled={processing}
                             >
-                                Back
-                            </Button>
-                            <Button
+                                {t('Назад')}
+                            </button>
+                            <button
                                 type="submit"
-                                className="flex-1"
+                                className={`${submitClass} mt-0 flex-1`}
                                 disabled={
                                     processing || code.length < OTP_MAX_LENGTH
                                 }
                             >
-                                Confirm
-                            </Button>
+                                {t('Подтвердить')}
+                            </button>
                         </div>
                     </div>
                 </>
@@ -252,6 +265,7 @@ export default function TwoFactorSetupModal({
     fetchSetupData,
     errors,
 }: Props) {
+    const t = useTranslations();
     const [showVerificationStep, setShowVerificationStep] =
         useState<boolean>(false);
 
@@ -262,29 +276,32 @@ export default function TwoFactorSetupModal({
     }>(() => {
         if (twoFactorEnabled) {
             return {
-                title: 'Two-factor authentication enabled',
-                description:
-                    'Two-factor authentication is now enabled. Scan the QR code or enter the setup key in your authenticator app.',
-                buttonText: 'Close',
+                title: t('2FA включена'),
+                description: t(
+                    'Отсканируйте QR-код или введите ключ в приложении-аутентификаторе.',
+                ),
+                buttonText: t('Закрыть'),
             };
         }
 
         if (showVerificationStep) {
             return {
-                title: 'Verify authentication code',
-                description:
-                    'Enter the 6-digit code from your authenticator app',
-                buttonText: 'Continue',
+                title: t('Проверка кода'),
+                description: t(
+                    'Введите 6-значный код из приложения-аутентификатора',
+                ),
+                buttonText: t('Продолжить'),
             };
         }
 
         return {
-            title: 'Enable two-factor authentication',
-            description:
-                'To finish enabling two-factor authentication, scan the QR code or enter the setup key in your authenticator app',
-            buttonText: 'Continue',
+            title: t('Включение 2FA'),
+            description: t(
+                'Отсканируйте QR-код или введите ключ в приложении-аутентификаторе, чтобы завершить настройку',
+            ),
+            buttonText: t('Продолжить'),
         };
-    }, [twoFactorEnabled, showVerificationStep]);
+    }, [twoFactorEnabled, showVerificationStep, t]);
 
     const resetModalState = useCallback(() => {
         if (twoFactorEnabled) {
@@ -324,11 +341,13 @@ export default function TwoFactorSetupModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className={`sm:max-w-md ${dialogClass}`}>
                 <DialogHeader className="flex items-center justify-center">
                     <GridScanIcon />
-                    <DialogTitle>{modalConfig.title}</DialogTitle>
-                    <DialogDescription className="text-center">
+                    <DialogTitle className="font-display text-xl font-semibold italic">
+                        {modalConfig.title}
+                    </DialogTitle>
+                    <DialogDescription className="text-center text-[#7d6952] dark:text-[#b7a58f]">
                         {modalConfig.description}
                     </DialogDescription>
                 </DialogHeader>

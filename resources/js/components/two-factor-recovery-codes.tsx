@@ -2,14 +2,12 @@ import { Form } from '@inertiajs/react';
 import { Eye, EyeOff, LockKeyhole, RefreshCw } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import AlertError from '@/components/alert-error';
-import { Button } from '@/components/ui/button';
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+    mutedTextClass,
+    panelClass,
+    secondaryButtonClass,
+} from '@/components/brand-auth';
+import { useTranslations } from '@/hooks/use-translations';
 import { regenerateRecoveryCodes } from '@/routes/two-factor';
 
 type Props = {
@@ -23,6 +21,7 @@ export default function TwoFactorRecoveryCodes({
     fetchRecoveryCodes,
     errors,
 }: Props) {
+    const t = useTranslations();
     const [codesAreVisible, setCodesAreVisible] = useState<boolean>(false);
     const codesSectionRef = useRef<HTMLDivElement | null>(null);
     const canRegenerateCodes = recoveryCodesList.length > 0 && codesAreVisible;
@@ -53,22 +52,24 @@ export default function TwoFactorRecoveryCodes({
     const RecoveryCodeIconComponent = codesAreVisible ? EyeOff : Eye;
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle className="flex gap-3">
+        <div className={`w-full space-y-4 p-5 ${panelClass}`}>
+            <div className="space-y-1">
+                <p className="flex items-center gap-2 font-semibold">
                     <LockKeyhole className="size-4" aria-hidden="true" />
-                    2FA recovery codes
-                </CardTitle>
-                <CardDescription>
-                    Recovery codes let you regain access if you lose your 2FA
-                    device. Store them in a secure password manager.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
+                    {t('Резервные коды 2FA')}
+                </p>
+                <p className={mutedTextClass}>
+                    {t(
+                        'Помогут войти, если потеряете телефон с приложением. Храните их в менеджере паролей.',
+                    )}
+                </p>
+            </div>
+            <div>
                 <div className="flex flex-col gap-3 select-none sm:flex-row sm:items-center sm:justify-between">
-                    <Button
+                    <button
+                        type="button"
                         onClick={toggleCodesVisibility}
-                        className="w-fit"
+                        className={`${secondaryButtonClass} w-fit`}
                         aria-expanded={codesAreVisible}
                         aria-controls="recovery-codes-section"
                     >
@@ -76,8 +77,10 @@ export default function TwoFactorRecoveryCodes({
                             className="size-4"
                             aria-hidden="true"
                         />
-                        {codesAreVisible ? 'Hide' : 'View'} recovery codes
-                    </Button>
+                        {codesAreVisible
+                            ? t('Скрыть коды')
+                            : t('Показать коды')}
+                    </button>
 
                     {canRegenerateCodes && (
                         <Form
@@ -86,14 +89,15 @@ export default function TwoFactorRecoveryCodes({
                             onSuccess={fetchRecoveryCodes}
                         >
                             {({ processing }) => (
-                                <Button
-                                    variant="secondary"
+                                <button
                                     type="submit"
                                     disabled={processing}
                                     aria-describedby="regenerate-warning"
+                                    className={secondaryButtonClass}
                                 >
-                                    <RefreshCw /> Regenerate codes
-                                </Button>
+                                    <RefreshCw className="size-4" />
+                                    {t('Новые коды')}
+                                </button>
                             )}
                         </Form>
                     )}
@@ -110,9 +114,9 @@ export default function TwoFactorRecoveryCodes({
                             <>
                                 <div
                                     ref={codesSectionRef}
-                                    className="bg-muted grid gap-1 rounded-lg p-4 font-mono text-sm"
+                                    className="grid gap-1 rounded-xl bg-[#c79a5f1a] p-4 font-mono text-sm"
                                     role="list"
-                                    aria-label="Recovery codes"
+                                    aria-label={t('Резервные коды 2FA')}
                                 >
                                     {recoveryCodesList.length ? (
                                         recoveryCodesList.map((code, index) => (
@@ -127,14 +131,14 @@ export default function TwoFactorRecoveryCodes({
                                     ) : (
                                         <div
                                             className="space-y-2"
-                                            aria-label="Loading recovery codes"
+                                            aria-label={t('Загрузка…')}
                                         >
                                             {Array.from(
                                                 { length: 8 },
                                                 (_, index) => (
                                                     <div
                                                         key={index}
-                                                        className="bg-muted-foreground/20 h-4 animate-pulse rounded"
+                                                        className="h-4 animate-pulse rounded bg-[#c79a5f33]"
                                                         aria-hidden="true"
                                                     />
                                                 ),
@@ -143,22 +147,18 @@ export default function TwoFactorRecoveryCodes({
                                     )}
                                 </div>
 
-                                <div className="text-muted-foreground text-xs select-none">
+                                <div className="text-xs text-[#7d6952] select-none dark:text-[#b7a58f]">
                                     <p id="regenerate-warning">
-                                        Each recovery code can be used once to
-                                        access your account and will be removed
-                                        after use. If you need more, click{' '}
-                                        <span className="font-bold">
-                                            Regenerate codes
-                                        </span>{' '}
-                                        above.
+                                        {t(
+                                            'Каждый код срабатывает один раз. Закончатся — нажмите «Новые коды»: старые перестанут работать.',
+                                        )}
                                     </p>
                                 </div>
                             </>
                         )}
                     </div>
                 </div>
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     );
 }
