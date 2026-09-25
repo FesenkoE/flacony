@@ -15,9 +15,9 @@ export const labelClass =
 export const submitClass =
     'mt-2 rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-7 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60';
 export const secondaryButtonClass =
-    'inline-flex items-center gap-2 rounded-full border border-[#e6d7bb] px-5 py-2.5 text-sm font-semibold text-[#241a10] hover:bg-[#f6efe3] disabled:opacity-60 dark:border-[#ffffff29] dark:text-[#f6ecdd] dark:hover:bg-[#ffffff0a]';
+    'inline-flex items-center justify-center gap-2 rounded-full border border-[#e6d7bb] px-5 py-2.5 text-sm font-semibold text-[#241a10] hover:bg-[#f6efe3] disabled:opacity-60 dark:border-[#ffffff29] dark:text-[#f6ecdd] dark:hover:bg-[#ffffff0a]';
 export const dangerButtonClass =
-    'inline-flex items-center gap-2 rounded-full border border-[#b4432f] px-5 py-2.5 text-sm font-semibold text-[#b4432f] hover:bg-[#b4432f14] disabled:opacity-60 dark:border-[#e07a63] dark:text-[#e07a63] dark:hover:bg-[#e07a6314]';
+    'inline-flex items-center justify-center gap-2 rounded-full border border-[#b4432f] px-5 py-2.5 text-sm font-semibold text-[#b4432f] hover:bg-[#b4432f14] disabled:opacity-60 dark:border-[#e07a63] dark:text-[#e07a63] dark:hover:bg-[#e07a6314]';
 export const dialogClass =
     'border-[#1e160c14] bg-[#fffaf1] text-[#241a10] dark:border-[#ffffff1a] dark:bg-[#130f0b] dark:text-[#f6ecdd]';
 export const panelClass =

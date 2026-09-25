@@ -10,6 +10,7 @@ import {
     submitClass,
 } from '@/components/brand-auth';
 import { useTranslations } from '@/hooks/use-translations';
+import { cn } from '@/lib/utils';
 
 type Props = {
     onSuccess: () => void;
@@ -112,7 +113,7 @@ export default function PasskeyRegistration({ onSuccess }: Props) {
                 <button
                     type="submit"
                     disabled={isLoading || !name.trim()}
-                    className={`${submitClass} mt-0`}
+                    className={cn(submitClass, 'mt-0 px-5 py-2.5')}
                 >
                     {isLoading ? t('Добавляем…') : t('Добавить')}
                 </button>

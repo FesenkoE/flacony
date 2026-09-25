@@ -25,6 +25,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { useAppearance } from '@/hooks/use-appearance';
 import { useClipboard } from '@/hooks/use-clipboard';
 import { useTranslations } from '@/hooks/use-translations';
+import { cn } from '@/lib/utils';
 import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
 import { confirm } from '@/routes/two-factor';
 
@@ -104,7 +105,7 @@ function TwoFactorSetupStep({
                     <div className="flex w-full space-x-5">
                         <button
                             type="button"
-                            className={`${submitClass} mt-0 w-full`}
+                            className={cn(submitClass, 'mt-0 w-full')}
                             onClick={onNextStep}
                         >
                             {buttonText}
@@ -227,7 +228,7 @@ function TwoFactorVerificationStep({
                             </button>
                             <button
                                 type="submit"
-                                className={`${submitClass} mt-0 flex-1`}
+                                className={cn(submitClass, 'mt-0 flex-1 py-2.5')}
                                 disabled={
                                     processing || code.length < OTP_MAX_LENGTH
                                 }
