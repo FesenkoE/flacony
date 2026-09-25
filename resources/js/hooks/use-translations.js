@@ -15,3 +15,11 @@ export function useTranslations() {
         return value;
     };
 }
+
+// DB records with a `<field>_uk` column: Ukrainian when set, Russian fallback.
+export function useLocalized() {
+    const { locale } = usePage().props;
+
+    return (record, field) =>
+        (locale === 'uk' && record[`${field}_uk`]) || record[field];
+}

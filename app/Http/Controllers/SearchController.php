@@ -57,6 +57,7 @@ class SearchController extends Controller
                 'id' => $post->id,
                 'slug' => $post->slug,
                 'title' => $post->title,
+                'title_uk' => $post->title_uk,
                 'category' => $post->category?->name,
                 'cover_path' => $post->cover_path,
                 'cover_path_light' => $post->cover_path_light,

@@ -2,10 +2,11 @@ import { Link } from '@inertiajs/react';
 import { Newspaper } from 'lucide-react';
 import { formatDate } from '@/lib/format-date';
 import { useThemeImagePath } from '@/hooks/use-theme-image';
-import { useTranslations } from '@/hooks/use-translations';
+import { useLocalized, useTranslations } from '@/hooks/use-translations';
 
 export default function PostCard({ post }) {
     const t = useTranslations();
+    const l = useLocalized();
     const coverPath = useThemeImagePath(post.cover_path, post.cover_path_light);
 
     return (
@@ -40,11 +41,11 @@ export default function PostCard({ post }) {
                     </span>
                 </div>
                 <h2 className="font-display line-clamp-2 text-2xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
-                    {post.title.replaceAll('-', '‑')}
+                    {l(post, 'title').replaceAll('-', '‑')}
                 </h2>
-                {post.excerpt && (
+                {l(post, 'excerpt') && (
                     <p className="line-clamp-3 text-sm leading-relaxed text-[#7d6952] dark:text-[#b7a58f]">
-                        {post.excerpt}
+                        {l(post, 'excerpt')}
                     </p>
                 )}
             </div>

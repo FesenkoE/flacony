@@ -5,10 +5,11 @@ import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { formatDate } from '@/lib/format-date';
 import { useThemeImagePath } from '@/hooks/use-theme-image';
-import { useTranslations } from '@/hooks/use-translations';
+import { useLocalized, useTranslations } from '@/hooks/use-translations';
 
 function FeaturedPostCard({ post }) {
     const t = useTranslations();
+    const l = useLocalized();
 
     const coverPath = useThemeImagePath(post.cover_path, post.cover_path_light);
 
@@ -44,11 +45,11 @@ function FeaturedPostCard({ post }) {
                     </span>
                 </div>
                 <h2 className="font-display text-3xl font-semibold text-[#241a10] italic group-hover:text-[#c79a5f] dark:text-[#f6ecdd] md:text-4xl">
-                    {post.title}
+                    {l(post, 'title')}
                 </h2>
-                {post.excerpt && (
+                {l(post, 'excerpt') && (
                     <p className="max-w-2xl text-base leading-relaxed text-[#7d6952] dark:text-[#b7a58f]">
-                        {post.excerpt}
+                        {l(post, 'excerpt')}
                     </p>
                 )}
             </div>

@@ -11,7 +11,7 @@ use Inertia\Response;
 
 class BlogController extends Controller
 {
-    private const CARD_COLUMNS = ['id', 'category_id', 'title', 'slug', 'excerpt', 'cover_path', 'cover_path_light', 'published_at'];
+    private const CARD_COLUMNS = ['id', 'category_id', 'title', 'title_uk', 'slug', 'excerpt', 'excerpt_uk', 'cover_path', 'cover_path_light', 'published_at'];
 
     public function index(Request $request): Response
     {
@@ -57,12 +57,12 @@ class BlogController extends Controller
         $prevPost = Post::published()
             ->where('published_at', '<', $post->published_at)
             ->latest('published_at')
-            ->first(['title', 'slug']);
+            ->first(['title', 'title_uk', 'slug']);
 
         $nextPost = Post::published()
             ->where('published_at', '>', $post->published_at)
             ->oldest('published_at')
-            ->first(['title', 'slug']);
+            ->first(['title', 'title_uk', 'slug']);
 
         return Inertia::render('blog/show', [
             'post' => $post,

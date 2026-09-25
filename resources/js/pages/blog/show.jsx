@@ -8,7 +8,7 @@ import { formatDate } from '@/lib/format-date';
 import { useClipboard } from '@/hooks/use-clipboard';
 import { useInitials } from '@/hooks/use-initials';
 import { useThemeImagePath } from '@/hooks/use-theme-image';
-import { useTranslations } from '@/hooks/use-translations';
+import { useLocalized, useTranslations } from '@/hooks/use-translations';
 import { pluralizeRu } from '@/lib/pluralize';
 
 const WORDS_PER_MINUTE = 200;
@@ -29,11 +29,14 @@ export default function BlogShow({
     promoCode,
 }) {
     const t = useTranslations();
+    const l = useLocalized();
+    const title = l(post, 'title');
+    const body = l(post, 'body');
     const getInitials = useInitials();
     const [copiedText, copy] = useClipboard();
-    const paragraphs = post.body.split(/\n{2,}/);
+    const paragraphs = body.split(/\n{2,}/);
     const coverPath = useThemeImagePath(post.cover_path, post.cover_path_light);
-    const wordCount = post.body.trim().split(/\s+/).length;
+    const wordCount = body.trim().split(/\s+/).length;
     const readingMinutes = Math.max(1, Math.round(wordCount / WORDS_PER_MINUTE));
     const cta = CATEGORY_CTA[post.category?.slug] ?? DEFAULT_CTA;
     const shareUrl =
@@ -47,7 +50,7 @@ export default function BlogShow({
 
     return (
         <>
-            <Head title={post.title} />
+            <Head title={title} />
             <div className="flex min-h-screen flex-col">
                 <SiteHeader />
                 <div className="flex-1 bg-[#f6efe3] dark:bg-[#0d0b09]">
@@ -122,7 +125,7 @@ export default function BlogShow({
                                         </button>
                                     </div>
                                     <h1 className="font-display text-5xl leading-tight font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
-                                        {post.title}
+                                        {title}
                                     </h1>
                                 </div>
 
@@ -149,7 +152,7 @@ export default function BlogShow({
                                                     {t('Предыдущая статья')}
                                                 </span>
                                                 <span className="font-display text-lg font-semibold text-[#241a10] italic group-hover:text-[#c79a5f] dark:text-[#f6ecdd]">
-                                                    {prevPost.title}
+                                                    {l(prevPost, 'title')}
                                                 </span>
                                             </Link>
                                         ) : (
@@ -165,7 +168,7 @@ export default function BlogShow({
                                                     <ChevronRight size={14} />
                                                 </span>
                                                 <span className="font-display text-lg font-semibold text-[#241a10] italic group-hover:text-[#c79a5f] dark:text-[#f6ecdd]">
-                                                    {nextPost.title}
+                                                    {l(nextPost, 'title')}
                                                 </span>
                                             </Link>
                                         ) : (

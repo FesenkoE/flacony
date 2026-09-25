@@ -15,9 +15,12 @@ class Post extends Model
         'author_id',
         'category_id',
         'title',
+        'title_uk',
         'slug',
         'excerpt',
+        'excerpt_uk',
         'body',
+        'body_uk',
         'cover_path',
         'cover_path_light',
         'published_at',
@@ -49,8 +52,11 @@ class Post extends Model
     {
         return [
             'title' => $this->title,
+            'title_uk' => $this->title_uk,
             'excerpt' => $this->excerpt,
+            'excerpt_uk' => $this->excerpt_uk,
             'body' => $this->body,
+            'body_uk' => $this->body_uk,
             'category' => $this->category?->name,
         ];
     }

@@ -3,12 +3,13 @@ import { Newspaper } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import BottleIcon from '@/components/bottle-icon';
 import { pickThemeImage, useIsDarkTheme } from '@/hooks/use-theme-image';
-import { useTranslations } from '@/hooks/use-translations';
+import { useLocalized, useTranslations } from '@/hooks/use-translations';
 
 const CLOSE_ANIMATION_MS = 200;
 
 export default function SearchOverlay({ open, onOpenChange }) {
     const t = useTranslations();
+    const l = useLocalized();
     const isDarkTheme = useIsDarkTheme();
     const [query, setQuery] = useState('');
     const [results, setResults] = useState({ products: [], lots: [], posts: [] });
@@ -270,11 +271,11 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                                 </div>
                                                 <div className="flex min-w-0 flex-1 flex-col">
                                                     <span className="truncate text-sm font-semibold">
-                                                        {post.title}
+                                                        {l(post, 'title')}
                                                     </span>
                                                     {post.category && (
                                                         <span className="truncate text-xs text-[#7d6952] dark:text-[#b7a58f]">
-                                                            {post.category}
+                                                            {t(post.category)}
                                                         </span>
                                                     )}
                                                 </div>

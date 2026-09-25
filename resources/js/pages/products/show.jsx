@@ -12,7 +12,7 @@ import {
     pickThemeImage,
     useIsDarkTheme,
 } from '@/hooks/use-theme-image';
-import { useTranslations } from '@/hooks/use-translations';
+import { useLocalized, useTranslations } from '@/hooks/use-translations';
 import { pluralizeRu } from '@/lib/pluralize';
 
 const LONGEVITY_LABELS = {
@@ -51,11 +51,10 @@ export default function ProductShow({ product, myReview }) {
     const t = useTranslations();
     const [variantIndex, setVariantIndex] = useState(0);
     const { added, addToCart } = useAddToCart();
-    const { auth, locale } = usePage().props;
+    const { auth } = usePage().props;
     const variant = product.variants[variantIndex];
     const isDark = useIsDarkTheme();
-    const description =
-        (locale === 'uk' && product.description_uk) || product.description;
+    const description = useLocalized()(product, 'description');
     const photos = [
         { image_path: product.image_path, image_path_light: product.image_path_light },
         ...product.images,

@@ -23,13 +23,25 @@ class PostForm
                     ->searchable()
                     ->preload(),
                 TextInput::make('title')
+                    ->label('Заголовок (рус)')
                     ->required(),
+                TextInput::make('title_uk')
+                    ->label('Заголовок (укр)')
+                    ->helperText('Если пусто — на украинской версии покажется русский текст. То же для анонса и текста.'),
                 TextInput::make('slug')
                     ->required(),
                 Textarea::make('excerpt')
+                    ->label('Анонс (рус)')
+                    ->columnSpanFull(),
+                Textarea::make('excerpt_uk')
+                    ->label('Анонс (укр)')
                     ->columnSpanFull(),
                 Textarea::make('body')
+                    ->label('Текст (рус)')
                     ->required()
+                    ->columnSpanFull(),
+                Textarea::make('body_uk')
+                    ->label('Текст (укр)')
                     ->columnSpanFull(),
                 FileUpload::make('cover_path')
                     ->label('Обложка (тёмная тема)')
