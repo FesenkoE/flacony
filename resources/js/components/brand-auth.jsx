@@ -6,7 +6,7 @@ import { useTranslations } from '@/hooks/use-translations';
 
 // Shared shell for the auth pages (login, register, password reset, ...):
 // site header/footer + one centered card, in the site's own palette instead
-// of the starter kit's AuthLayout.
+// of the starter kit's auth layout (deleted).
 
 export const fieldClass =
     'w-full rounded-xl border border-[#e6d7bb] bg-[#fbf5ea] px-4 py-2.5 text-sm text-[#241a10] outline-none focus:border-[#c79a5f] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#f6ecdd]';
