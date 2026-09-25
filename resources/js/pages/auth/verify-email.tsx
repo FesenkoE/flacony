@@ -1,46 +1,50 @@
-// Components
-import { Form, Head } from '@inertiajs/react';
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
+import { Form, Head, Link } from '@inertiajs/react';
+import {
+    AuthCard,
+    AuthStatus,
+    footerLinkClass,
+    submitClass,
+} from '@/components/brand-auth';
+import { useTranslations } from '@/hooks/use-translations';
 import { logout } from '@/routes';
 import { send } from '@/routes/verification';
 
 export default function VerifyEmail({ status }: { status?: string }) {
+    const t = useTranslations();
+
     return (
         <>
-            <Head title="Email verification" />
-
-            {status === 'verification-link-sent' && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    A new verification link has been sent to the email address
-                    you provided during registration.
-                </div>
-            )}
-
-            <Form {...send.form()} className="space-y-6 text-center">
-                {({ processing }) => (
-                    <>
-                        <Button disabled={processing} variant="secondary">
-                            {processing && <Spinner />}
-                            Resend verification email
-                        </Button>
-
-                        <TextLink
-                            href={logout()}
-                            className="mx-auto block text-sm"
-                        >
-                            Log out
-                        </TextLink>
-                    </>
+            <Head title={t('Подтверждение email')} />
+            <AuthCard
+                title={t('Подтвердите email')}
+                subtitle={t(
+                    'Мы отправили письмо со ссылкой — перейдите по ней, чтобы завершить регистрацию',
                 )}
-            </Form>
+            >
+                {status === 'verification-link-sent' && (
+                    <AuthStatus>
+                        {t('Новая ссылка отправлена на ваш email')}
+                    </AuthStatus>
+                )}
+
+                <Form {...send.form()} className="mt-8 flex flex-col">
+                    {({ processing }) => (
+                        <button
+                            type="submit"
+                            disabled={processing}
+                            className={submitClass}
+                        >
+                            {t('Отправить письмо ещё раз')}
+                        </button>
+                    )}
+                </Form>
+
+                <p className="mt-6 text-center text-sm text-[#7d6952] dark:text-[#b7a58f]">
+                    <Link href={logout()} as="button" className={footerLinkClass}>
+                        {t('Выйти')}
+                    </Link>
+                </p>
+            </AuthCard>
         </>
     );
 }
-
-VerifyEmail.layout = {
-    title: 'Email verification',
-    description:
-        'Please verify your email address by clicking on the link we just emailed to you.',
-};
