@@ -21,6 +21,32 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
+    public const DESCRIPTIONS_UK = [
+        'dior-sauvage' => 'Свіжий і мінеральний аромат з бергамотом на старті та амброксаном у базі — впізнавана «синя» класика, яка однаково доречна вранці на роботі й увечері в барі.',
+        'dior-jadore' => 'Розкішний квітковий букет з іланг-іланга, троянди та жасмину на золотистій базі — втілення класичної жіночності від Dior.',
+        'dior-homme-intense' => 'Пудрово-ірисовий аромат з какао та ветивером у базі — елегантний, теплий, без агресивної солодкості.',
+        'byredo-gypsy-water' => 'Деревно-цитрусовий унісекс-аромат з ладаном і ваніллю — вільний, кочовий характер без прив\'язки до сезону.',
+        'byredo-mojave-ghost' => 'Легкий і прозорий мускусно-квітковий аромат, натхненний пустельною рослиною гуаюла — повітряний, майже невагомий.',
+        'byredo-bal-dafrique' => 'Цитрусово-деревна композиція з ноткою африканських чорнобривців — тепла, сонячна, трохи ностальгічна.',
+        'le-labo-santal-33' => 'Культовий сандалово-шкіряний аромат з нотами кардамону та кедра — один із найвпізнаваніших нішевих ароматів останнього десятиліття.',
+        'le-labo-rose-31' => 'Несподівана «чоловіча» троянда — квітка переплетена з кміном, кедром і амброю, без жодної пудрової ноти.',
+        'le-labo-another-13' => 'Чистий, майже абстрактний мускусно-амбровий аромат з нотою озону — так званий «запах паперу», унікальний і мінімалістичний.',
+        'diptyque-philosykos' => 'Зелений інжировий аромат — соковите листя, молочний сік і деревина інжиру цілком, без нудотності.',
+        'diptyque-eau-rose' => 'Прозора, свіжа троянда з відтінком лічі та легкою пудровою базою — делікатна й не нудотна.',
+        'diptyque-tam-dao' => 'Обволікаючий сандалово-кедровий аромат, натхненний в\'єтнамськими храмами — теплий, спокійний, медитативний.',
+        'tom-ford-tobacco-vanille' => 'Насичений тютюново-ванільний аромат зі спеціями та сухофруктами — теплий, як старе шкіряне крісло біля каміна.',
+        'tom-ford-oud-wood' => 'М\'який, «дизайнерський» уд без різкості — сандал, палісандр і спеції створюють теплу деревну базу.',
+        'maison-margiela-jazz-club' => 'Ром, тютюн і ванільна тонка — затишний аромат прокуреного джаз-клубу з серії Replica.',
+        'maison-margiela-by-the-fireplace' => 'Димний аромат палаючих полін з каштаном і ваніллю — запах зимового вечора біля каміна з лінійки Replica.',
+        'xerjoff-naxos' => 'Мед, тютюн і лаванда в щільній, майже гурманській композиції — один із найвпізнаваніших ароматів Xerjoff.',
+        'amouage-interlude-man' => 'Димний, смолистий і дуже щільний аромат з ладаном і спеціями — не для тихого виходу, вимагає впевненості.',
+        'amouage-reflection-woman' => 'Елегантний квітково-деревний аромат з ірисом і ветивером — стримана розкіш без зайвої солодкості.',
+        'parfums-de-marly-layton' => 'Яблуко, лаванда й ваніль у теплій, привабливій композиції — один із найобговорюваніших чоловічих ароматів останніх років.',
+        'parfums-de-marly-delina' => 'Пудрово-фруктовий аромат з лічі та півонією на базі амбри — повітряний і дуже жіночний.',
+        'creed-aventus' => 'Фруктово-димна композиція з ананасом, березовим дьогтем і мускусом — еталон «успішного» чоловічого аромату.',
+        'creed-green-irish-tweed' => 'Свіжий фіалково-деревний аромат з ірисом і сандалом — класика в жанрі «чистої» чоловічої парфумерії.',
+    ];
+
     public function run(): void
     {
         $testUser = User::firstOrCreate(
@@ -42,7 +68,7 @@ class DatabaseSeeder extends Seeder
             ['brand' => 'Dior', 'name' => 'Homme Intense', 'category' => 'male', 'variants' => [[5, 470], [10, 890]], 'description' => 'Пудрово-ирисовый аромат с какао и ветивером в базе — элегантный, тёплый, без агрессивной сладости.'],
             ['brand' => 'Byredo', 'name' => 'Gypsy Water', 'category' => 'unisex', 'variants' => [[5, 500], [10, 950]], 'description' => 'Древесно-цитрусовый унисекс-аромат с ладаном и ванилью — свободный, кочевой характер без привязки к сезону.'],
             ['brand' => 'Byredo', 'name' => 'Mojave Ghost', 'category' => 'unisex', 'variants' => [[5, 520], [10, 980]], 'description' => 'Лёгкий и прозрачный мускусно-цветочный аромат, вдохновлённый пустынным растением гуайюла — воздушный, почти невесомый.'],
-            ['brand' => 'Byredo', 'name' => "Bal d'Afrique", 'category' => 'unisex', 'variants' => [[5, 510], [10, 960]], 'description' => 'Цитрусово-древесная композиция с ноткой африканской марии — тёплая, солнечная, слегка ностальгическая.'],
+            ['brand' => 'Byredo', 'name' => "Bal d'Afrique", 'category' => 'unisex', 'variants' => [[5, 510], [10, 960]], 'description' => 'Цитрусово-древесная композиция с ноткой африканских бархатцев — тёплая, солнечная, слегка ностальгическая.'],
             ['brand' => 'Le Labo', 'name' => 'Santal 33', 'category' => 'niche', 'variants' => [[2, 250], [5, 550], [10, 1050]], 'description' => 'Культовый сандалово-кожаный аромат с нотами кардамона и кедра — один из самых узнаваемых нишевых запахов последнего десятилетия.'],
             ['brand' => 'Le Labo', 'name' => 'Rose 31', 'category' => 'niche', 'variants' => [[2, 260], [5, 560], [10, 1080]], 'description' => 'Неожиданная «мужская» роза — цветок сплетён с кумином, кедром и амброй, без единой пудровой ноты.'],
             ['brand' => 'Le Labo', 'name' => 'Another 13', 'category' => 'niche', 'variants' => [[2, 270], [5, 580], [10, 1100]], 'description' => 'Чистый, почти абстрактный мускусно-амбровый аромат с нотой озона — так называемый «запах бумаги», уникальный и минималистичный.'],
@@ -71,7 +97,7 @@ class DatabaseSeeder extends Seeder
             'dior-homme-intense' => ['perfumer' => 'François Demachy', 'release_year' => 2011, 'concentration' => 'EDP', 'top_notes' => ['Лаванда'], 'heart_notes' => ['Ирис', 'Какао'], 'base_notes' => ['Ветивер', 'Амбретта', 'Груша'], 'accords' => [['name' => 'Пудровый', 'percent' => 100], ['name' => 'Ирисовый', 'percent' => 65], ['name' => 'Сладкий', 'percent' => 45], ['name' => 'Древесный', 'percent' => 40]], 'longevity' => 'long_lasting', 'sillage' => 'moderate'],
             'byredo-gypsy-water' => ['perfumer' => 'Jerome Epinette', 'release_year' => 2008, 'concentration' => 'EDP', 'top_notes' => ['Бергамот', 'Лимон', 'Перец', 'Можжевельник'], 'heart_notes' => ['Ладан', 'Хвоя', 'Ирис'], 'base_notes' => ['Амбра', 'Сандал', 'Ваниль'], 'accords' => [['name' => 'Древесный', 'percent' => 100], ['name' => 'Тёплый пряный', 'percent' => 60], ['name' => 'Цитрусовый', 'percent' => 52], ['name' => 'Амбровый', 'percent' => 45]], 'longevity' => 'moderate', 'sillage' => 'moderate'],
             'byredo-mojave-ghost' => ['perfumer' => 'Jerome Epinette', 'release_year' => 2013, 'concentration' => 'EDP', 'top_notes' => ['Амбретта', 'Магнолия'], 'heart_notes' => ['Жасмин самбак', 'Сандал', 'Фиалка'], 'base_notes' => ['Мускус', 'Амбра', 'Кедр'], 'accords' => [['name' => 'Мускусный', 'percent' => 100], ['name' => 'Цветочный', 'percent' => 52], ['name' => 'Древесный', 'percent' => 42], ['name' => 'Пудровый', 'percent' => 38]], 'longevity' => 'moderate', 'sillage' => 'soft'],
-            'byredo-bal-dafrique' => ['perfumer' => 'Jerome Epinette', 'release_year' => 2009, 'concentration' => 'EDP', 'top_notes' => ['Бергамот', 'Лимон', 'Нероли'], 'heart_notes' => ['Африканский бархатцы', 'Жасмин', 'Фиалка'], 'base_notes' => ['Кедр', 'Мускус', 'Ветивер'], 'accords' => [['name' => 'Цитрусовый', 'percent' => 100], ['name' => 'Древесный', 'percent' => 58], ['name' => 'Цветочный', 'percent' => 42]], 'longevity' => 'moderate', 'sillage' => 'moderate'],
+            'byredo-bal-dafrique' => ['perfumer' => 'Jerome Epinette', 'release_year' => 2009, 'concentration' => 'EDP', 'top_notes' => ['Бергамот', 'Лимон', 'Нероли'], 'heart_notes' => ['Африканские бархатцы', 'Жасмин', 'Фиалка'], 'base_notes' => ['Кедр', 'Мускус', 'Ветивер'], 'accords' => [['name' => 'Цитрусовый', 'percent' => 100], ['name' => 'Древесный', 'percent' => 58], ['name' => 'Цветочный', 'percent' => 42]], 'longevity' => 'moderate', 'sillage' => 'moderate'],
             'le-labo-santal-33' => ['perfumer' => 'Frank Voelkl', 'release_year' => 2011, 'concentration' => 'EDP', 'top_notes' => ['Кардамон', 'Ирис', 'Фиалка'], 'heart_notes' => ['Папирус', 'Амброксан'], 'base_notes' => ['Сандал', 'Кедр', 'Кожа'], 'accords' => [['name' => 'Древесный', 'percent' => 100], ['name' => 'Кожаный', 'percent' => 65], ['name' => 'Тёплый пряный', 'percent' => 52], ['name' => 'Анималистичный', 'percent' => 38]], 'longevity' => 'long_lasting', 'sillage' => 'strong'],
             'le-labo-rose-31' => ['perfumer' => 'Daphne Bugey', 'release_year' => 2006, 'concentration' => 'EDP', 'top_notes' => ['Кумин', 'Кориандр'], 'heart_notes' => ['Роза', 'Кедр'], 'base_notes' => ['Амбра', 'Мускус', 'Ветивер', 'Ладан'], 'accords' => [['name' => 'Розовый', 'percent' => 100], ['name' => 'Древесный', 'percent' => 58], ['name' => 'Тёплый пряный', 'percent' => 52], ['name' => 'Амбровый', 'percent' => 42]], 'longevity' => 'long_lasting', 'sillage' => 'moderate'],
             'le-labo-another-13' => ['perfumer' => 'Daphne Bugey', 'release_year' => 2008, 'concentration' => 'EDP', 'top_notes' => ['Семена амбретты', 'Мускус'], 'heart_notes' => ['Жасмин', 'Кокос', 'Амбра'], 'base_notes' => ['Амброксан', 'Мускус'], 'accords' => [['name' => 'Мускусный', 'percent' => 100], ['name' => 'Амбровый', 'percent' => 48], ['name' => 'Водный', 'percent' => 42]], 'longevity' => 'moderate', 'sillage' => 'soft'],
@@ -133,6 +159,7 @@ class DatabaseSeeder extends Seeder
                     'category_id' => $categories[$entry['category']]->id,
                     'name' => $entry['name'],
                     'description' => $entry['description'],
+                    'description_uk' => self::DESCRIPTIONS_UK[(string) $slug] ?? null,
                     'image_path' => $imagePaths[(string) $slug]['dark'] ?? null,
                     'image_path_light' => $imagePaths[(string) $slug]['light'] ?? null,
                     ...$fragranceDetails[(string) $slug],

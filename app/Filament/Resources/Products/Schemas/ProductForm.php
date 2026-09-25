@@ -54,6 +54,11 @@ class ProductForm
                             ->directory('products')
                             ->columnSpanFull(),
                         Textarea::make('description')
+                            ->label('Описание (рус)')
+                            ->columnSpanFull(),
+                        Textarea::make('description_uk')
+                            ->label('Описание (укр)')
+                            ->helperText('Если пусто — на украинской версии сайта покажется русское описание.')
                             ->columnSpanFull(),
                     ]),
 

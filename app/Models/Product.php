@@ -17,6 +17,7 @@ class Product extends Model
         'name',
         'slug',
         'description',
+        'description_uk',
         'is_active',
         'image_path',
         'image_path_light',

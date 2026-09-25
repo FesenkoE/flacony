@@ -51,9 +51,11 @@ export default function ProductShow({ product, myReview }) {
     const t = useTranslations();
     const [variantIndex, setVariantIndex] = useState(0);
     const { added, addToCart } = useAddToCart();
-    const { auth } = usePage().props;
+    const { auth, locale } = usePage().props;
     const variant = product.variants[variantIndex];
     const isDark = useIsDarkTheme();
+    const description =
+        (locale === 'uk' && product.description_uk) || product.description;
     const photos = [
         { image_path: product.image_path, image_path_light: product.image_path_light },
         ...product.images,
@@ -274,9 +276,9 @@ export default function ProductShow({ product, myReview }) {
                                 )}
                             </div>
 
-                            {product.description && (
+                            {description && (
                                 <p className="text-sm leading-relaxed text-[#7d6952] dark:text-[#b7a58f]">
-                                    {product.description}
+                                    {description}
                                 </p>
                             )}
 
@@ -480,7 +482,7 @@ export default function ProductShow({ product, myReview }) {
                                                 className="flex items-center gap-3"
                                             >
                                                 <span className="w-36 shrink-0 text-sm text-[#241a10] dark:text-[#f6ecdd]">
-                                                    {accord.name}
+                                                    {t(accord.name)}
                                                 </span>
                                                 <div className="h-2 flex-1 overflow-hidden rounded-full bg-[#e6d7bb] dark:bg-[#ffffff1a]">
                                                     <div
@@ -521,7 +523,7 @@ export default function ProductShow({ product, myReview }) {
                                                                 key={note}
                                                                 className="rounded-full border border-[#e6d7bb] bg-[#fbf5ea] px-3 py-1 text-xs text-[#7d6952] dark:border-[#ffffff29] dark:bg-[#ffffff0a] dark:text-[#b7a58f]"
                                                             >
-                                                                {note}
+                                                                {t(note)}
                                                             </span>
                                                         ))}
                                                     </div>
