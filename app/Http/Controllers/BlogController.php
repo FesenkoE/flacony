@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\PostCategory;
+use App\Models\PromoCode;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -53,9 +54,22 @@ class BlogController extends Controller
             )
             : $sameCategory;
 
+        $prevPost = Post::published()
+            ->where('published_at', '<', $post->published_at)
+            ->latest('published_at')
+            ->first(['title', 'slug']);
+
+        $nextPost = Post::published()
+            ->where('published_at', '>', $post->published_at)
+            ->oldest('published_at')
+            ->first(['title', 'slug']);
+
         return Inertia::render('blog/show', [
             'post' => $post,
             'relatedPosts' => $relatedPosts->values(),
+            'prevPost' => $prevPost,
+            'nextPost' => $nextPost,
+            'promoCode' => PromoCode::where('active', true)->first(['code', 'type', 'value']),
         ]);
     }
 }

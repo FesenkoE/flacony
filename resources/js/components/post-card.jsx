@@ -38,7 +38,7 @@ export default function PostCard({ post }) {
                     </span>
                 </div>
                 <h2 className="font-display line-clamp-2 text-2xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
-                    {post.title}
+                    {post.title.replaceAll('-', '‑')}
                 </h2>
                 {post.excerpt && (
                     <p className="line-clamp-3 text-sm leading-relaxed text-[#7d6952] dark:text-[#b7a58f]">
