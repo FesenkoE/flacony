@@ -1,11 +1,16 @@
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
+import {
+    AuthCard,
+    footerLinkClass,
+    fieldClass,
+    GoogleButton,
+    labelClass,
+    OrSeparator,
+    PasswordField,
+    submitClass,
+} from '@/components/brand-auth';
 import InputError from '@/components/input-error';
-import PasswordInput from '@/components/password-input';
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Spinner } from '@/components/ui/spinner';
+import { useTranslations } from '@/hooks/use-translations';
 import { login } from '@/routes';
 import { store } from '@/routes/register';
 
@@ -14,75 +19,91 @@ type Props = {
 };
 
 export default function Register({ passwordRules }: Props) {
+    const t = useTranslations();
+
     return (
         <>
-            <Head title="Register" />
-            <Form
-                {...store.form()}
-                resetOnSuccess={['password', 'password_confirmation']}
-                disableWhileProcessing
-                className="flex flex-col gap-6"
+            <Head title={t('Регистрация')} />
+            <AuthCard
+                title={t('Создать аккаунт')}
+                subtitle={t('Чтобы оформлять заказы и продавать распив')}
             >
-                {({ processing, errors }) => (
-                    <>
-                        <div className="grid gap-6">
-                            <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
-                                <Input
+                <div className="mt-8">
+                    <GoogleButton />
+                </div>
+                <OrSeparator>{t('Или через email')}</OrSeparator>
+
+                <Form
+                    {...store.form()}
+                    resetOnSuccess={['password', 'password_confirmation']}
+                    className="flex flex-col gap-5"
+                >
+                    {({ processing, errors }) => (
+                        <>
+                            <div className="flex flex-col gap-1.5">
+                                <label className={labelClass} htmlFor="name">
+                                    {t('Имя')}
+                                </label>
+                                <input
                                     id="name"
                                     type="text"
+                                    name="name"
                                     required
                                     autoFocus
-                                    tabIndex={1}
                                     autoComplete="name"
-                                    name="name"
-                                    placeholder="Full name"
+                                    placeholder={t('Имя и фамилия')}
+                                    className={fieldClass}
                                 />
-                                <InputError
-                                    message={errors.name}
-                                    className="mt-2"
-                                />
+                                <InputError message={errors.name} />
                             </div>
 
-                            <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
-                                <Input
+                            <div className="flex flex-col gap-1.5">
+                                <label className={labelClass} htmlFor="email">
+                                    Email
+                                </label>
+                                <input
                                     id="email"
                                     type="email"
-                                    required
-                                    tabIndex={2}
-                                    autoComplete="email"
                                     name="email"
+                                    required
+                                    autoComplete="email"
                                     placeholder="email@example.com"
+                                    className={fieldClass}
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
-                            <div className="grid gap-2">
-                                <Label htmlFor="password">Password</Label>
-                                <PasswordInput
+                            <div className="flex flex-col gap-1.5">
+                                <label
+                                    className={labelClass}
+                                    htmlFor="password"
+                                >
+                                    {t('Пароль')}
+                                </label>
+                                <PasswordField
                                     id="password"
-                                    required
-                                    tabIndex={3}
-                                    autoComplete="new-password"
                                     name="password"
-                                    placeholder="Password"
+                                    required
+                                    autoComplete="new-password"
+                                    placeholder={t('Пароль')}
                                     passwordrules={passwordRules}
                                 />
                                 <InputError message={errors.password} />
                             </div>
 
-                            <div className="grid gap-2">
-                                <Label htmlFor="password_confirmation">
-                                    Confirm password
-                                </Label>
-                                <PasswordInput
+                            <div className="flex flex-col gap-1.5">
+                                <label
+                                    className={labelClass}
+                                    htmlFor="password_confirmation"
+                                >
+                                    {t('Повторите пароль')}
+                                </label>
+                                <PasswordField
                                     id="password_confirmation"
-                                    required
-                                    tabIndex={4}
-                                    autoComplete="new-password"
                                     name="password_confirmation"
-                                    placeholder="Confirm password"
+                                    required
+                                    autoComplete="new-password"
+                                    placeholder={t('Повторите пароль')}
                                     passwordrules={passwordRules}
                                 />
                                 <InputError
@@ -90,31 +111,25 @@ export default function Register({ passwordRules }: Props) {
                                 />
                             </div>
 
-                            <Button
+                            <button
                                 type="submit"
-                                className="mt-2 w-full"
-                                tabIndex={5}
+                                disabled={processing}
                                 data-test="register-user-button"
+                                className={submitClass}
                             >
-                                {processing && <Spinner />}
-                                Create account
-                            </Button>
-                        </div>
+                                {t('Зарегистрироваться')}
+                            </button>
+                        </>
+                    )}
+                </Form>
 
-                        <div className="text-muted-foreground text-center text-sm">
-                            Already have an account?{' '}
-                            <TextLink href={login()} tabIndex={6}>
-                                Log in
-                            </TextLink>
-                        </div>
-                    </>
-                )}
-            </Form>
+                <p className="mt-6 text-center text-sm text-[#7d6952] dark:text-[#b7a58f]">
+                    {t('Уже есть аккаунт?')}{' '}
+                    <Link href={login()} className={footerLinkClass}>
+                        {t('Войти')}
+                    </Link>
+                </p>
+            </AuthCard>
         </>
     );
 }
-
-Register.layout = {
-    title: 'Create an account',
-    description: 'Enter your details below to create your account',
-};
