@@ -62,7 +62,7 @@ export default function ProductsIndex({
         ...(filters.category ?? []).map((slug) => ({
             key: 'category',
             value: slug,
-            label: categories.find((c) => c.slug === slug)?.name ?? slug,
+            label: t(categories.find((c) => c.slug === slug)?.name ?? slug),
         })),
         ...(filters.brand ?? []).map((slug) => ({
             key: 'brand',
@@ -77,7 +77,7 @@ export default function ProductsIndex({
         ...(filters.accord ?? []).map((value) => ({
             key: 'accord',
             value,
-            label: value,
+            label: t(value),
         })),
         ...(filters.volume ?? []).map((value) => ({
             key: 'volume',

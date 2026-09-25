@@ -71,7 +71,7 @@ export default function ProductFilters({
                 {categories.map((category) => (
                     <FilterCheckbox
                         key={category.id}
-                        label={category.name}
+                        label={t(category.name)}
                         checked={(filters.category ?? []).includes(
                             category.slug,
                         )}
@@ -143,14 +143,18 @@ export default function ProductFilters({
 
             {accords.length > 0 && (
                 <FilterGroup title={t('Аромат')}>
-                    {accords.map((accord) => (
-                        <FilterCheckbox
-                            key={accord}
-                            label={accord}
-                            checked={(filters.accord ?? []).includes(accord)}
-                            onChange={() => toggle('accord', accord)}
-                        />
-                    ))}
+                    {[...accords]
+                        .sort((a, b) => t(a).localeCompare(t(b)))
+                        .map((accord) => (
+                            <FilterCheckbox
+                                key={accord}
+                                label={t(accord)}
+                                checked={(filters.accord ?? []).includes(
+                                    accord,
+                                )}
+                                onChange={() => toggle('accord', accord)}
+                            />
+                        ))}
                 </FilterGroup>
             )}
 
