@@ -5,6 +5,7 @@ import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { Separator } from '@/components/ui/separator';
 import { useCurrentUrl } from '@/hooks/use-current-url';
+import { useTranslations } from '@/hooks/use-translations';
 import { cn, toUrl } from '@/lib/utils';
 import { edit as editAppearance } from '@/routes/appearance';
 import { edit } from '@/routes/profile';
@@ -30,6 +31,7 @@ const sidebarNavItems: NavItem[] = [
 ];
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
+    const t = useTranslations();
     const { isCurrentOrParentUrl } = useCurrentUrl();
 
     return (
@@ -38,15 +40,15 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
             <div className="min-h-screen bg-[#f6efe3] text-[#241a10] dark:bg-[#0d0b09] dark:text-[#f6ecdd]">
                 <div className="mx-auto max-w-4xl px-6 py-10">
                     <Heading
-                        title="Настройки"
-                        description="Профиль и параметры аккаунта"
+                        title={t('Настройки')}
+                        description={t('Профиль и параметры аккаунта')}
                     />
 
                     <div className="flex flex-col gap-8 lg:flex-row lg:gap-12">
                         <aside className="w-full lg:w-48">
                             <nav
                                 className="flex flex-col gap-1"
-                                aria-label="Settings"
+                                aria-label={t('Настройки')}
                             >
                                 {sidebarNavItems.map((item, index) => (
                                     <Link
@@ -59,13 +61,13 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                                                 : 'text-[#7d6952] dark:text-[#b7a58f]',
                                         )}
                                     >
-                                        {item.title}
+                                        {t(item.title)}
                                     </Link>
                                 ))}
                             </nav>
                         </aside>
 
-                        <Separator className="lg:hidden" />
+                        <Separator className="bg-[#1e160c14] lg:hidden dark:bg-[#ffffff1a]" />
 
                         <div className="flex-1 md:max-w-2xl">
                             <section className="max-w-xl space-y-12">
