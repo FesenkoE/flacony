@@ -16,14 +16,15 @@ const MONTHS = [
 // Uses UTC getters (not local getDate/getMonth/...) so the server (SSR,
 // usually UTC) and the browser (user's own timezone) always render the same
 // string — mismatched output between them breaks React hydration.
-export function formatDate(iso) {
+// t: optional useTranslations() result — month names are RU source keys.
+export function formatDate(iso, t = (s) => s) {
     const date = new Date(iso);
-    return `${date.getUTCDate()} ${MONTHS[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
+    return `${date.getUTCDate()} ${t(MONTHS[date.getUTCMonth()])} ${date.getUTCFullYear()}`;
 }
 
-export function formatDateTime(iso) {
+export function formatDateTime(iso, t = (s) => s) {
     const date = new Date(iso);
     const hours = String(date.getUTCHours()).padStart(2, '0');
     const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-    return `${date.getUTCDate()} ${MONTHS[date.getUTCMonth()]}, ${hours}:${minutes}`;
+    return `${date.getUTCDate()} ${t(MONTHS[date.getUTCMonth()])}, ${hours}:${minutes}`;
 }

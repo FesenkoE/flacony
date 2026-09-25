@@ -82,7 +82,7 @@ export default function BlogShow({
                                 <div className="mt-6 mb-8 flex flex-col gap-2">
                                     {post.category && (
                                         <span className="text-xs font-bold tracking-[0.18em] text-[#c79a5f] uppercase">
-                                            {post.category.name}
+                                            {t(post.category.name)}
                                         </span>
                                     )}
                                     <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
@@ -98,7 +98,7 @@ export default function BlogShow({
                                                     <span>·</span>
                                                 </>
                                             )}
-                                            {formatDate(post.published_at)}
+                                            {formatDate(post.published_at, t)}
                                             <span>·</span>
                                             {readingMinutes}{' '}
                                             {t(

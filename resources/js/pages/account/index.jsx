@@ -209,7 +209,7 @@ export default function AccountIndex({ lots, orders }) {
                                             })}
                                         </span>
                                         <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
-                                            {formatDate(order.created_at)}
+                                            {formatDate(order.created_at, t)}
                                         </span>
                                     </div>
                                     <span className="font-display text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">

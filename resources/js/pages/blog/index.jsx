@@ -8,6 +8,8 @@ import { useThemeImagePath } from '@/hooks/use-theme-image';
 import { useTranslations } from '@/hooks/use-translations';
 
 function FeaturedPostCard({ post }) {
+    const t = useTranslations();
+
     const coverPath = useThemeImagePath(post.cover_path, post.cover_path_light);
 
     return (
@@ -34,11 +36,11 @@ function FeaturedPostCard({ post }) {
                 <div className="flex items-center gap-2">
                     {post.category && (
                         <span className="w-fit rounded-full bg-[#c79a5f1a] px-3 py-1 text-[11px] font-semibold tracking-[0.08em] text-[#c79a5f] uppercase">
-                            {post.category.name}
+                            {t(post.category.name)}
                         </span>
                     )}
                     <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
-                        {formatDate(post.published_at)}
+                        {formatDate(post.published_at, t)}
                     </span>
                 </div>
                 <h2 className="font-display text-3xl font-semibold text-[#241a10] italic group-hover:text-[#c79a5f] dark:text-[#f6ecdd] md:text-4xl">
@@ -95,7 +97,7 @@ export default function BlogIndex({ posts, categories, activeCategory }) {
                                                 : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
                                         }
                                     >
-                                        {category.name}
+                                        {t(category.name)}
                                     </Link>
                                 ))}
                             </div>

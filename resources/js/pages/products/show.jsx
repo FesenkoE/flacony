@@ -630,7 +630,7 @@ export default function ProductShow({ product, myReview }) {
                                                 {review.user.name}
                                             </span>
                                             <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
-                                                {formatDate(review.created_at)}
+                                                {formatDate(review.created_at, t)}
                                             </span>
                                         </div>
                                         <StarRating

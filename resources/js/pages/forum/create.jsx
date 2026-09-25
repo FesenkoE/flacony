@@ -16,7 +16,7 @@ export default function ForumTopicCreate({ category }) {
         <>
             <Head
                 title={t('Новая тема — {category}', {
-                    category: category.name,
+                    category: t(category.name),
                 })}
             />
             <SiteHeader />
@@ -26,7 +26,7 @@ export default function ForumTopicCreate({ category }) {
                         href={`/forum/${category.slug}`}
                         className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
                     >
-                        ← {category.name}
+                        ← {t(category.name)}
                     </Link>
 
                     <h1 className="mt-4 mb-6 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">

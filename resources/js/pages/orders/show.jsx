@@ -34,7 +34,7 @@ export default function OrderShow({
                             {t('Заказ №{id} принят', { id: order.id })}
                         </h1>
                         <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                            {formatDateTime(order.created_at)} ·{' '}
+                            {formatDateTime(order.created_at, t)} ·{' '}
                             {paymentMethodLabel}
                         </p>
                     </div>

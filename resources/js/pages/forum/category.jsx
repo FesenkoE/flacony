@@ -11,7 +11,7 @@ export default function ForumCategory({ category, topics }) {
 
     return (
         <>
-            <Head title={category.name} />
+            <Head title={t(category.name)} />
             <SiteHeader />
             <div className="min-h-screen bg-[#f6efe3] dark:bg-[#0d0b09]">
                 <div className="mx-auto max-w-3xl p-6">
@@ -24,7 +24,7 @@ export default function ForumCategory({ category, topics }) {
 
                     <div className="mt-4 mb-8 flex items-center justify-between">
                         <h1 className="text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                            {category.name}
+                            {t(category.name)}
                         </h1>
                         {auth.user ? (
                             <Link
@@ -61,7 +61,7 @@ export default function ForumCategory({ category, topics }) {
                                         </span>
                                         <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
                                             {topic.author.name} ·{' '}
-                                            {formatDate(topic.created_at)}
+                                            {formatDate(topic.created_at, t)}
                                         </span>
                                     </div>
                                     <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">

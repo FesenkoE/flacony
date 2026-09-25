@@ -38,11 +38,11 @@ export default function ForumIndex({ categories }) {
                                     </span>
                                     <div className="flex flex-1 flex-col gap-1">
                                         <span className="font-display text-xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
-                                            {category.name}
+                                            {t(category.name)}
                                         </span>
                                         {category.description && (
                                             <span className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                                                {category.description}
+                                                {t(category.description)}
                                             </span>
                                         )}
                                     </div>
