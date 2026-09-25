@@ -27,6 +27,8 @@ void createInertiaApp({
             case name === 'home':
             case name === 'auth/login':
             case name === 'auth/register':
+            case name === 'auth/forgot-password':
+            case name === 'auth/reset-password':
             case name.startsWith('products/'):
             case name.startsWith('cart/'):
             case name.startsWith('sellers/'):
