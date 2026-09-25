@@ -82,6 +82,7 @@ class LotController extends Controller
             'photo_batch_code_path' => $request->file('photo_batch_code')->store('lots', 'public'),
             'remaining_volume_ml' => $validated['total_volume_ml'],
             'status' => Lot::STATUS_PENDING,
+            'locale' => app()->getLocale(),
         ]);
 
         Inertia::flash('toast', [
@@ -128,11 +129,15 @@ class LotController extends Controller
             }
         }
 
+        // New photos, or any fix to a rejected lot, send it back to moderation.
+        $needsModeration = $newPhotoPaths || $lot->status === Lot::STATUS_REJECTED;
+
         $lot->update([
             ...$validated,
             'remaining_volume_ml' => min($lot->remaining_volume_ml, $validated['total_volume_ml']),
+            'locale' => app()->getLocale(),
             ...$newPhotoPaths,
-            ...($newPhotoPaths ? ['status' => Lot::STATUS_PENDING, 'rejection_reason' => null] : []),
+            ...($needsModeration ? ['status' => Lot::STATUS_PENDING, 'rejection_reason' => null] : []),
         ]);
 
         foreach ($oldPaths as $path) {

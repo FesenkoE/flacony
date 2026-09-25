@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\LotModerated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Scout\Searchable;
@@ -30,7 +31,18 @@ class Lot extends Model
         'bulk_price_per_ml',
         'status',
         'rejection_reason',
+        'locale',
     ];
+
+    protected static function booted(): void
+    {
+        // Covers both the approve/reject table actions and the admin edit form.
+        static::updated(function (Lot $lot) {
+            if ($lot->wasChanged('status') && in_array($lot->status, [self::STATUS_APPROVED, self::STATUS_REJECTED], true)) {
+                $lot->seller->notify((new LotModerated($lot))->locale($lot->locale));
+            }
+        });
+    }
 
     public function seller(): BelongsTo
     {
