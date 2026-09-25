@@ -69,6 +69,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('checkout', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::post('checkout/promo/validate', [PromoCodeController::class, 'validate'])->name('checkout.promo.validate');
     Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.status');
     Route::get('nova-poshta/cities', [NovaPoshtaController::class, 'cities'])->name('nova-poshta.cities');
     Route::get('nova-poshta/warehouses', [NovaPoshtaController::class, 'warehouses'])->name('nova-poshta.warehouses');
 });

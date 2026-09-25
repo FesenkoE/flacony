@@ -58,6 +58,8 @@ class OrderStatusTest extends TestCase
         $order->transitionTo(Order::STATUS_SHIPPED, '20450000000000');
 
         $this->assertSame('20450000000000', $order->fresh()->tracking_number);
+        $this->assertNotNull($order->fresh()->confirmed_at);
+        $this->assertNotNull($order->fresh()->shipped_at);
 
         app()->setLocale('uk');
         $mail = (new OrderStatusChanged($order->fresh()))->toMail($order);

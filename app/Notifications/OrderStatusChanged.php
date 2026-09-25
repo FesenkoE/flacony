@@ -32,7 +32,14 @@ class OrderStatusChanged extends Notification
 
         $mail = (new MailMessage)
             ->subject(__($subject, $id))
-            ->line(__($line))
+            ->line(__($line));
+
+        // A split cart means several orders — say who ships this one.
+        if ($order->seller) {
+            $mail->line(__('Отправитель: :name (распив)', ['name' => $order->seller->name]));
+        }
+
+        $mail
             ->line(__('Сумма: :total ₴', ['total' => number_format((float) $order->total, 2, '.', ' ')]));
 
         // MailMessage has a single button: tracking beats "view order" once shipped.

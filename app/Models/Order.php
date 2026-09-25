@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\NewSale;
 use App\Notifications\OrderStatusChanged;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,6 +33,8 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
+        'seller_id',
+        'checkout_id',
         'name',
         'email',
         'phone',
@@ -45,12 +48,31 @@ class Order extends Model
         'status',
         'locale',
         'tracking_number',
+        'confirmed_at',
+        'shipped_at',
+        'delivered_at',
+        'cancelled_at',
         'total',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'confirmed_at' => 'datetime',
+            'shipped_at' => 'datetime',
+            'delivered_at' => 'datetime',
+            'cancelled_at' => 'datetime',
+        ];
+    }
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function seller(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'seller_id');
     }
 
     public function items(): HasMany
@@ -82,6 +104,7 @@ class Order extends Model
 
             $this->update([
                 'status' => $status,
+                "{$status}_at" => now(),
                 'tracking_number' => $trackingNumber ?? $this->tracking_number,
             ]);
         });
@@ -89,6 +112,18 @@ class Order extends Model
         if ($status !== self::STATUS_DELIVERED) {
             $this->notifyCustomer();
         }
+    }
+
+    public function notifySeller(): void
+    {
+        if (! $this->seller) {
+            return;
+        }
+
+        // The seller's language is the one they last managed their lot in.
+        $locale = Lot::whereKey($this->items()->value('lot_id'))->value('locale') ?? 'uk';
+
+        $this->seller->notify((new NewSale($this))->locale($locale));
     }
 
     public function notifyCustomer(): void

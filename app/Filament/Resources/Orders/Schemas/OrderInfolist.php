@@ -55,8 +55,12 @@ class OrderInfolist
                                 ->weight('bold'),
                         ]),
                     Section::make('Статус')
-                        ->columns(3)
+                        ->columns(4)
                         ->schema([
+                            TextEntry::make('seller.name')
+                                ->label('Отправитель')
+                                ->placeholder('Flacony')
+                                ->helperText(fn (Order $record) => $record->seller_id ? 'Распив — статус ведёт продавец' : null),
                             TextEntry::make('status')
                                 ->label('Статус')
                                 ->badge()

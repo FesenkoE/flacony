@@ -353,6 +353,16 @@ export default function CheckoutIndex({
     const [city, setCity] = useState(null);
     const [discount, setDiscount] = useState(0);
     const usesNovaPoshta = NOVA_POSHTA_METHODS.includes(deliveryMethod);
+    // Each seller ships their own decants, so the cart becomes one order per shipper.
+    const hasFlaconyItems = items.some((item) => item.type === 'variant');
+    const shippers = [
+        ...(hasFlaconyItems ? ['Flacony'] : []),
+        ...new Set(
+            items
+                .filter((item) => item.type === 'lot')
+                .map((item) => t('{name} (распив)', { name: item.seller_name })),
+        ),
+    ];
 
     return (
         <>
@@ -370,6 +380,15 @@ export default function CheckoutIndex({
                     <h1 className="mt-4 mb-6 text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                         {t('Оформление заказа')}
                     </h1>
+
+                    {shippers.length > 1 && (
+                        <p className="mb-4 rounded-2xl border border-[#c79a5f4d] bg-[#c79a5f1a] px-4 py-3 text-sm text-[#241a10] dark:text-[#f6ecdd]">
+                            {t(
+                                'Товары отправят разные отправители, поэтому для каждого оформим отдельный заказ со своим статусом и ТТН: {list}.',
+                                { list: shippers.join(', ') },
+                            )}
+                        </p>
+                    )}
 
                     <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-[#1e160c14] bg-[#fffaf1] p-4 dark:border-[#ffffff14] dark:bg-[#ffffff0a]">
                         {items.map((item) => (
@@ -615,10 +634,17 @@ export default function CheckoutIndex({
                                     </p>
                                 </div>
 
-                                <PromoCodeField
-                                    onDiscountChange={setDiscount}
-                                />
-                                <InputError message={errors.promo_code} />
+                                {/* Promo codes are Flacony's — nothing to apply them to in a decants-only cart. */}
+                                {hasFlaconyItems && (
+                                    <>
+                                        <PromoCodeField
+                                            onDiscountChange={setDiscount}
+                                        />
+                                        <InputError
+                                            message={errors.promo_code}
+                                        />
+                                    </>
+                                )}
 
                                 <div className="flex flex-col gap-1.5">
                                     <label

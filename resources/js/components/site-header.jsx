@@ -420,6 +420,11 @@ export default function SiteHeader() {
                                             {t('Продавать')}
                                         </Link>
                                     </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <Link href="/settings/profile">
+                                            {t('Настройки')}
+                                        </Link>
+                                    </DropdownMenuItem>
                                     <DropdownMenuSeparator className="bg-[#1e160c14] dark:bg-[#ffffff1a]" />
                                     <DropdownMenuItem
                                         asChild

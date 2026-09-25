@@ -8,6 +8,8 @@ use App\Models\PromoCode;
 use App\Support\Cart;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -27,6 +29,20 @@ class CheckoutController extends Controller
             'courier' => __('Курьер по городу'),
             'pickup' => __('Самовывоз'),
         ];
+    }
+
+    /**
+     * Decant sellers ship themselves, so only Nova Poshta works once the cart has lots.
+     *
+     * @return array<string, string>
+     */
+    public static function deliveryMethodsFor(Collection $items): array
+    {
+        $methods = self::deliveryMethods();
+
+        return $items->contains('type', 'lot')
+            ? array_intersect_key($methods, array_flip(['np_branch', 'np_courier']))
+            : $methods;
     }
 
     /**
@@ -51,7 +67,7 @@ class CheckoutController extends Controller
         return Inertia::render('checkout/index', [
             'items' => $items,
             'total' => $items->sum('subtotal'),
-            'deliveryMethods' => self::deliveryMethods(),
+            'deliveryMethods' => self::deliveryMethodsFor($items),
             'paymentMethods' => self::paymentMethods(),
         ]);
     }
@@ -71,7 +87,7 @@ class CheckoutController extends Controller
             'phone' => ['required', 'string', 'max:32'],
             'city' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string', 'max:500'],
-            'delivery_method' => ['required', Rule::in(array_keys(self::deliveryMethods()))],
+            'delivery_method' => ['required', Rule::in(array_keys(self::deliveryMethodsFor($items)))],
             'payment_method' => ['required', Rule::in(array_keys(self::paymentMethods()))],
             'promo_code' => ['nullable', 'string', 'max:64'],
             'comment' => ['nullable', 'string', 'max:1000'],
@@ -83,7 +99,7 @@ class CheckoutController extends Controller
         ];
         unset($orderData['first_name'], $orderData['last_name']);
 
-        $order = DB::transaction(function () use ($request, $orderData, $items) {
+        $orders = DB::transaction(function () use ($request, $orderData, $items) {
             // ponytail: lock lot rows so two concurrent checkouts of the same
             // lot can't both succeed with more volume than remains.
             foreach ($items->where('type', 'lot') as $item) {
@@ -98,52 +114,73 @@ class CheckoutController extends Controller
                 }
             }
 
-            $subtotal = $items->sum('subtotal');
-            $discount = 0;
+            // One order per shipper: Flacony (catalog, seller_id null) first,
+            // then one per decant seller — each gets its own status and TTN.
+            $groups = $items->groupBy(fn (array $item) => $item['seller_id'] ?? 0)->sortKeys();
+            $checkoutId = (string) Str::uuid();
+            $promoCode = $orderData['promo_code'] ?? null;
+            unset($orderData['promo_code']);
 
-            if (! empty($orderData['promo_code'])) {
-                $promo = PromoCode::findByCode($orderData['promo_code'], lock: true);
-
-                if (! $promo) {
-                    throw ValidationException::withMessages(['promo_code' => __('Промокод не найден.')]);
-                }
-
-                $promo->assertUsableFor($subtotal);
-                $discount = $promo->discountFor($subtotal);
-                $promo->increment('used_count');
+            if (filled($promoCode) && ! $groups->has(0)) {
+                throw ValidationException::withMessages(['promo_code' => __('Промокод действует только на товары каталога Flacony.')]);
             }
 
-            $order = Order::create([
-                ...$orderData,
-                'user_id' => $request->user()->id,
-                'locale' => app()->getLocale(),
-                'total' => $subtotal - $discount,
-                'discount_amount' => $discount,
-            ]);
+            return $groups->map(function (Collection $groupItems, int $sellerId) use ($request, $orderData, $checkoutId, $promoCode) {
+                $subtotal = $groupItems->sum('subtotal');
+                $discount = 0;
 
-            foreach ($items as $item) {
-                $order->items()->create([
-                    'type' => $item['type'],
-                    'product_variant_id' => $item['product_variant_id'],
-                    'lot_id' => $item['lot_id'],
-                    'volume_ml' => $item['type'] === 'lot' ? $item['volume_ml'] : null,
-                    'brand_name' => $item['brand_name'],
-                    'product_name' => $item['product_name'],
-                    'detail' => $item['detail'],
-                    'subtotal' => $item['subtotal'],
+                // The promo is Flacony's, so it only discounts Flacony's order.
+                if ($sellerId === 0 && filled($promoCode)) {
+                    $promo = PromoCode::findByCode($promoCode, lock: true);
+
+                    if (! $promo) {
+                        throw ValidationException::withMessages(['promo_code' => __('Промокод не найден.')]);
+                    }
+
+                    $promo->assertUsableFor($subtotal);
+                    $discount = $promo->discountFor($subtotal);
+                    $promo->increment('used_count');
+                }
+
+                $order = Order::create([
+                    ...$orderData,
+                    'user_id' => $request->user()->id,
+                    'seller_id' => $sellerId ?: null,
+                    'checkout_id' => $checkoutId,
+                    'promo_code' => $discount > 0 ? $promoCode : null,
+                    'locale' => app()->getLocale(),
+                    'total' => $subtotal - $discount,
+                    'discount_amount' => $discount,
                 ]);
 
-                if ($item['type'] === 'lot') {
-                    Lot::whereKey($item['lot_id'])->decrement('remaining_volume_ml', $item['volume_ml']);
-                }
-            }
+                foreach ($groupItems as $item) {
+                    $order->items()->create([
+                        'type' => $item['type'],
+                        'product_variant_id' => $item['product_variant_id'],
+                        'lot_id' => $item['lot_id'],
+                        'volume_ml' => $item['type'] === 'lot' ? $item['volume_ml'] : null,
+                        'brand_name' => $item['brand_name'],
+                        'product_name' => $item['product_name'],
+                        'detail' => $item['detail'],
+                        'subtotal' => $item['subtotal'],
+                    ]);
 
-            return $order;
+                    if ($item['type'] === 'lot') {
+                        Lot::whereKey($item['lot_id'])->decrement('remaining_volume_ml', $item['volume_ml']);
+                    }
+                }
+
+                return $order;
+            })->values();
         });
 
         Cart::clear();
-        $order->notifyCustomer();
 
-        return redirect()->route('orders.show', $order);
+        foreach ($orders as $order) {
+            $order->notifyCustomer();
+            $order->notifySeller();
+        }
+
+        return redirect()->route('orders.show', $orders->first());
     }
 }

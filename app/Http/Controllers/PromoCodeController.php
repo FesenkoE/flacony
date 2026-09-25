@@ -20,7 +20,12 @@ class PromoCodeController extends Controller
             return response()->json(['message' => __('Промокод не найден.')], 422);
         }
 
-        $subtotal = Cart::items()->sum('subtotal');
+        // Promo codes are Flacony's: they only discount catalog items, not decants.
+        $subtotal = Cart::items()->where('type', 'variant')->sum('subtotal');
+
+        if ($subtotal <= 0) {
+            return response()->json(['message' => __('Промокод действует только на товары каталога Flacony.')], 422);
+        }
 
         try {
             $promo->assertUsableFor($subtotal);

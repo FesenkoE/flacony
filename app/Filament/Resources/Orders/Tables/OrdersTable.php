@@ -7,6 +7,7 @@ use App\Models\Order;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class OrdersTable
@@ -22,6 +23,9 @@ class OrdersTable
                     ->label('Покупатель')
                     ->description(fn (Order $record) => $record->phone)
                     ->searchable(['name', 'phone', 'email']),
+                TextColumn::make('seller.name')
+                    ->label('Отправитель')
+                    ->placeholder('Flacony'),
                 TextColumn::make('city')
                     ->label('Город'),
                 TextColumn::make('total')
@@ -43,6 +47,11 @@ class OrdersTable
                 SelectFilter::make('status')
                     ->label('Статус')
                     ->options(Order::STATUS_LABELS),
+                TernaryFilter::make('seller_id')
+                    ->label('Отправитель')
+                    ->nullable()
+                    ->trueLabel('Продавцы распива')
+                    ->falseLabel('Flacony'),
             ])
             ->recordActions([
                 ...OrderStatusActions::make(),

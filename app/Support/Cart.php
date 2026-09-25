@@ -21,6 +21,8 @@ class Cart
                 'key' => $variant->id,
                 'product_variant_id' => $variant->id,
                 'lot_id' => null,
+                'seller_id' => null,
+                'seller_name' => null,
                 'volume_ml' => $variant->volume_ml,
                 'quantity' => $cart[$variant->id],
                 'unit_price' => $variant->price,
@@ -30,13 +32,16 @@ class Cart
                 'subtotal' => $variant->price * $cart[$variant->id],
             ]);
 
-        $lotItems = Lot::whereIn('id', array_keys($cartLots))
+        $lotItems = Lot::with('seller:id,name')
+            ->whereIn('id', array_keys($cartLots))
             ->get()
             ->map(fn (Lot $lot) => [
                 'type' => 'lot',
                 'key' => $lot->id,
                 'product_variant_id' => null,
                 'lot_id' => $lot->id,
+                'seller_id' => $lot->user_id,
+                'seller_name' => $lot->seller->name,
                 'volume_ml' => (float) $cartLots[$lot->id],
                 'brand_name' => $lot->brand_name,
                 'product_name' => $lot->product_name,

@@ -146,8 +146,24 @@ function LotRow({ lot, t }) {
     );
 }
 
-export default function AccountIndex({ lots, orders }) {
+export default function AccountIndex({ lots, orders, sales, activeTab }) {
     const t = useTranslations();
+    const newSales = sales.filter((sale) => sale.status === 'new').length;
+    const tabs = [
+        { key: 'orders', label: t('Мои заказы') },
+        // Only sellers who've actually sold something need this tab.
+        ...(sales.length > 0
+            ? [
+                  {
+                      key: 'sales',
+                      label: t('Мои продажи'),
+                      // Sales waiting for the seller to confirm them.
+                      badge: newSales || null,
+                  },
+              ]
+            : []),
+        { key: 'lots', label: t('Мои лоты') },
+    ];
     const { auth } = usePage().props;
     const listRef = useFlipList([lots.length]);
 
@@ -160,94 +176,150 @@ export default function AccountIndex({ lots, orders }) {
                     <h1 className="text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                         {t('Личный кабинет')}
                     </h1>
-                    <p className="mt-1 text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                        {auth.user.name} · {auth.user.email}
-                    </p>
-
-                    <div className="mt-6 flex flex-wrap gap-3">
-                        <Link
-                            href="/settings/profile"
-                            className="rounded-full border border-[#e6d7bb] px-5 py-2.5 text-sm font-semibold text-[#241a10] dark:border-[#ffffff29] dark:text-[#f6ecdd]"
-                        >
-                            {t('Настройки профиля')}
-                        </Link>
-                        <Link
-                            href={`/sellers/${auth.user.id}`}
-                            className="rounded-full border border-[#e6d7bb] px-5 py-2.5 text-sm font-semibold text-[#241a10] dark:border-[#ffffff29] dark:text-[#f6ecdd]"
-                        >
-                            {t('Моя витрина')}
-                        </Link>
-                        <Link
-                            href="/cart"
-                            className="rounded-full border border-[#e6d7bb] px-5 py-2.5 text-sm font-semibold text-[#241a10] dark:border-[#ffffff29] dark:text-[#f6ecdd]"
-                        >
-                            {t('Корзина')}
-                        </Link>
+                    <div className="mt-1 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 text-sm">
+                        <span className="text-[#7d6952] dark:text-[#b7a58f]">
+                            {auth.user.name} · {auth.user.email}
+                        </span>
+                        <span className="flex gap-5">
+                            <Link
+                                href="/settings/profile"
+                                className="font-semibold text-[#241a10] underline decoration-[#c79a5f] underline-offset-4 dark:text-[#f6ecdd]"
+                            >
+                                {t('Настройки')}
+                            </Link>
+                            <Link
+                                href={`/sellers/${auth.user.id}`}
+                                className="font-semibold text-[#241a10] underline decoration-[#c79a5f] underline-offset-4 dark:text-[#f6ecdd]"
+                            >
+                                {t('Моя витрина')}
+                            </Link>
+                        </span>
                     </div>
 
-                    <div className="mt-10 flex items-center justify-between">
-                        <h2 className="text-xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                            {t('Мои заказы')}
-                        </h2>
+                    <div className="mt-10 flex flex-wrap gap-2">
+                        {tabs.map((tab) => (
+                            <Link
+                                key={tab.key}
+                                href={`/dashboard?tab=${tab.key}`}
+                                preserveScroll
+                                className={
+                                    'inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium ' +
+                                    (activeTab === tab.key
+                                        ? 'border-[#c79a5f] bg-[#c79a5f29] text-[#241a10] dark:text-[#f6ecdd]'
+                                        : 'border-[#e6d7bb] text-[#7d6952] dark:border-[#ffffff29] dark:text-[#b7a58f]')
+                                }
+                            >
+                                {tab.label}
+                                {tab.badge && (
+                                    <span className="rounded-full bg-[#c79a5f] px-2 py-0.5 text-[11px] font-bold text-[#3d2712]">
+                                        {tab.badge}
+                                    </span>
+                                )}
+                            </Link>
+                        ))}
                     </div>
 
-                    {orders.length === 0 ? (
-                        <p className="mt-4 text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                            {t('Ты ещё не оформлял заказы.')}
-                        </p>
-                    ) : (
-                        <div className="mt-4 flex flex-col gap-3">
-                            {orders.map((order) => (
-                                <Link
-                                    key={order.id}
-                                    href={`/orders/${order.id}`}
-                                    className="flex items-center justify-between gap-4 rounded-2xl border border-[#1e160c14] bg-[#fffaf1] p-4 dark:border-[#ffffff14] dark:bg-[#ffffff0a]"
-                                >
-                                    <div className="flex flex-col gap-1">
-                                        <span className="font-display text-lg font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
-                                            {t('Заказ №{id}', {
-                                                id: order.id,
-                                            })}
-                                        </span>
-                                        <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
-                                            {formatDate(order.created_at, t)}
-                                        </span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <OrderStatusBadge
-                                            status={order.status}
-                                        />
-                                        <span className="font-display text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                                            {Number(order.total).toFixed(2)} ₴
-                                        </span>
-                                    </div>
-                                </Link>
-                            ))}
-                        </div>
+                    {activeTab === 'orders' && (
+                        <>
+                            {orders.length === 0 ? (
+                                <p className="mt-4 text-sm text-[#7d6952] dark:text-[#b7a58f]">
+                                    {t('Ты ещё не оформлял заказы.')}
+                                </p>
+                            ) : (
+                                <div className="mt-4 flex flex-col gap-3">
+                                    {orders.map((order) => (
+                                        <Link
+                                            key={order.id}
+                                            href={`/orders/${order.id}`}
+                                            className="flex items-center justify-between gap-4 rounded-2xl border border-[#1e160c14] bg-[#fffaf1] p-4 dark:border-[#ffffff14] dark:bg-[#ffffff0a]"
+                                        >
+                                            <div className="flex flex-col gap-1">
+                                                <span className="font-display text-lg font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
+                                                    {t('Заказ №{id}', {
+                                                        id: order.id,
+                                                    })}
+                                                </span>
+                                                <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
+                                                    {formatDate(order.created_at, t)}
+                                                    {order.seller &&
+                                                        ` · ${t('{name} (распив)', {
+                                                            name: order.seller.name,
+                                                        })}`}
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                <OrderStatusBadge
+                                                    status={order.status}
+                                                />
+                                                <span className="font-display text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                                                    {Number(order.total).toFixed(2)} ₴
+                                                </span>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            )}
+                        </>
                     )}
 
-                    <div className="mt-10 flex items-center justify-between">
-                        <h2 className="text-xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                            {t('Мои лоты')}
-                        </h2>
-                        <Link
-                            href="/sellers/lots/create"
-                            className="rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
-                        >
-                            + {t('Добавить лот')}
-                        </Link>
-                    </div>
+                    {activeTab === 'sales' && (
+                        <>
+                            <div className="mt-4 flex flex-col gap-3">
+                                {sales.map((sale) => (
+                                    <Link
+                                        key={sale.id}
+                                        href={`/orders/${sale.id}`}
+                                        className="flex items-center justify-between gap-4 rounded-2xl border border-[#1e160c14] bg-[#fffaf1] p-4 dark:border-[#ffffff14] dark:bg-[#ffffff0a]"
+                                    >
+                                        <div className="flex flex-col gap-1">
+                                            <span className="font-display text-lg font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
+                                                {t('Заказ №{id}', {
+                                                    id: sale.id,
+                                                })}
+                                            </span>
+                                            <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
+                                                {sale.name} ·{' '}
+                                                {formatDate(sale.created_at, t)}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                            <OrderStatusBadge
+                                                status={sale.status}
+                                            />
+                                            <span className="font-display text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                                                {Number(sale.total).toFixed(2)}{' '}
+                                                ₴
+                                            </span>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        </>
+                    )}
 
-                    {lots.length === 0 ? (
-                        <p className="mt-4 text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                            {t('Ты ещё не выставлял лоты на распив.')}
-                        </p>
-                    ) : (
-                        <div ref={listRef} className="mt-4 flex flex-col gap-3">
-                            {lots.map((lot) => (
-                                <LotRow key={lot.id} lot={lot} t={t} />
-                            ))}
-                        </div>
+                    {activeTab === 'lots' && (
+                        <>
+                            <div className="mt-6 flex justify-end">
+                                <Link
+                                    href="/sellers/lots/create"
+                                    className="rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
+                                >
+                                    + {t('Добавить лот')}
+                                </Link>
+                            </div>
+
+                            {lots.length === 0 ? (
+                                <p className="mt-4 text-sm text-[#7d6952] dark:text-[#b7a58f]">
+                                    {t('Ты ещё не выставлял лоты на распив.')}
+                                </p>
+                            ) : (
+                                <div ref={listRef} className="mt-4 flex flex-col gap-3">
+                                    {lots.map((lot) => (
+                                        <LotRow key={lot.id} lot={lot} t={t} />
+                                    ))}
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
             </div>
