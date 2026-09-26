@@ -229,7 +229,7 @@ export default function BlogShow({
                             <h2 className="mb-4 text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                                 {t('Читайте также')}
                             </h2>
-                            <div className="grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-6">
+                            <div className="grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-x-6 gap-y-10">
                                 {relatedPosts.map((related) => (
                                     <PostCard key={related.id} post={related} />
                                 ))}

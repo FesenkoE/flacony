@@ -116,7 +116,7 @@ export default function SearchIndex({ query, products, lots, posts, brands }) {
                                     <h2 className="text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
                                         {t('Блог')}
                                     </h2>
-                                    <div className="grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-6">
+                                    <div className="grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-x-6 gap-y-10">
                                         {posts.map((post) => (
                                             <PostCard key={post.id} post={post} />
                                         ))}

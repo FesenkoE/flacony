@@ -10,11 +10,9 @@ export default function PostCard({ post }) {
     const coverPath = useThemeImagePath(post.cover_path, post.cover_path_light);
 
     return (
-        <Link
-            href={`/blog/${post.slug}`}
-            className="flex flex-col overflow-hidden rounded-3xl border border-[#1e160c14] bg-[#fffaf1] transition-colors hover:border-[#c79a5f66] dark:border-[#ffffff14] dark:bg-[#ffffff0a]"
-        >
-            <div className="scent-card-photo flex aspect-[16/9] items-center justify-center overflow-hidden">
+        <Link href={`/blog/${post.slug}`} className="group flex flex-col">
+            {/* Editorial card: no box around it, the cover and type carry it. */}
+            <div className="scent-card-photo flex aspect-[16/9] items-center justify-center overflow-hidden rounded-3xl">
                 {coverPath ? (
                     <img
                         src={`/storage/${coverPath}`}
@@ -29,7 +27,7 @@ export default function PostCard({ post }) {
                     />
                 )}
             </div>
-            <div className="flex flex-1 flex-col gap-3 p-6">
+            <div className="flex flex-1 flex-col gap-3 pt-4">
                 <div className="flex items-center gap-2">
                     {post.category && (
                         <span className="w-fit rounded-full bg-[#c79a5f1a] px-3 py-1 text-[11px] font-semibold tracking-[0.08em] text-[#c79a5f] uppercase">
@@ -40,7 +38,7 @@ export default function PostCard({ post }) {
                         {formatDate(post.published_at, t)}
                     </span>
                 </div>
-                <h2 className="font-display line-clamp-2 text-2xl font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
+                <h2 className="font-display line-clamp-2 text-2xl font-semibold text-[#241a10] italic group-hover:text-[#c79a5f] dark:text-[#f6ecdd]">
                     {l(post, 'title').replaceAll('-', '‑')}
                 </h2>
                 {l(post, 'excerpt') && (
