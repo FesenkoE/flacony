@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Brand;
 use App\Models\Category;
-use App\Models\ForumCategory;
 use App\Models\Lot;
 use App\Models\Post;
 use App\Models\PostCategory;
@@ -367,67 +366,7 @@ class DatabaseSeeder extends Seeder
             );
         }
 
-        $forumCategoryDefs = [
-            ['name' => 'Общие обсуждения', 'description' => 'Всё, что не подошло под другие разделы'],
-            ['name' => 'Вопросы новичков', 'description' => 'Только начинаешь разбираться в парфюмерии — сюда'],
-            ['name' => 'Отзывы о продавцах', 'description' => 'Делимся опытом покупок на витринах'],
-        ];
-
-        $forumCategories = [];
-        foreach ($forumCategoryDefs as $entry) {
-            $forumCategories[] = ForumCategory::firstOrCreate(
-                ['slug' => str($entry['name'])->slug()],
-                $entry,
-            );
-        }
-
-        $topics = [
-            [
-                'category' => 1,
-                'title' => 'С чего начать, если раньше пользовался только масс-маркетом?',
-                'author' => $testUser,
-                'body' => 'Пользовался только масс-маркетом, хочу попробовать нишу, но брать флакон вслепую за несколько тысяч страшно. С чего посоветуете начать?',
-                'replies' => [
-                    [$sellerUsers[0], 'Начни с распива — возьми 2-3 мл разных ароматов из разных семейств (древесные, цитрусовые, амбровые), чтобы понять, что вообще нравится, прежде чем брать полный флакон.'],
-                    [$sellerUsers[1], 'Согласен с советом выше. Ещё добавлю: не нюхай больше 3 ароматов подряд за раз, нос "устаёт" и перестаёт различать оттенки.'],
-                ],
-            ],
-            [
-                'category' => 0,
-                'title' => 'Как отличить оригинал от подделки при покупке распива?',
-                'author' => $sellerUsers[2],
-                'body' => 'Хочу взять распив Aventus у незнакомого продавца и боюсь нарваться на подделку. На что смотреть до покупки и как проверить уже после?',
-                'replies' => [
-                    [$sellerUsers[3], 'Смотри на батч-код флакона, откуда наливают — большинство брендов дают проверить его на официальном сайте. Плюс сравнивай цвет и вязкость с фото оригинала.'],
-                ],
-            ],
-            [
-                'category' => 2,
-                'title' => 'Отзыв о покупке у Игоря — Aventus пришёл быстро и герметично упакован',
-                'author' => $testUser,
-                'body' => 'Брал у Игоря 5 мл Aventus: отправил на следующий день, дошло за два дня, атомайзер стеклянный, ничего не протекло. По ощущениям один в один с флаконом из магазина.',
-                'replies' => [
-                    [$sellerUsers[1], 'Спасибо за отзыв! Всегда упаковываю в стекло с уплотнителем, чтобы точно не протекло при доставке.'],
-                ],
-            ],
-        ];
-
-        foreach ($topics as $topicDef) {
-            $topic = $forumCategories[$topicDef['category']]->topics()->firstOrCreate(
-                ['title' => $topicDef['title']],
-                [
-                    'user_id' => $topicDef['author']->id,
-                    'slug' => str($topicDef['title'])->slug().'-'.str()->random(6),
-                ],
-            );
-
-            // Like a topic created on the site, its opening message is the first reply.
-            foreach ([[$topicDef['author'], $topicDef['body']], ...$topicDef['replies']] as [$author, $body]) {
-                $topic->replies()->firstOrCreate(
-                    ['user_id' => $author->id, 'body' => $body],
-                );
-            }
-        }
+        $this->call(ForumSeeder::class);
 
         PromoCode::firstOrCreate(
             ['code' => 'WELCOME10'],

@@ -32,6 +32,12 @@ class ForumTest extends TestCase
             ->where('topics.0.title', 'Старая тема')   // bumped by the fresh answer
             ->where('topics.0.replies_count', 1)
             ->where('topics.1.replies_count', 0));
+
+        $this->get('/forum')->assertInertia(fn ($page) => $page
+            ->where('categories.0.last_topic.title', 'Старая тема')
+            ->where('recentTopics.0.title', 'Старая тема')
+            ->where('recentTopics.0.latest_reply.body', 'Ответ')
+            ->where('recentTopics.1.title', 'Новая тема'));
     }
 
     public function test_admin_can_delete_a_reply_but_not_the_opening_message()

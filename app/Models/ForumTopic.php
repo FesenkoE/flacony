@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ForumTopic extends Model
 {
@@ -23,5 +25,19 @@ class ForumTopic extends Model
     public function replies(): HasMany
     {
         return $this->hasMany(ForumReply::class);
+    }
+
+    public function latestReply(): HasOne
+    {
+        return $this->hasOne(ForumReply::class)->latestOfMany(['created_at', 'id']);
+    }
+
+    // Forums bump a topic when someone answers, not when it was opened.
+    public function scopeByActivity(Builder $query): void
+    {
+        $query->with(['category:id,name,slug', 'author:id,name', 'latestReply.author:id,name'])
+            ->withCount('replies')
+            ->withMax('replies', 'created_at')
+            ->orderByDesc('replies_max_created_at');
     }
 }

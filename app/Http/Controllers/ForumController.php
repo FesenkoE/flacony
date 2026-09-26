@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ForumCategory;
+use App\Models\ForumTopic;
+use Illuminate\Support\Collection;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -10,8 +12,17 @@ class ForumController extends Controller
 {
     public function index(): Response
     {
+        $categories = ForumCategory::withCount('topics')->orderBy('name')->get();
+
+        // ponytail: one query per section — there are a handful of them.
+        $categories->each(fn (ForumCategory $category) => $category->setRelation(
+            'lastTopic',
+            $category->topics()->byActivity()->first(),
+        ));
+
         return Inertia::render('forum/index', [
-            'categories' => ForumCategory::withCount('topics')->orderBy('name')->get(),
+            'categories' => $categories,
+            'recentTopics' => self::countAnswers(ForumTopic::byActivity()->limit(6)->get()),
         ]);
     }
 
@@ -19,15 +30,13 @@ class ForumController extends Controller
     {
         return Inertia::render('forum/category', [
             'category' => $category,
-            'topics' => $category->topics()
-                ->with('author:id,name')
-                ->withCount('replies')
-                // Forums bump a topic when someone answers, not when it was opened.
-                ->withMax('replies', 'created_at')
-                ->orderByDesc('replies_max_created_at')
-                ->get()
-                // The opening message is stored as the first reply.
-                ->each(fn ($topic) => $topic->replies_count--),
+            'topics' => self::countAnswers($category->topics()->byActivity()->get()),
         ]);
+    }
+
+    // The opening message is stored as the first reply, so it isn't an answer.
+    private static function countAnswers(Collection $topics): Collection
+    {
+        return $topics->each(fn (ForumTopic $topic) => $topic->replies_count--);
     }
 }
