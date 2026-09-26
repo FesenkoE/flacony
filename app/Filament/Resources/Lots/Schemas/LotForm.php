@@ -25,6 +25,14 @@ class LotForm
                             ->disabled(),
                         TextInput::make('product_name')
                             ->disabled(),
+                        Select::make('product_id')
+                            ->label('Товар каталога')
+                            ->relationship('product', 'name', fn ($query) => $query->with('brand'))
+                            ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->brand->name} — {$record->name}")
+                            ->searchable(['name'])
+                            ->preload()
+                            ->helperText('На витрине показывается фото этого товара. Подставляется сам, если бренд и название совпали с каталогом.')
+                            ->columnSpanFull(),
                         TextInput::make('total_volume_ml')
                             ->numeric()
                             ->disabled(),

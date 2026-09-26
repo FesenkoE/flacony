@@ -3,7 +3,9 @@ import { useState } from 'react';
 import BottleIcon from '@/components/bottle-icon';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { useAddLotToCart } from '@/hooks/use-add-lot-to-cart';
+import { useThemeImagePath } from '@/hooks/use-theme-image';
 import { useTranslations } from '@/hooks/use-translations';
 import { pluralizeRu } from '@/lib/pluralize';
 
@@ -15,6 +17,69 @@ function fakeStatsForLot(lotId) {
         views: 40 + ((lotId * 37) % 260),
         buyers: 1 + ((lotId * 13) % 20),
     };
+}
+
+// The seller's own shots of this very bottle — proof it's genuine, not a storefront photo.
+function SellerPhotos({ lot }) {
+    const t = useTranslations();
+    const [open, setOpen] = useState(null);
+    const photos = [
+        { path: lot.photo_sprayer_path, label: t('Флакон') },
+        { path: lot.photo_batch_code_path, label: t('Батч-код') },
+    ].filter((photo) => photo.path);
+
+    if (photos.length === 0) {
+        return null;
+    }
+
+    return (
+        <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-0.5">
+                <span className="text-sm font-semibold text-[#241a10] dark:text-[#f6ecdd]">
+                    {t('Фото от продавца')}
+                </span>
+                <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
+                    {t(
+                        'Тот самый флакон, из которого наливают. Батч-код можно проверить на сайте бренда.',
+                    )}
+                </span>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+                {photos.map((photo) => (
+                    <button
+                        key={photo.path}
+                        type="button"
+                        onClick={() => setOpen(photo)}
+                        className="group flex flex-col gap-1.5 text-left"
+                    >
+                        <span className="aspect-square overflow-hidden rounded-2xl">
+                            <img
+                                src={`/storage/${photo.path}`}
+                                alt={photo.label}
+                                className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                            />
+                        </span>
+                        <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
+                            {photo.label}
+                        </span>
+                    </button>
+                ))}
+            </div>
+
+            <Dialog open={open !== null} onOpenChange={() => setOpen(null)}>
+                <DialogContent className="w-auto max-w-[92vw] rounded-none border-0 bg-transparent p-0 shadow-none">
+                    <DialogTitle className="sr-only">{open?.label}</DialogTitle>
+                    {open && (
+                        <img
+                            src={`/storage/${open.path}`}
+                            alt={open.label}
+                            className="max-h-[88vh] max-w-[92vw] rounded-2xl object-contain"
+                        />
+                    )}
+                </DialogContent>
+            </Dialog>
+        </div>
+    );
 }
 
 export default function LotShow({ lot, isOwn, sellerLotsCount }) {
@@ -33,6 +98,10 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
     const maxVolume = Math.max(1, Math.floor(remaining));
     const [volume, setVolume] = useState(Math.min(5, maxVolume));
     const { added, addLotToCart } = useAddLotToCart();
+    const coverPath = useThemeImagePath(
+        lot.product?.image_path,
+        lot.product?.image_path_light,
+    );
 
     const effectivePricePerMl =
         bulkThreshold !== null && bulkPrice !== null && volume >= bulkThreshold
@@ -55,30 +124,33 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                     </Link>
 
                     <div className="mt-6 grid gap-8 md:grid-cols-2">
-                        <div className="scent-card-photo relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl">
-                            {lot.photo_sprayer_path ? (
-                                <img
-                                    src={`/storage/${lot.photo_sprayer_path}`}
-                                    alt={`${lot.brand_name} ${lot.product_name}`}
-                                    className="h-full w-full object-cover"
-                                />
-                            ) : (
-                                <BottleIcon size={164} />
-                            )}
-                            {isOwn && lot.status !== 'approved' && (
-                                <span
-                                    className={
-                                        'absolute top-4 left-4 rounded-full px-3 py-1 text-xs font-semibold tracking-[0.04em] uppercase ' +
-                                        (lot.status === 'rejected'
-                                            ? 'bg-[#c0645a] text-[#fdf3f1]'
-                                            : 'bg-[#c79a5f] text-[#3d2712]')
-                                    }
-                                >
-                                    {lot.status === 'rejected'
-                                        ? t('Отклонён')
-                                        : t('На модерации')}
-                                </span>
-                            )}
+                        <div className="flex flex-col gap-6">
+                            <div className="scent-card-photo relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl">
+                                {coverPath ? (
+                                    <img
+                                        src={`/storage/${coverPath}`}
+                                        alt={`${lot.brand_name} ${lot.product_name}`}
+                                        className="h-full w-full object-cover"
+                                    />
+                                ) : (
+                                    <BottleIcon size={164} />
+                                )}
+                                {isOwn && lot.status !== 'approved' && (
+                                    <span
+                                        className={
+                                            'absolute top-4 left-4 rounded-full px-3 py-1 text-xs font-semibold tracking-[0.04em] uppercase ' +
+                                            (lot.status === 'rejected'
+                                                ? 'bg-[#c0645a] text-[#fdf3f1]'
+                                                : 'bg-[#c79a5f] text-[#3d2712]')
+                                        }
+                                    >
+                                        {lot.status === 'rejected'
+                                            ? t('Отклонён')
+                                            : t('На модерации')}
+                                    </span>
+                                )}
+                            </div>
+                            <SellerPhotos lot={lot} />
                         </div>
 
                         <div className="flex flex-col gap-5">
@@ -95,6 +167,15 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                 <p className="text-sm text-[#7d6952] dark:text-[#b7a58f]">
                                     {lot.description}
                                 </p>
+                            )}
+
+                            {lot.product && (
+                                <Link
+                                    href={`/products/${lot.product.slug}`}
+                                    className="w-fit text-sm font-semibold text-[#241a10] underline decoration-[#c79a5f] underline-offset-4 dark:text-[#f6ecdd]"
+                                >
+                                    {t('Ноты и описание аромата')}
+                                </Link>
                             )}
 
                             <div className="flex items-center gap-5 text-sm text-[#7d6952] dark:text-[#b7a58f]">
@@ -153,7 +234,12 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                     {lot.status === 'rejected' &&
                                         lot.rejection_reason && (
                                             <p className="rounded-xl bg-[#c0645a14] px-4 py-3 text-sm text-[#c0645a]">
-                                                {t('Причина отклонения: {reason}', { reason: lot.rejection_reason })}
+                                                {t(
+                                                    'Причина отклонения: {reason}',
+                                                    {
+                                                        reason: lot.rejection_reason,
+                                                    },
+                                                )}
                                             </p>
                                         )}
                                     <div className="flex flex-col gap-1.5">

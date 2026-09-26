@@ -3,6 +3,7 @@ import { ShoppingCart } from 'lucide-react';
 import { useState } from 'react';
 import BottleIcon from '@/components/bottle-icon';
 import { useAddLotToCart } from '@/hooks/use-add-lot-to-cart';
+import { useThemeImagePath } from '@/hooks/use-theme-image';
 import { useTranslations } from '@/hooks/use-translations';
 
 export default function LotCard({ lot, isOwn = false }) {
@@ -20,6 +21,11 @@ export default function LotCard({ lot, isOwn = false }) {
     const maxVolume = Math.max(1, Math.floor(remaining));
     const [volume, setVolume] = useState(Math.min(5, maxVolume));
     const { added, addLotToCart } = useAddLotToCart();
+    // Our catalog photo keeps the storefront uniform; seller photos live on the lot page.
+    const coverPath = useThemeImagePath(
+        lot.product?.image_path,
+        lot.product?.image_path_light,
+    );
 
     const effectivePricePerMl =
         bulkThreshold !== null && bulkPrice !== null && volume >= bulkThreshold
@@ -31,9 +37,9 @@ export default function LotCard({ lot, isOwn = false }) {
     return (
         <div className="flex h-full flex-col overflow-hidden rounded-3xl border border-[#1e160c14] bg-[#fffaf1] dark:border-[#ffffff14] dark:bg-[#ffffff0a] dark:backdrop-blur-lg">
             <div className="scent-card-photo relative flex aspect-square items-center justify-center overflow-hidden">
-                {lot.photo_sprayer_path ? (
+                {coverPath ? (
                     <img
-                        src={`/storage/${lot.photo_sprayer_path}`}
+                        src={`/storage/${coverPath}`}
                         alt={`${lot.brand_name} ${lot.product_name}`}
                         className="h-full w-full object-cover"
                     />

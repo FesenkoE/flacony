@@ -19,6 +19,7 @@ class Lot extends Model
 
     protected $fillable = [
         'user_id',
+        'product_id',
         'brand_name',
         'product_name',
         'photo_sprayer_path',
@@ -34,14 +35,32 @@ class Lot extends Model
         'locale',
     ];
 
+    // Every lot card shows the catalog photo, so it always comes along.
+    protected $with = ['product:id,slug,image_path,image_path_light'];
+
     protected static function booted(): void
     {
+        // Sellers type brand + name (with catalog suggestions); a match links the
+        // lot to our product. An admin's manual pick in the same save wins.
+        static::saving(function (Lot $lot) {
+            if ($lot->isDirty(['brand_name', 'product_name']) && ! $lot->isDirty('product_id')) {
+                $lot->product_id = Product::whereRelation('brand', 'name', $lot->brand_name)
+                    ->where('name', $lot->product_name)
+                    ->value('id');
+            }
+        });
+
         // Covers both the approve/reject table actions and the admin edit form.
         static::updated(function (Lot $lot) {
             if ($lot->wasChanged('status') && in_array($lot->status, [self::STATUS_APPROVED, self::STATUS_REJECTED], true)) {
                 $lot->seller->notify((new LotModerated($lot))->locale($lot->locale));
             }
         });
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
     }
 
     public function seller(): BelongsTo

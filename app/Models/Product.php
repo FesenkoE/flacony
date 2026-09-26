@@ -32,6 +32,17 @@ class Product extends Model
         'sillage',
     ];
 
+    protected static function booted(): void
+    {
+        // A perfume added to the catalog picks up lots sellers listed before it existed.
+        static::created(function (Product $product) {
+            Lot::whereNull('product_id')
+                ->where('brand_name', $product->brand?->name)
+                ->where('product_name', $product->name)
+                ->update(['product_id' => $product->id]);
+        });
+    }
+
     protected function casts(): array
     {
         return [
@@ -40,6 +51,11 @@ class Product extends Model
             'base_notes' => 'array',
             'accords' => 'array',
         ];
+    }
+
+    public function lots(): HasMany
+    {
+        return $this->hasMany(Lot::class);
     }
 
     public function brand(): BelongsTo
