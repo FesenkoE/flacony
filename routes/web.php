@@ -65,18 +65,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('favorites/{product}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
     Route::post('products/{product:slug}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
     Route::delete('reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
-    Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-    Route::post('checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-    Route::post('checkout/promo/validate', [PromoCodeController::class, 'validate'])->name('checkout.promo.validate');
     Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.status');
-    Route::get('nova-poshta/cities', [NovaPoshtaController::class, 'cities'])->name('nova-poshta.cities');
-    Route::get('nova-poshta/warehouses', [NovaPoshtaController::class, 'warehouses'])->name('nova-poshta.warehouses');
 });
 
 Route::get('lots', [LotController::class, 'index'])->name('lots.index');
 Route::get('sellers/lots/{lot}', [LotController::class, 'show'])->name('lots.show');
 Route::get('sellers/{user}', [SellerController::class, 'show'])->name('sellers.show');
+
+// Checkout is open to guests; they reach their order through a signed link.
+Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('checkout', [CheckoutController::class, 'store'])->middleware('throttle:10,1')->name('checkout.store');
+Route::post('checkout/promo/validate', [PromoCodeController::class, 'validate'])->name('checkout.promo.validate');
+Route::get('orders/{order}/view', [OrderController::class, 'show'])->middleware('signed')->name('orders.view');
+Route::get('nova-poshta/cities', [NovaPoshtaController::class, 'cities'])->name('nova-poshta.cities');
+Route::get('nova-poshta/warehouses', [NovaPoshtaController::class, 'warehouses'])->name('nova-poshta.warehouses');
 
 Route::get('cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('cart', [CartController::class, 'store'])->name('cart.store');

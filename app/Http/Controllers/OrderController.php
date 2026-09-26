@@ -13,9 +13,11 @@ class OrderController extends Controller
 {
     public function show(Request $request, Order $order): Response
     {
-        $userId = $request->user()->id;
-        $isBuyer = $order->user_id === $userId;
-        $isSeller = $order->seller_id === $userId;
+        // The signed route already rejected bad signatures, so holding the link means buyer.
+        $viaLink = $request->routeIs('orders.view');
+        $userId = $request->user()?->id;
+        $isBuyer = $viaLink || $order->user_id === $userId;
+        $isSeller = ! $viaLink && $userId && $order->seller_id === $userId;
 
         abort_unless($isBuyer || $isSeller, 403);
 
@@ -27,7 +29,8 @@ class OrderController extends Controller
                 ? Order::where('checkout_id', $order->checkout_id)
                     ->whereKeyNot($order->id)
                     ->with('seller:id,name')
-                    ->get(['id', 'seller_id', 'status', 'total'])
+                    ->get(['id', 'user_id', 'seller_id', 'status', 'total'])
+                    ->map(fn (Order $sibling) => [...$sibling->only(['id', 'status', 'total', 'seller']), 'url' => $sibling->viewUrl()])
                 : [],
             'deliveryMethodLabel' => CheckoutController::deliveryMethods()[$order->delivery_method] ?? $order->delivery_method,
             'paymentMethodLabel' => CheckoutController::paymentMethods()[$order->payment_method] ?? $order->payment_method,

@@ -49,6 +49,6 @@ class OrderStatusChanged extends Notification
                 ->action(__('Отследить посылку'), 'https://tracking.novaposhta.ua/#/uk/'.rawurlencode($order->tracking_number));
         }
 
-        return $mail->action(__('Посмотреть заказ'), route('orders.show', $order));
+        return $mail->action(__('Посмотреть заказ'), $order->viewUrl());
     }
 }

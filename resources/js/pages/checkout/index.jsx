@@ -347,7 +347,7 @@ export default function CheckoutIndex({
 }) {
     const t = useTranslations();
     const { auth } = usePage().props;
-    const [firstName, ...lastNameParts] = auth.user.name.split(' ');
+    const [firstName, ...lastNameParts] = (auth.user?.name ?? '').split(' ');
     const lastName = lastNameParts.join(' ');
     const [deliveryMethod, setDeliveryMethod] = useState('');
     const [city, setCity] = useState(null);
@@ -360,7 +360,9 @@ export default function CheckoutIndex({
         ...new Set(
             items
                 .filter((item) => item.type === 'lot')
-                .map((item) => t('{name} (распив)', { name: item.seller_name })),
+                .map((item) =>
+                    t('{name} (распив)', { name: item.seller_name }),
+                ),
         ),
     ];
 
@@ -416,6 +418,18 @@ export default function CheckoutIndex({
                             </span>
                         </div>
                     </div>
+
+                    {!auth.user && (
+                        <p className="mb-4 text-sm text-[#7d6952] dark:text-[#b7a58f]">
+                            {t('Уже есть аккаунт?')}{' '}
+                            <Link
+                                href="/login"
+                                className="font-semibold text-[#241a10] underline decoration-[#c79a5f] underline-offset-4 dark:text-[#f6ecdd]"
+                            >
+                                {t('Войти')}
+                            </Link>
+                        </p>
+                    )}
 
                     <Form
                         action="/checkout"
@@ -473,7 +487,7 @@ export default function CheckoutIndex({
                                             id="email"
                                             name="email"
                                             type="email"
-                                            defaultValue={auth.user.email}
+                                            defaultValue={auth.user?.email}
                                             className={fieldClass}
                                         />
                                         <InputError message={errors.email} />

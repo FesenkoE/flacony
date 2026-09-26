@@ -1,4 +1,4 @@
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import {
     dangerButtonClass,
@@ -123,6 +123,7 @@ export default function OrderShow({
     paymentMethodLabel,
 }) {
     const t = useTranslations();
+    const { auth } = usePage().props;
     const heading = {
         new: 'Заказ №{id} принят',
         confirmed: 'Заказ №{id} подтверждён',
@@ -185,7 +186,9 @@ export default function OrderShow({
                     {isSeller && <SellerActions order={order} />}
 
                     {siblingOrders.length > 0 && (
-                        <div className={`mb-6 flex flex-col gap-2 p-4 ${panelClass}`}>
+                        <div
+                            className={`mb-6 flex flex-col gap-2 p-4 ${panelClass}`}
+                        >
                             <span className="text-sm text-[#241a10] dark:text-[#f6ecdd]">
                                 {t(
                                     'Корзину отправляют разные отправители, поэтому она разделена на несколько заказов:',
@@ -194,12 +197,11 @@ export default function OrderShow({
                             {siblingOrders.map((sibling) => (
                                 <Link
                                     key={sibling.id}
-                                    href={`/orders/${sibling.id}`}
+                                    href={sibling.url}
                                     className="flex items-center justify-between gap-3 text-sm"
                                 >
                                     <span className="font-semibold text-[#241a10] underline decoration-[#c79a5f] underline-offset-4 dark:text-[#f6ecdd]">
-                                        {t('Заказ №{id}', { id: sibling.id })}{' '}
-                                        ·{' '}
+                                        {t('Заказ №{id}', { id: sibling.id })} ·{' '}
                                         {sibling.seller
                                             ? t('{name} (распив)', {
                                                   name: sibling.seller.name,
@@ -281,12 +283,14 @@ export default function OrderShow({
                     </div>
 
                     <div className="flex justify-center gap-4">
-                        <Link
-                            href="/dashboard"
-                            className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
-                        >
-                            {t('Личный кабинет')}
-                        </Link>
+                        {auth.user && (
+                            <Link
+                                href="/dashboard"
+                                className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"
+                            >
+                                {t('Личный кабинет')}
+                            </Link>
+                        )}
                         <Link
                             href="/products"
                             className="text-sm text-[#7d6952] hover:text-[#241a10] dark:text-[#b7a58f] dark:hover:text-[#f6ecdd]"

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\URL;
 
 class Order extends Model
 {
@@ -78,6 +79,15 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    // Guests have no account to log into, so their link carries a signature instead
+    // (never expires — like Shopify's order status page).
+    public function viewUrl(): string
+    {
+        return $this->user_id
+            ? route('orders.show', $this)
+            : URL::signedRoute('orders.view', $this);
     }
 
     public function canTransitionTo(string $status): bool

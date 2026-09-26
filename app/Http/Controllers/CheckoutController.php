@@ -144,7 +144,7 @@ class CheckoutController extends Controller
 
                 $order = Order::create([
                     ...$orderData,
-                    'user_id' => $request->user()->id,
+                    'user_id' => $request->user()?->id,
                     'seller_id' => $sellerId ?: null,
                     'checkout_id' => $checkoutId,
                     'promo_code' => $discount > 0 ? $promoCode : null,
@@ -181,6 +181,6 @@ class CheckoutController extends Controller
             $order->notifySeller();
         }
 
-        return redirect()->route('orders.show', $orders->first());
+        return redirect($orders->first()->viewUrl());
     }
 }

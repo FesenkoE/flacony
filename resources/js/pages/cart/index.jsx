@@ -1,4 +1,4 @@
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { useConfirmDelete } from '@/hooks/use-confirm-delete';
 import { useFlipList } from '@/hooks/use-flip-list';
 import BottleIcon from '@/components/bottle-icon';
@@ -49,7 +49,6 @@ function CartRow({ item, t }) {
 export default function CartIndex({ items, total }) {
     const t = useTranslations();
     const listRef = useFlipList([items.length]);
-    const { auth } = usePage().props;
 
     return (
         <>
@@ -114,12 +113,10 @@ export default function CartIndex({ items, total }) {
                             </div>
 
                             <Link
-                                href={auth.user ? '/checkout' : '/login'}
+                                href="/checkout"
                                 className="mt-2 rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-7 py-3.5 text-center text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
                             >
-                                {auth.user
-                                    ? t('Оформить заказ')
-                                    : t('Войти, чтобы оформить заказ')}
+                                {t('Оформить заказ')}
                             </Link>
                         </div>
                     )}
