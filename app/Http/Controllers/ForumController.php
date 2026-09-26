@@ -22,8 +22,12 @@ class ForumController extends Controller
             'topics' => $category->topics()
                 ->with('author:id,name')
                 ->withCount('replies')
-                ->latest()
-                ->get(),
+                // Forums bump a topic when someone answers, not when it was opened.
+                ->withMax('replies', 'created_at')
+                ->orderByDesc('replies_max_created_at')
+                ->get()
+                // The opening message is stored as the first reply.
+                ->each(fn ($topic) => $topic->replies_count--),
         ]);
     }
 }
