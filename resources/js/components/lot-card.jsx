@@ -2,6 +2,8 @@ import { Link } from '@inertiajs/react';
 import { ShoppingCart } from 'lucide-react';
 import { useState } from 'react';
 import BottleIcon from '@/components/bottle-icon';
+import LotPrice from '@/components/lot-price';
+import VolumePicker from '@/components/volume-picker';
 import { useAddLotToCart } from '@/hooks/use-add-lot-to-cart';
 import { useThemeImagePath } from '@/hooks/use-theme-image';
 import { useTranslations } from '@/hooks/use-translations';
@@ -27,16 +29,15 @@ export default function LotCard({ lot, isOwn = false }) {
         lot.product?.image_path_light,
     );
 
-    const effectivePricePerMl =
-        bulkThreshold !== null && bulkPrice !== null && volume >= bulkThreshold
-            ? bulkPrice
-            : pricePerMl;
-    const price = (volume * effectivePricePerMl).toFixed(2);
     const projectedRemaining = remaining - volume;
 
     return (
         <div className="flex h-full flex-col overflow-hidden rounded-3xl border border-[#1e160c14] bg-[#fffaf1] dark:border-[#ffffff14] dark:bg-[#ffffff0a] dark:backdrop-blur-lg">
-            <div className="scent-card-photo relative flex aspect-square items-center justify-center overflow-hidden">
+            {/* Photo and title lead to the lot page (the seller name inside links elsewhere, so no single wrapper). */}
+            <Link
+                href={`/sellers/lots/${lot.id}`}
+                className="scent-card-photo relative flex aspect-square items-center justify-center overflow-hidden"
+            >
                 {coverPath ? (
                     <img
                         src={`/storage/${coverPath}`}
@@ -60,7 +61,7 @@ export default function LotCard({ lot, isOwn = false }) {
                             : t('На модерации')}
                     </span>
                 )}
-            </div>
+            </Link>
 
             <div className="flex flex-1 flex-col p-6">
                 <div className="flex flex-col gap-1.5">
@@ -68,7 +69,12 @@ export default function LotCard({ lot, isOwn = false }) {
                         {lot.brand_name}
                     </span>
                     <h3 className="font-display text-2xl leading-none font-semibold text-[#241a10] italic dark:text-[#f6ecdd]">
-                        {lot.product_name}
+                        <Link
+                            href={`/sellers/lots/${lot.id}`}
+                            className="hover:text-[#c79a5f]"
+                        >
+                            {lot.product_name}
+                        </Link>
                     </h3>
                     {!isOwn && lot.seller && (
                         <Link
@@ -157,33 +163,22 @@ export default function LotCard({ lot, isOwn = false }) {
                             </span>
                         </div>
 
-                        <div className="mt-5 flex flex-col gap-2">
-                            <div className="flex items-center justify-between">
-                                <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
-                                    {t('Сколько мл')}
-                                </span>
-                                <span className="text-sm font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                                    {volume} мл
-                                </span>
-                            </div>
-                            <input
-                                type="range"
-                                min={1}
-                                max={maxVolume}
-                                step={1}
+                        {/* Pinned to the bottom with the price, so pickers line up across a row whatever the text above. */}
+                        <div className="mt-auto pt-5">
+                            <VolumePicker
                                 value={volume}
-                                onChange={(e) =>
-                                    setVolume(Number(e.target.value))
-                                }
-                                style={{ accentColor: '#c79a5f' }}
-                                className="w-full"
+                                onChange={setVolume}
+                                max={maxVolume}
                             />
                         </div>
 
-                        <div className="mt-auto flex flex-col gap-3 pt-4">
-                            <span className="font-display text-2xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                                {price} ₴
-                            </span>
+                        <div className="flex flex-col gap-3 pt-4">
+                            <LotPrice
+                                volume={volume}
+                                pricePerMl={pricePerMl}
+                                bulkThreshold={bulkThreshold}
+                                bulkPrice={bulkPrice}
+                            />
                             <button
                                 type="button"
                                 onClick={() => addLotToCart(lot.id, volume)}

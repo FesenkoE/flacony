@@ -3,6 +3,8 @@ import { useState } from 'react';
 import BottleIcon from '@/components/bottle-icon';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
+import LotPrice from '@/components/lot-price';
+import VolumePicker from '@/components/volume-picker';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { useAddLotToCart } from '@/hooks/use-add-lot-to-cart';
 import { useThemeImagePath } from '@/hooks/use-theme-image';
@@ -103,11 +105,6 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
         lot.product?.image_path_light,
     );
 
-    const effectivePricePerMl =
-        bulkThreshold !== null && bulkPrice !== null && volume >= bulkThreshold
-            ? bulkPrice
-            : pricePerMl;
-    const price = (volume * effectivePricePerMl).toFixed(2);
     const projectedRemaining = remaining - volume;
 
     return (
@@ -332,35 +329,20 @@ export default function LotShow({ lot, isOwn, sellerLotsCount }) {
                                         </span>
                                     </div>
 
-                                    <div className="flex flex-col gap-2">
-                                        <div className="flex items-center justify-between">
-                                            <span className="text-[11px] font-semibold tracking-[0.1em] text-[#7d6952] uppercase dark:text-[#b7a58f]">
-                                                {t('Сколько мл')}
-                                            </span>
-                                            <span className="text-sm font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                                                {volume} мл
-                                            </span>
-                                        </div>
-                                        <input
-                                            type="range"
-                                            min={1}
-                                            max={maxVolume}
-                                            step={1}
-                                            value={volume}
-                                            onChange={(e) =>
-                                                setVolume(
-                                                    Number(e.target.value),
-                                                )
-                                            }
-                                            style={{ accentColor: '#c79a5f' }}
-                                            className="w-full"
-                                        />
-                                    </div>
+                                    <VolumePicker
+                                        value={volume}
+                                        onChange={setVolume}
+                                        max={maxVolume}
+                                    />
 
-                                    <div className="mt-2 flex items-center justify-between">
-                                        <span className="font-display text-3xl font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                                            {price} ₴
-                                        </span>
+                                    <div className="mt-2 flex items-center justify-between gap-4">
+                                        <LotPrice
+                                            volume={volume}
+                                            pricePerMl={pricePerMl}
+                                            bulkThreshold={bulkThreshold}
+                                            bulkPrice={bulkPrice}
+                                            size="text-3xl"
+                                        />
                                         <button
                                             type="button"
                                             onClick={() =>
