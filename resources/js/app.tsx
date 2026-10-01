@@ -1,4 +1,5 @@
 import { createInertiaApp } from '@inertiajs/react';
+import type { ComponentType } from 'react';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { initializeTheme } from '@/hooks/use-appearance';
@@ -7,7 +8,10 @@ import SettingsLayout from '@/layouts/settings/layout';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-const pages = import.meta.glob(['./pages/**/*.tsx', './pages/**/*.jsx']);
+const pages = import.meta.glob<{ default: ComponentType }>([
+    './pages/**/*.tsx',
+    './pages/**/*.jsx',
+]);
 
 void createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
@@ -19,7 +23,7 @@ void createInertiaApp({
             throw new Error(`Page not found: ${name}`);
         }
         const mod = await pages[path]();
-        return mod.default ?? mod;
+        return mod.default;
     },
     layout: (name) => {
         switch (true) {

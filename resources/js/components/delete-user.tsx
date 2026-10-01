@@ -66,7 +66,10 @@ export default function DeleteUser() {
                         {({ resetAndClearErrors, processing, errors }) => (
                             <>
                                 <div className="flex flex-col gap-1.5">
-                                    <label htmlFor="password" className="sr-only">
+                                    <label
+                                        htmlFor="password"
+                                        className="sr-only"
+                                    >
                                         {t('Пароль')}
                                     </label>
                                     <PasswordField
@@ -83,7 +86,9 @@ export default function DeleteUser() {
                                     <DialogClose asChild>
                                         <button
                                             type="button"
-                                            onClick={() => resetAndClearErrors()}
+                                            onClick={() =>
+                                                resetAndClearErrors()
+                                            }
                                             className={secondaryButtonClass}
                                         >
                                             {t('Отмена')}

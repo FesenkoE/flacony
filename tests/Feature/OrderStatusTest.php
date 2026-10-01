@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Notifications\OrderStatusChanged;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\TestCase;
 
 class OrderStatusTest extends TestCase
@@ -84,7 +85,7 @@ class OrderStatusTest extends TestCase
         [$order] = $this->orderWithLot();
 
         $this->assertFalse($order->canTransitionTo(Order::STATUS_DELIVERED));
-        $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+        $this->expectException(HttpException::class);
         $order->transitionTo(Order::STATUS_DELIVERED);
     }
 

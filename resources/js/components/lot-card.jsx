@@ -182,7 +182,7 @@ export default function LotCard({ lot, isOwn = false }) {
                             <button
                                 type="button"
                                 onClick={() => addLotToCart(lot.id, volume)}
-                                className="flex w-full items-center justify-center gap-2 rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-5 py-3 text-sm font-bold tracking-[0.04em] whitespace-nowrap text-[#3d2712] uppercase"
+                                className="flex w-full items-center justify-center gap-2 rounded-full bg-[#c5aa86] px-5 py-3 text-sm font-bold tracking-[0.04em] whitespace-nowrap text-[#3d2712] uppercase dark:bg-[#c79a5f]"
                             >
                                 <ShoppingCart size={16} strokeWidth={2.25} />
                                 {added ? t('Добавлено') : t('В корзину')}

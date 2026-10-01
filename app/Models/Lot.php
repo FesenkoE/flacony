@@ -44,8 +44,10 @@ class Lot extends Model
         // lot to our product. An admin's manual pick in the same save wins.
         static::saving(function (Lot $lot) {
             if ($lot->isDirty(['brand_name', 'product_name']) && ! $lot->isDirty('product_id')) {
-                $lot->product_id = Product::whereRelation('brand', 'name', $lot->brand_name)
-                    ->where('name', $lot->product_name)
+                // Explicit lower(): MySQL collation is case-insensitive, SQLite (CI) is not.
+                // ponytail: SQLite lower() folds ASCII only; fine while catalog names are Latin.
+                $lot->product_id = Product::whereHas('brand', fn ($q) => $q->whereRaw('lower(name) = ?', [mb_strtolower($lot->brand_name)]))
+                    ->whereRaw('lower(name) = ?', [mb_strtolower($lot->product_name)])
                     ->value('id');
             }
         });

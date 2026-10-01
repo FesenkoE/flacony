@@ -63,9 +63,7 @@ export default function OrderTimeline({ order }) {
                                     : done
                                       ? 'border-[#c79a5f] bg-[#c79a5f] text-[#3d2712]'
                                       : 'border-[#e6d7bb] bg-[#fffaf1] text-[#7d6952] dark:border-[#ffffff29] dark:bg-[#130f0b] dark:text-[#b7a58f]') +
-                                (current
-                                    ? ' ring-4 ring-[#c79a5f40]'
-                                    : '')
+                                (current ? ' ring-4 ring-[#c79a5f40]' : '')
                             }
                         >
                             {isCancel ? (

@@ -319,7 +319,7 @@ function Hero({ promoCode, newArrivals, activeLotsCount }) {
                     >
                         <Link
                             href="/products"
-                            className="hero-cta-sheen relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
+                            className="hero-cta-sheen relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-[#c5aa86] px-6 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase dark:bg-[#c79a5f]"
                         >
                             {t('Смотреть каталог')}
                             <svg
@@ -466,7 +466,7 @@ export default function Home({
                                     'Выставь остаток флакона и получи деньги за то, что не допробуешь',
                                 )}
                             </span>
-                            <span className="mt-2 rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-6 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase">
+                            <span className="mt-2 rounded-full bg-[#c5aa86] px-6 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase dark:bg-[#c79a5f]">
                                 {t('Выставить лот')}
                             </span>
                         </Link>
@@ -561,7 +561,7 @@ export default function Home({
 
                         <Link
                             href="/register"
-                            className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
+                            className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#c5aa86] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase dark:bg-[#c79a5f]"
                         >
                             {t('Зарегистрироваться')}
                         </Link>

@@ -55,7 +55,9 @@ export default function ManageTwoFactor(props: Props) {
             <Heading
                 variant="small"
                 title={t('Двухфакторная аутентификация')}
-                description={t('Вход с кодом из приложения на телефоне — даже если пароль утечёт')}
+                description={t(
+                    'Вход с кодом из приложения на телефоне — даже если пароль утечёт',
+                )}
             />
             {twoFactorEnabled ? (
                 <div className="flex flex-col items-start justify-start space-y-4">

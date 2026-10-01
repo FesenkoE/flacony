@@ -232,9 +232,7 @@ export default function LotForm({
                                         type="number"
                                         min="1"
                                         step="1"
-                                        defaultValue={
-                                            defaults.total_volume_ml
-                                        }
+                                        defaultValue={defaults.total_volume_ml}
                                         className={fieldClass}
                                         placeholder="100"
                                     />
@@ -260,9 +258,7 @@ export default function LotForm({
                                         className={fieldClass}
                                         placeholder="25"
                                     />
-                                    <InputError
-                                        message={errors.price_per_ml}
-                                    />
+                                    <InputError message={errors.price_per_ml} />
                                 </div>
                             </FormSection>
 
@@ -335,16 +331,14 @@ export default function LotForm({
                                         className={textareaClass}
                                         placeholder="Batch code: 3201..."
                                     />
-                                    <InputError
-                                        message={errors.description}
-                                    />
+                                    <InputError message={errors.description} />
                                 </div>
                             </FormSection>
 
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-7 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60"
+                                className="rounded-full bg-[#c5aa86] px-7 py-3 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase disabled:opacity-60 dark:bg-[#c79a5f]"
                             >
                                 {submitLabel}
                             </button>

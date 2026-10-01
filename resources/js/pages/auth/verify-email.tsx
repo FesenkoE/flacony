@@ -40,7 +40,11 @@ export default function VerifyEmail({ status }: { status?: string }) {
                 </Form>
 
                 <p className="mt-6 text-center text-sm text-[#7d6952] dark:text-[#b7a58f]">
-                    <Link href={logout()} as="button" className={footerLinkClass}>
+                    <Link
+                        href={logout()}
+                        as="button"
+                        className={footerLinkClass}
+                    >
                         {t('Выйти')}
                     </Link>
                 </p>

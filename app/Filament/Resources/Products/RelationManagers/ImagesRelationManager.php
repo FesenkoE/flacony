@@ -112,7 +112,7 @@ class ImagesRelationManager extends RelationManager
                             Notification::make()
                                 ->warning()
                                 ->title('Количество файлов не совпало со строками без светлой версии')
-                                ->body("Строк без светлой версии: {$rows->count()}, загружено файлов: " . count($paths) . '. Заполнены по порядку, лишнее не применено.')
+                                ->body("Строк без светлой версии: {$rows->count()}, загружено файлов: ".count($paths).'. Заполнены по порядку, лишнее не применено.')
                                 ->send();
                         }
                     }),

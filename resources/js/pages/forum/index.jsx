@@ -37,7 +37,7 @@ export default function ForumIndex({ categories, recentTopics }) {
                                         href={`/forum/${category.slug}`}
                                         className="flex items-center gap-4 rounded-3xl border border-[#1e160c14] bg-[#fffaf1] p-6 transition-colors hover:border-[#c79a5f66] dark:border-[#ffffff14] dark:bg-[#ffffff0a]"
                                     >
-                                        <span className="hidden h-12 w-12 shrink-0 items-center sm:flex justify-center rounded-full bg-[#c79a5f1a] text-[#c79a5f]">
+                                        <span className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#c79a5f1a] text-[#c79a5f] sm:flex">
                                             <MessageCircle
                                                 size={20}
                                                 strokeWidth={1.75}

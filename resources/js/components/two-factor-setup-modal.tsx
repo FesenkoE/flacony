@@ -228,7 +228,10 @@ function TwoFactorVerificationStep({
                             </button>
                             <button
                                 type="submit"
-                                className={cn(submitClass, 'mt-0 flex-1 py-2.5')}
+                                className={cn(
+                                    submitClass,
+                                    'mt-0 flex-1 py-2.5',
+                                )}
                                 disabled={
                                     processing || code.length < OTP_MAX_LENGTH
                                 }

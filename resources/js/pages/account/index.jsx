@@ -240,11 +240,19 @@ export default function AccountIndex({ lots, orders, sales, activeTab }) {
                                                     })}
                                                 </span>
                                                 <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
-                                                    {formatDate(order.created_at, t)}
+                                                    {formatDate(
+                                                        order.created_at,
+                                                        t,
+                                                    )}
                                                     {order.seller &&
-                                                        ` · ${t('{name} (распив)', {
-                                                            name: order.seller.name,
-                                                        })}`}
+                                                        ` · ${t(
+                                                            '{name} (распив)',
+                                                            {
+                                                                name: order
+                                                                    .seller
+                                                                    .name,
+                                                            },
+                                                        )}`}
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-3">
@@ -252,7 +260,10 @@ export default function AccountIndex({ lots, orders, sales, activeTab }) {
                                                     status={order.status}
                                                 />
                                                 <span className="font-display text-lg font-semibold text-[#241a10] dark:text-[#f6ecdd]">
-                                                    {Number(order.total).toFixed(2)} ₴
+                                                    {Number(
+                                                        order.total,
+                                                    ).toFixed(2)}{' '}
+                                                    ₴
                                                 </span>
                                             </div>
                                         </Link>
@@ -302,7 +313,7 @@ export default function AccountIndex({ lots, orders, sales, activeTab }) {
                             <div className="mt-6 flex justify-end">
                                 <Link
                                     href="/sellers/lots/create"
-                                    className="rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
+                                    className="rounded-full bg-[#c5aa86] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase dark:bg-[#c79a5f]"
                                 >
                                     + {t('Добавить лот')}
                                 </Link>
@@ -313,7 +324,10 @@ export default function AccountIndex({ lots, orders, sales, activeTab }) {
                                     {t('Ты ещё не выставлял лоты на распив.')}
                                 </p>
                             ) : (
-                                <div ref={listRef} className="mt-4 flex flex-col gap-3">
+                                <div
+                                    ref={listRef}
+                                    className="mt-4 flex flex-col gap-3"
+                                >
                                     {lots.map((lot) => (
                                         <LotRow key={lot.id} lot={lot} t={t} />
                                     ))}

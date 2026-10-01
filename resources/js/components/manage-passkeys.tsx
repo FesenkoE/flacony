@@ -53,7 +53,9 @@ export default function ManagePasskeys(props: Props) {
             <Heading
                 variant="small"
                 title={t('Пасскеи')}
-                description={t('Вход по отпечатку, Face ID или ключу — без пароля')}
+                description={t(
+                    'Вход по отпечатку, Face ID или ключу — без пароля',
+                )}
             />
 
             <div className={`overflow-hidden ${panelClass}`}>

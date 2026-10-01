@@ -12,7 +12,11 @@ export default function SearchOverlay({ open, onOpenChange }) {
     const l = useLocalized();
     const isDarkTheme = useIsDarkTheme();
     const [query, setQuery] = useState('');
-    const [results, setResults] = useState({ products: [], lots: [], posts: [] });
+    const [results, setResults] = useState({
+        products: [],
+        lots: [],
+        posts: [],
+    });
     const [loading, setLoading] = useState(false);
     const [mounted, setMounted] = useState(open);
     const [closing, setClosing] = useState(false);
@@ -188,9 +192,7 @@ export default function SearchOverlay({ open, onOpenChange }) {
                                                             className="h-full w-full object-cover"
                                                         />
                                                     ) : (
-                                                        <BottleIcon
-                                                            size={25}
-                                                        />
+                                                        <BottleIcon size={25} />
                                                     )}
                                                 </div>
                                                 <div className="flex min-w-0 flex-1 flex-col">

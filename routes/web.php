@@ -18,6 +18,7 @@ use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SellerController;
+use App\Http\Middleware\HandleLocale;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -28,7 +29,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::post('locale/{locale}', function (string $locale) {
-    $locale = in_array($locale, \App\Http\Middleware\HandleLocale::SUPPORTED, true) ? $locale : 'uk';
+    $locale = in_array($locale, HandleLocale::SUPPORTED, true) ? $locale : 'uk';
 
     return back()->cookie('locale', $locale, 60 * 24 * 365);
 })->name('locale.update');

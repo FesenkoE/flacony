@@ -8,10 +8,7 @@ import { formatDate } from '@/lib/format-date';
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
 import { useAddToCart } from '@/hooks/use-add-to-cart';
-import {
-    pickThemeImage,
-    useIsDarkTheme,
-} from '@/hooks/use-theme-image';
+import { pickThemeImage, useIsDarkTheme } from '@/hooks/use-theme-image';
 import { useLocalized, useTranslations } from '@/hooks/use-translations';
 import { pluralizeRu } from '@/lib/pluralize';
 
@@ -56,7 +53,10 @@ export default function ProductShow({ product, myReview }) {
     const isDark = useIsDarkTheme();
     const description = useLocalized()(product, 'description');
     const photos = [
-        { image_path: product.image_path, image_path_light: product.image_path_light },
+        {
+            image_path: product.image_path,
+            image_path_light: product.image_path_light,
+        },
         ...product.images,
     ];
     const [photoIndex, setPhotoIndex] = useState(0);
@@ -129,7 +129,9 @@ export default function ProductShow({ product, myReview }) {
                                     <>
                                         <button
                                             type="button"
-                                            onClick={() => setLightboxOpen(true)}
+                                            onClick={() =>
+                                                setLightboxOpen(true)
+                                            }
                                             aria-label={t('Увеличить фото')}
                                             className="h-full w-full"
                                         >
@@ -180,7 +182,9 @@ export default function ProductShow({ product, myReview }) {
                                                 key={i}
                                                 type="button"
                                                 onClick={() => setPhotoIndex(i)}
-                                                aria-label={t('Фото {n}', { n: i + 1 })}
+                                                aria-label={t('Фото {n}', {
+                                                    n: i + 1,
+                                                })}
                                                 className={
                                                     'scent-card-photo aspect-square w-16 shrink-0 overflow-hidden rounded-xl border-2 ' +
                                                     (i === photoIndex
@@ -204,7 +208,10 @@ export default function ProductShow({ product, myReview }) {
                             )}
                         </div>
 
-                        <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
+                        <Dialog
+                            open={lightboxOpen}
+                            onOpenChange={setLightboxOpen}
+                        >
                             <DialogContent className="w-auto max-w-[92vw] rounded-none border-0 bg-transparent p-0 shadow-none">
                                 <DialogTitle className="sr-only">
                                     {`${product.brand.name} — ${product.name}`}
@@ -222,7 +229,9 @@ export default function ProductShow({ product, myReview }) {
                                             <button
                                                 type="button"
                                                 onClick={prevPhoto}
-                                                aria-label={t('Предыдущее фото')}
+                                                aria-label={t(
+                                                    'Предыдущее фото',
+                                                )}
                                                 className="absolute top-1/2 left-3 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-[#00000066] text-white"
                                             >
                                                 <ChevronLeft size={20} />
@@ -323,7 +332,7 @@ export default function ProductShow({ product, myReview }) {
                                 <button
                                     type="button"
                                     onClick={() => addToCart(variant.id)}
-                                    className="flex w-full items-center justify-center gap-2 rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-5 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
+                                    className="flex w-full items-center justify-center gap-2 rounded-full bg-[#c5aa86] px-5 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase dark:bg-[#c79a5f]"
                                 >
                                     {added ? (
                                         <svg
@@ -587,7 +596,7 @@ export default function ProductShow({ product, myReview }) {
                                 <div className="flex items-center gap-3">
                                     <button
                                         type="submit"
-                                        className="rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-5 py-2 text-sm font-bold text-[#3d2712] uppercase"
+                                        className="rounded-full bg-[#c5aa86] px-5 py-2 text-sm font-bold text-[#3d2712] uppercase dark:bg-[#c79a5f]"
                                     >
                                         {myReview
                                             ? t('Обновить отзыв')
@@ -629,7 +638,10 @@ export default function ProductShow({ product, myReview }) {
                                                 {review.user.name}
                                             </span>
                                             <span className="text-xs text-[#7d6952] dark:text-[#b7a58f]">
-                                                {formatDate(review.created_at, t)}
+                                                {formatDate(
+                                                    review.created_at,
+                                                    t,
+                                                )}
                                             </span>
                                         </div>
                                         <StarRating

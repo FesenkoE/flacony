@@ -81,7 +81,7 @@ export default function CartIndex({ items, total }) {
                             <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
                                 <Link
                                     href="/products"
-                                    className="rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
+                                    className="rounded-full bg-[#c5aa86] px-7 py-3.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase dark:bg-[#c79a5f]"
                                 >
                                     {t('Смотреть каталог')}
                                 </Link>
@@ -114,7 +114,7 @@ export default function CartIndex({ items, total }) {
 
                             <Link
                                 href="/checkout"
-                                className="mt-2 rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-7 py-3.5 text-center text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
+                                className="mt-2 rounded-full bg-[#c5aa86] px-7 py-3.5 text-center text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase dark:bg-[#c79a5f]"
                             >
                                 {t('Оформить заказ')}
                             </Link>

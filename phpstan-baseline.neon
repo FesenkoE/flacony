@@ -1,0 +1,571 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Cannot access property \$title on Illuminate\\Database\\Eloquent\\Model\|int\|string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Filament/Resources/ForumTopics/Pages/ViewForumTopic.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:replies\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Filament/Resources/ForumTopics/RelationManagers/RepliesRelationManager.php
+
+		-
+			message: '#^Cannot access property \$id on Illuminate\\Database\\Eloquent\\Model\|int\|string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Filament/Resources/Orders/Pages/ViewOrder.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:images\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: app/Filament/Resources/Products/RelationManagers/ImagesRelationManager.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Auth\\GoogleController\:\:redirect\(\) should return Illuminate\\Http\\RedirectResponse but returns Symfony\\Component\\HttpFoundation\\RedirectResponse\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/Auth/GoogleController.php
+
+		-
+			message: '#^Cannot call method isPast\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/BlogController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Lot\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Lot\>\:\:\$brand_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/CartController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Lot\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Lot\>\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/CartController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Lot\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Lot\>\:\:\$product_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/CartController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Lot\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Lot\>\:\:\$remaining_volume_ml\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/CartController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\ProductVariant\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\ProductVariant\>\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/CartController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\ProductVariant\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\ProductVariant\>\:\:\$product\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/CartController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\ProductVariant\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\ProductVariant\>\:\:\$volume_ml\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/CartController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$brand\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/CartController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/CartController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\CheckoutController\:\:deliveryMethodsFor\(\) has parameter \$items with generic class Illuminate\\Support\\Collection but does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Http/Controllers/CheckoutController.php
+
+		-
+			message: '#^Unable to resolve the template type TGroupKey in call to method Illuminate\\Support\\Collection\<\(int\|string\),mixed\>\:\:groupBy\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: app/Http/Controllers/CheckoutController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\:\:byActivity\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Http/Controllers/ForumController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ForumController\:\:countAnswers\(\) has parameter \$topics with generic class Illuminate\\Support\\Collection but does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Http/Controllers/ForumController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ForumController\:\:countAnswers\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Http/Controllers/ForumController.php
+
+		-
+			message: '#^Property App\\Models\\ForumTopic\:\:\$replies_count is not writable\.$#'
+			identifier: assign.propertyReadOnly
+			count: 1
+			path: app/Http/Controllers/ForumController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:replies\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/ForumTopicController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\LotController\:\:brandOptions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Controllers/LotController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\LotController\:\:productNameOptions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Controllers/LotController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\LotController\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Controllers/LotController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/SearchController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Post\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Controllers/SearchController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Product\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Controllers/SearchController.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Post\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Controllers/SearchController.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Product\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Controllers/SearchController.php
+
+		-
+			message: '#^Method App\\Models\\Brand\:\:products\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Brand.php
+
+		-
+			message: '#^Method App\\Models\\Category\:\:products\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Category.php
+
+		-
+			message: '#^Method App\\Models\\Favorite\:\:product\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Favorite.php
+
+		-
+			message: '#^Method App\\Models\\Favorite\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Favorite.php
+
+		-
+			message: '#^Method App\\Models\\ForumCategory\:\:topics\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ForumCategory.php
+
+		-
+			message: '#^Method App\\Models\\ForumReply\:\:author\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ForumReply.php
+
+		-
+			message: '#^Method App\\Models\\ForumReply\:\:topic\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ForumReply.php
+
+		-
+			message: '#^Method App\\Models\\ForumTopic\:\:author\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ForumTopic.php
+
+		-
+			message: '#^Method App\\Models\\ForumTopic\:\:category\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ForumTopic.php
+
+		-
+			message: '#^Method App\\Models\\ForumTopic\:\:latestReply\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasOne does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ForumTopic.php
+
+		-
+			message: '#^Method App\\Models\\ForumTopic\:\:replies\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ForumTopic.php
+
+		-
+			message: '#^Method App\\Models\\ForumTopic\:\:scopeByActivity\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ForumTopic.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:notify\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/Lot.php
+
+		-
+			message: '#^Method App\\Models\\Lot\:\:product\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Lot.php
+
+		-
+			message: '#^Method App\\Models\\Lot\:\:seller\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Lot.php
+
+		-
+			message: '#^Method App\\Models\\Lot\:\:toSearchableArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/Lot.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$lot_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Order.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$volume_ml\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Order.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:notify\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/Order.php
+
+		-
+			message: '#^Method App\\Models\\Order\:\:items\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Order.php
+
+		-
+			message: '#^Method App\\Models\\Order\:\:seller\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Order.php
+
+		-
+			message: '#^Method App\\Models\\Order\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Order.php
+
+		-
+			message: '#^Method App\\Models\\OrderItem\:\:order\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/OrderItem.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Post.php
+
+		-
+			message: '#^Cannot call method isPast\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Post.php
+
+		-
+			message: '#^Method App\\Models\\Post\:\:author\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Post.php
+
+		-
+			message: '#^Method App\\Models\\Post\:\:category\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Post.php
+
+		-
+			message: '#^Method App\\Models\\Post\:\:scopePublished\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Post.php
+
+		-
+			message: '#^Method App\\Models\\Post\:\:toSearchableArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/Post.php
+
+		-
+			message: '#^Method App\\Models\\PostCategory\:\:posts\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/PostCategory.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Models/Product.php
+
+		-
+			message: '#^Method App\\Models\\Product\:\:brand\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Product.php
+
+		-
+			message: '#^Method App\\Models\\Product\:\:category\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Product.php
+
+		-
+			message: '#^Method App\\Models\\Product\:\:favorites\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Product.php
+
+		-
+			message: '#^Method App\\Models\\Product\:\:images\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Product.php
+
+		-
+			message: '#^Method App\\Models\\Product\:\:lots\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Product.php
+
+		-
+			message: '#^Method App\\Models\\Product\:\:reviews\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Product.php
+
+		-
+			message: '#^Method App\\Models\\Product\:\:toSearchableArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/Product.php
+
+		-
+			message: '#^Method App\\Models\\Product\:\:variants\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Product.php
+
+		-
+			message: '#^Only iterables can be unpacked, array\|string given\.$#'
+			identifier: arrayUnpacking.nonIterable
+			count: 3
+			path: app/Models/Product.php
+
+		-
+			message: '#^Method App\\Models\\ProductImage\:\:product\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProductImage.php
+
+		-
+			message: '#^Method App\\Models\\ProductVariant\:\:product\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProductVariant.php
+
+		-
+			message: '#^Method App\\Models\\Review\:\:product\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Review.php
+
+		-
+			message: '#^Method App\\Models\\Review\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Review.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:favorites\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:lots\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:orders\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$brand_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Notifications/NewSale.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$detail\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Notifications/NewSale.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$product_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Notifications/NewSale.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Notifications/OrderStatusChanged.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$brand\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Support/Cart.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Support/Cart.php
+
+		-
+			message: '#^Method App\\Support\\Cart\:\:items\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Support/Cart.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Lot\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Support/Cart.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\ProductVariant\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Support/Cart.php
+
+		-
+			message: '#^Parameter \#1 \$source of method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:concat\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Support/Cart.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Lot\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Support/Cart.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\ProductVariant\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Support/Cart.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:values\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Support/Cart.php
+
+		-
+			message: '#^Offset ''cover'' on array\{title\: ''Parfum, EDP, EDT,…'', excerpt\: ''На флаконе часто…'', body\: ''Разница между…'', published_days_ago\: 9, cover\: ''posts/parfum\-edp…'', category\: ''matchast''\}\|array\{title\: ''Ароматические…'', excerpt\: ''Древесные,…'', body\: ''Все ароматы принято…'', published_days_ago\: 2, cover\: ''posts/aromaticeskie…'', category\: ''matchast''\}\|array\{title\: ''Как выбрать свой…'', excerpt\: ''Полки в нишевом…'', body\: ''Переход от масс…'', published_days_ago\: 5, cover\: ''posts/kak\-vybrat…'', category\: ''gaidy''\}\|array\{title\: ''Как правильно…'', excerpt\: ''Свет, тепло и…'', body\: ''Парфюмерное масло…'', published_days_ago\: 6, cover\: ''posts/kak\-pravilno…'', category\: ''uhod''\}\|array\{title\: ''Мужской, женский,…'', excerpt\: ''На флаконе часто…'', body\: ''Деление парфюмерии…'', published_days_ago\: 8, cover\: ''posts/muzskoi…'', category\: ''stil\-i\-podbor''\}\|array\{title\: ''Натуральные и…'', excerpt\: ''«Натуральный» не…'', body\: ''Многие уверены\:…'', published_days_ago\: 1, cover\: ''posts/naturalnye\-i…'', category\: ''matchast''\}\|array\{title\: ''Почему один и тот…'', excerpt\: ''Один и тот же…'', body\: ''Аромат не…'', published_days_ago\: 3, cover\: ''posts/pocemu\-odin\-i…'', category\: ''uhod''\}\|array\{title\: ''Что такое распив и…'', excerpt\: ''Полный флакон…'', body\: ''Распив — это когда…'', published_days_ago\: 4, cover\: ''posts/cto\-takoe…'', category\: ''gaidy''\} in isset\(\) always exists and is not nullable\.$#'
+			identifier: isset.offset
+			count: 1
+			path: database/seeders/DatabaseSeeder.php
+
+		-
+			message: '#^Offset ''cover'' on array\{title\: ''Parfum, EDP, EDT,…'', excerpt\: ''На флаконе часто…'', body\: ''Разница между…'', published_days_ago\: 9, cover\: ''posts/parfum\-edp…'', category\: ''matchast''\}\|array\{title\: ''Ароматические…'', excerpt\: ''Древесные,…'', body\: ''Все ароматы принято…'', published_days_ago\: 2, cover\: ''posts/aromaticeskie…'', category\: ''matchast''\}\|array\{title\: ''Как выбрать свой…'', excerpt\: ''Полки в нишевом…'', body\: ''Переход от масс…'', published_days_ago\: 5, cover\: ''posts/kak\-vybrat…'', category\: ''gaidy''\}\|array\{title\: ''Как правильно…'', excerpt\: ''Свет, тепло и…'', body\: ''Парфюмерное масло…'', published_days_ago\: 6, cover\: ''posts/kak\-pravilno…'', category\: ''uhod''\}\|array\{title\: ''Мужской, женский,…'', excerpt\: ''На флаконе часто…'', body\: ''Деление парфюмерии…'', published_days_ago\: 8, cover\: ''posts/muzskoi…'', category\: ''stil\-i\-podbor''\}\|array\{title\: ''Натуральные и…'', excerpt\: ''«Натуральный» не…'', body\: ''Многие уверены\:…'', published_days_ago\: 1, cover\: ''posts/naturalnye\-i…'', category\: ''matchast''\}\|array\{title\: ''Почему один и тот…'', excerpt\: ''Один и тот же…'', body\: ''Аромат не…'', published_days_ago\: 3, cover\: ''posts/pocemu\-odin\-i…'', category\: ''uhod''\}\|array\{title\: ''Что такое распив и…'', excerpt\: ''Полный флакон…'', body\: ''Распив — это когда…'', published_days_ago\: 4, cover\: ''posts/cto\-takoe…'', category\: ''gaidy''\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: database/seeders/DatabaseSeeder.php
+
+		-
+			message: '#^Parameter \#2 \$values of static method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\User\>\:\:firstOrCreate\(\) expects array\<string, mixed\>\|Closure, array\<int\|string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: database/seeders/DatabaseSeeder.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:replies\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: database/seeders/ForumSeeder.php
+
+		-
+			message: '#^Parameter \#2 \$values of static method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\User\>\:\:firstOrCreate\(\) expects array\<string, mixed\>\|Closure, array\<int\|string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: database/seeders/ForumSeeder.php

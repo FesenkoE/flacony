@@ -1,5 +1,11 @@
 import { Head, Link } from '@inertiajs/react';
-import { Check, ChevronLeft, ChevronRight, Copy, Newspaper } from 'lucide-react';
+import {
+    Check,
+    ChevronLeft,
+    ChevronRight,
+    Copy,
+    Newspaper,
+} from 'lucide-react';
 import BottleIcon from '@/components/bottle-icon';
 import PostCard from '@/components/post-card';
 import SiteFooter from '@/components/site-footer';
@@ -37,10 +43,12 @@ export default function BlogShow({
     const paragraphs = body.split(/\n{2,}/);
     const coverPath = useThemeImagePath(post.cover_path, post.cover_path_light);
     const wordCount = body.trim().split(/\s+/).length;
-    const readingMinutes = Math.max(1, Math.round(wordCount / WORDS_PER_MINUTE));
+    const readingMinutes = Math.max(
+        1,
+        Math.round(wordCount / WORDS_PER_MINUTE),
+    );
     const cta = CATEGORY_CTA[post.category?.slug] ?? DEFAULT_CTA;
-    const shareUrl =
-        typeof window !== 'undefined' ? window.location.href : '';
+    const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
     const CopyIcon = copiedText === shareUrl ? Check : Copy;
     const discount = promoCode
         ? promoCode.type === 'percent'
@@ -65,7 +73,11 @@ export default function BlogShow({
                         <div
                             className={`mt-6 grid grid-cols-1 gap-10 ${promoCode ? 'lg:grid-cols-[1fr_320px]' : ''}`}
                         >
-                            <div className={promoCode ? '' : 'mx-auto w-full max-w-4xl'}>
+                            <div
+                                className={
+                                    promoCode ? '' : 'mx-auto w-full max-w-4xl'
+                                }
+                            >
                                 <div className="scent-card-photo flex aspect-[21/9] items-center justify-center overflow-hidden rounded-3xl">
                                     {coverPath ? (
                                         <img
@@ -145,7 +157,7 @@ export default function BlogShow({
                                         {prevPost ? (
                                             <Link
                                                 href={`/blog/${prevPost.slug}`}
-                                                className="group flex flex-1 flex-col gap-1 rounded-2xl p-3 -m-3 hover:bg-[#1e160c08] dark:hover:bg-[#ffffff08]"
+                                                className="group -m-3 flex flex-1 flex-col gap-1 rounded-2xl p-3 hover:bg-[#1e160c08] dark:hover:bg-[#ffffff08]"
                                             >
                                                 <span className="flex items-center gap-1 text-xs text-[#7d6952] dark:text-[#b7a58f]">
                                                     <ChevronLeft size={14} />{' '}
@@ -161,7 +173,7 @@ export default function BlogShow({
                                         {nextPost ? (
                                             <Link
                                                 href={`/blog/${nextPost.slug}`}
-                                                className="group flex flex-1 flex-col items-end gap-1 rounded-2xl p-3 -m-3 text-right hover:bg-[#1e160c08] dark:hover:bg-[#ffffff08]"
+                                                className="group -m-3 flex flex-1 flex-col items-end gap-1 rounded-2xl p-3 text-right hover:bg-[#1e160c08] dark:hover:bg-[#ffffff08]"
                                             >
                                                 <span className="flex items-center gap-1 text-xs text-[#7d6952] dark:text-[#b7a58f]">
                                                     {t('Следующая статья')}{' '}

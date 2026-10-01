@@ -16,12 +16,13 @@ return new class extends Migration
         });
 
         // Link existing lots whose brand + name match a catalog product.
-        DB::table('lots')
-            ->join('products', 'products.name', '=', 'lots.product_name')
-            ->join('brands', function ($join) {
-                $join->on('brands.id', '=', 'products.brand_id')->on('brands.name', '=', 'lots.brand_name');
-            })
-            ->update(['lots.product_id' => DB::raw('products.id')]);
+        // Correlated subquery instead of UPDATE ... JOIN so it runs on MySQL and SQLite (CI).
+        DB::table('lots')->update(['product_id' => DB::raw(
+            '(select products.id from products
+              join brands on brands.id = products.brand_id
+              where products.name = lots.product_name and brands.name = lots.brand_name
+              limit 1)'
+        )]);
     }
 
     public function down(): void

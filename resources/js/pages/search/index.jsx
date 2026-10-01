@@ -50,7 +50,7 @@ export default function SearchIndex({ query, products, lots, posts, brands }) {
                         />
                         <button
                             type="submit"
-                            className="rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-5 py-2.5 text-sm font-bold text-[#3d2712] uppercase"
+                            className="rounded-full bg-[#c5aa86] px-5 py-2.5 text-sm font-bold text-[#3d2712] uppercase dark:bg-[#c79a5f]"
                         >
                             {t('Найти')}
                         </button>
@@ -118,7 +118,10 @@ export default function SearchIndex({ query, products, lots, posts, brands }) {
                                     </h2>
                                     <div className="grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-x-6 gap-y-10">
                                         {posts.map((post) => (
-                                            <PostCard key={post.id} post={post} />
+                                            <PostCard
+                                                key={post.id}
+                                                post={post}
+                                            />
                                         ))}
                                     </div>
                                 </div>

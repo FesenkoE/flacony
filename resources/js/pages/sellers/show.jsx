@@ -29,7 +29,7 @@ export default function SellerShow({ seller, lots }) {
                         {isOwnStorefront && (
                             <Link
                                 href="/sellers/lots/create"
-                                className="rounded-full bg-[#c5aa86] dark:bg-[#c79a5f] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase"
+                                className="rounded-full bg-[#c5aa86] px-5 py-2.5 text-sm font-bold tracking-[0.04em] text-[#3d2712] uppercase dark:bg-[#c79a5f]"
                             >
                                 + {t('Добавить лот')}
                             </Link>

@@ -85,10 +85,7 @@ export default function PasskeyRegistration({ onSuccess }: Props) {
     }
 
     return (
-        <form
-            onSubmit={handleSubmit}
-            className={`space-y-4 p-4 ${panelClass}`}
-        >
+        <form onSubmit={handleSubmit} className={`space-y-4 p-4 ${panelClass}`}>
             <div className="flex flex-col gap-1.5">
                 <label className={labelClass} htmlFor="passkey-name">
                     {t('Название')}

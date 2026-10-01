@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Filament\Resources\ForumTopics\Pages\ViewForumTopic;
 use App\Filament\Resources\ForumTopics\RelationManagers\RepliesRelationManager;
 use App\Models\ForumCategory;
-use App\Models\ForumReply;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;

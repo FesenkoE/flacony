@@ -39,9 +39,7 @@ export default function PasskeyItem({ passkey, onDelete }: Props) {
                 </div>
                 <div className="space-y-1">
                     <div className="flex items-center gap-2.5">
-                        <p className="font-semibold">
-                            {passkey.name}
-                        </p>
+                        <p className="font-semibold">{passkey.name}</p>
                         {passkey.authenticator && (
                             <span className="inline-flex items-center gap-1 rounded-full border border-[#e6d7bb] px-2 py-0.5 text-[11px] font-semibold tracking-wide text-[#7d6952] uppercase dark:border-[#ffffff29] dark:text-[#b7a58f]">
                                 {passkey.authenticator}
@@ -79,10 +77,9 @@ export default function PasskeyItem({ passkey, onDelete }: Props) {
                         {t('Удалить пасскей?')}
                     </DialogTitle>
                     <DialogDescription className="text-[#7d6952] dark:text-[#b7a58f]">
-                        {t(
-                            'Войти с пасскеем «{name}» больше не получится.',
-                            { name: passkey.name },
-                        )}
+                        {t('Войти с пасскеем «{name}» больше не получится.', {
+                            name: passkey.name,
+                        })}
                     </DialogDescription>
                     <DialogFooter className="gap-2">
                         <DialogClose asChild>
